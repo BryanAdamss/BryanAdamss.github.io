@@ -98,7 +98,7 @@
 <meta property="og:image" content="http://images.cnblogs.com/cnblogs_com/2050/201208/201208101725521060.png">
 <meta property="og:image" content="http://images.cnblogs.com/cnblogs_com/2050/201208/201208101725587335.png">
 <meta property="og:image" content="http://images.cnblogs.com/cnblogs_com/2050/201208/201208101726046184.png">
-<meta property="og:updated_time" content="2017-03-10T10:20:10.830Z">
+<meta property="og:updated_time" content="2017-03-13T01:59:28.789Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="break-word、word-wrap、white-space">
 <meta name="twitter:description" content="white-spacewhite-space的定义是用来设置如何处理元素中的空白。这里的空白指的是空格、tab制表符。
@@ -478,7 +478,7 @@
 </tr>
 </tbody>
 </table>
-<p>在white-space、word-wrap、word-break都为normal值时，既默认情况下时。一行的剩余空间不足以容纳一个单词时，浏览器会将这个单词挪到下一行显示。挪后如果这个单词比容器还长，则这个单词会直接溢出，因为默认情况下，浏览器是无法在单词内进行换行的。中文会一行空间不足以容纳一个字时，在字后进行换行</p>
+<p><strong>在white-space、word-wrap、word-break都为normal值时，既默认情况下时。一行的剩余空间不足以容纳一个单词时，浏览器会将这个单词挪到下一行显示。挪后如果这个单词比容器还长，则这个单词会直接溢出，因为默认情况下，浏览器是无法在单词内进行换行的。中文会一行空间不足以容纳一个字时，在字后进行换行</strong></p>
 <p><img src="http://images.cnblogs.com/cnblogs_com/2050/201208/201208101725521060.png" alt=""></p>
 <p>此时如果设置word-wrap:break-word，则会将这个长单词进行截断，从截断处进行换行。</p>
 <p><img src="http://images.cnblogs.com/cnblogs_com/2050/201208/201208101725587335.png" alt=""></p>
@@ -490,6 +490,13 @@
 <p>当同时设置word-wrap:break-word;和word-break:break-all时，word-break:break-all的效果会生效</p>
 <h1 id="word-spacing"><a href="#word-spacing" class="headerlink" title="word-spacing"></a>word-spacing</h1><p>规定英文<strong>单词</strong>之间的间距</p>
 <h1 id="letter-spacing"><a href="#letter-spacing" class="headerlink" title="letter-spacing"></a>letter-spacing</h1><p>规定英文<strong>字符</strong>之间的间距</p>
+<p>总结:</p>
+<p>默认情况下，当一行的剩余空间不足以容纳某一单词时，浏览器会将此单词整体挪到下一行显示。此时，若这个单词超长(长度超出容器的宽度)，则此单词会直接溢出(此时上一行会留下一段空白)。</p>
+<p>word-wrap:指明是否允许在长单词中换行，当设置其属性为break-word，则会把超过容器长度的单词进行截断，并换行(上一行留下的空白并不会被清除)</p>
+<p>word-break:当其设置break-all时，它是word-wrap:break-word的升级版，它能解决上一行留白问题。它会让单词先在当前行显示，当单词某个字符到达容器边界时，会直接在此字符出进行截断，并换行。这样就最大限度的利用了空间。</p>
+<p>white-space:指定处理空白符的方式，比较有用的属性为nowrap，设置文本不换行。一般配合其它css实现文本过长省略号</p>
+<p>word-spacing:规定英文单词之间的间距</p>
+<p>letter-spacing:规定英文单词字符之间的间距</p>
 <blockquote>
 <p>  图片引用在自<a href="http://www.cnblogs.com/2050/archive/2012/08/10/2632256.html" target="_blank" rel="external">http://www.cnblogs.com/2050/archive/2012/08/10/2632256.html</a></p>
 </blockquote>
