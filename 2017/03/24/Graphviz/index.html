@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="mock,模拟数据," />
+  <meta name="keywords" content="Graphviz,绘图," />
 
 
 
@@ -87,16 +87,24 @@
 
 
 
-<meta name="description" content="Mock.js的基本用法如何使用123456789101112131415161718192021&amp;lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery-2.2.4.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;&amp;lt;!-- 引入Mock.js --&amp;gt;&amp;lt;script type=&quot;text/javascript&quot; src=&quot;js/mock">
+<meta name="description" content="Graphviz的安装以及基本使用介绍Graphviz可通过代码的方式生成图形
+安装win下，可在官网http://http://www.graphviz.org/Download_windows.php下载，安装好后，手动将bin文件夹添加到环境变量即可。cmd 下键入dot -version,能出现Graphviz相关信息，则表示安装成功
+生成图片12dot 源文件 -T 图片格式 -o 输出">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mock-js">
-<meta property="og:url" content="http://yoursite.com/2017/03/24/mock-js/index.html">
+<meta property="og:title" content="Graphviz">
+<meta property="og:url" content="http://yoursite.com/2017/03/24/Graphviz/index.html">
 <meta property="og:site_name" content="BryanAdamss的博客">
-<meta property="og:description" content="Mock.js的基本用法如何使用123456789101112131415161718192021&amp;lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery-2.2.4.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;&amp;lt;!-- 引入Mock.js --&amp;gt;&amp;lt;script type=&quot;text/javascript&quot; src=&quot;js/mock">
-<meta property="og:updated_time" content="2017-03-24T06:17:07.794Z">
+<meta property="og:description" content="Graphviz的安装以及基本使用介绍Graphviz可通过代码的方式生成图形
+安装win下，可在官网http://http://www.graphviz.org/Download_windows.php下载，安装好后，手动将bin文件夹添加到环境变量即可。cmd 下键入dot -version,能出现Graphviz相关信息，则表示安装成功
+生成图片12dot 源文件 -T 图片格式 -o 输出">
+<meta property="og:image" content="http://i.imgur.com/bx6evhH.png">
+<meta property="og:updated_time" content="2017-03-24T09:28:22.252Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mock-js">
-<meta name="twitter:description" content="Mock.js的基本用法如何使用123456789101112131415161718192021&amp;lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery-2.2.4.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;&amp;lt;!-- 引入Mock.js --&amp;gt;&amp;lt;script type=&quot;text/javascript&quot; src=&quot;js/mock">
+<meta name="twitter:title" content="Graphviz">
+<meta name="twitter:description" content="Graphviz的安装以及基本使用介绍Graphviz可通过代码的方式生成图形
+安装win下，可在官网http://http://www.graphviz.org/Download_windows.php下载，安装好后，手动将bin文件夹添加到环境变量即可。cmd 下键入dot -version,能出现Graphviz相关信息，则表示安装成功
+生成图片12dot 源文件 -T 图片格式 -o 输出">
+<meta name="twitter:image" content="http://i.imgur.com/bx6evhH.png">
 
 
 
@@ -124,13 +132,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/03/24/mock-js/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/03/24/Graphviz/"/>
 
 
 
 
 
-  <title> mock-js | BryanAdamss的博客 </title>
+  <title> Graphviz | BryanAdamss的博客 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -291,7 +299,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/24/mock-js/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/24/Graphviz/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BryanAdamss">
@@ -312,7 +320,7 @@
             
             
               
-                mock-js
+                Graphviz
               
             
           </h1>
@@ -327,8 +335,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-24T10:52:19+08:00">
-                2017-03-24 10:52:19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-24T16:55:14+08:00">
+                2017-03-24 16:55:14
               </time>
             
 
@@ -350,8 +358,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/FrontEnd/" itemprop="url" rel="index">
-                    <span itemprop="name">前端</span>
+                  <a href="/categories/other/" itemprop="url" rel="index">
+                    <span itemprop="name">其他</span>
                   </a>
                 </span>
 
@@ -385,148 +393,24 @@
       
 
       
-        <h1 id="Mock-js的基本用法"><a href="#Mock-js的基本用法" class="headerlink" title="Mock.js的基本用法"></a>Mock.js的基本用法</h1><h2 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;script type=<span class="string">"text/javascript"</span> src=<span class="string">"js/jquery-2.2.4.min.js"</span>&gt;&lt;/script&gt;</div><div class="line">&lt;!-- 引入Mock.js --&gt;</div><div class="line">&lt;script type="text/javascript" src="js/mock-min.js"&gt;&lt;/script&gt;</div><div class="line"></div><div class="line">&lt;script&gt;</div><div class="line">    <span class="comment">// 根据数据模板生成模拟数据。</span></div><div class="line">    Mock.mock(<span class="string">'http://test.cn'</span>, &#123;</div><div class="line">        <span class="string">"userName"</span>: <span class="string">"@cname"</span>,</div><div class="line">        <span class="string">"sex|1"</span>: [<span class="string">"男"</span>, <span class="string">"女"</span>],</div><div class="line">        <span class="string">"avator"</span>: Mock.Random.image(<span class="string">'100x100'</span>, <span class="string">'#894FC4'</span>, <span class="string">'#FFF'</span>, <span class="string">'png'</span>, <span class="string">'头像'</span>)</div><div class="line">    &#125;);</div><div class="line">    <span class="comment">// 模拟请求</span></div><div class="line">    $.ajax(&#123;</div><div class="line">        <span class="attr">url</span>: <span class="string">'http://test.cn'</span>,</div><div class="line">        <span class="attr">dataType</span>: <span class="string">'json'</span></div><div class="line">    &#125;).done(<span class="function"><span class="keyword">function</span>(<span class="params">data, status, xhr</span>) </span>&#123;</div><div class="line">        <span class="comment">// 请求成功，do something</span></div><div class="line">        <span class="built_in">console</span>.log(data);</div><div class="line">    &#125;);</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
-<h2 id="语法规范"><a href="#语法规范" class="headerlink" title="语法规范"></a>语法规范</h2><ol>
-<li><strong>数据模板</strong>定义规范（Data Template Definition，DTD）</li>
-<li><strong>数据占位符</strong>定义规范（Data Placeholder Definition，DPD） </li>
-</ol>
-<h3 id="数据模板定义语法"><a href="#数据模板定义语法" class="headerlink" title="数据模板定义语法"></a>数据模板定义语法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&apos;name|rule&apos;:value</div><div class="line">name:属性名</div><div class="line">rule:生成规则</div><div class="line">vale:属性值</div></pre></td></tr></table></figure>
-<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><ul>
-<li>属性名(name)和生成规则(value)之间要用<code>|</code>分隔</li>
-<li>生成规则(rule)不是必须的</li>
-<li><strong>最终生成值的类型和初始值由属性值(value)确定</strong></li>
-<li>属性值(value)中可以包含数据占位符(<code>@占位符</code>)</li>
-<li>生成规则有7种格式<ul>
-<li>‘name|min-max’: value</li>
-<li>‘name|count’: value</li>
-<li>‘name|min-max.dmin-dmax’: value</li>
-<li>‘name|min-max.dcount’: value</li>
-<li>‘name|count.dmin-dmax’: value</li>
-<li>‘name|count.dcount’: value</li>
-<li>‘name|+step’: value</li>
-</ul>
-</li>
-<li><strong>生成规则的具体含义还要配合属性值(value)的类型来确定</strong></li>
-</ul>
-<h4 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h4><ol>
-<li>属性值(value)是String<ol>
-<li>‘name |min-max’:stringValue<ul>
-<li>通过重复stringValue，生成一个字符串。重复次数在[min,max]区间取值(次数大于等于min，小于等于max)</li>
-</ul>
-</li>
-<li>‘name |count’:stringValue<ul>
-<li>通过重复stringValue字符串count次，生成一个字符串。</li>
-</ul>
-</li>
-</ol>
-</li>
-<li>属性值(value)是Number<ol>
-<li>‘name|+1’: numberValue<ul>
-<li>属性值自动加 1，初始值为numberValue。</li>
-</ul>
-</li>
-<li>‘name|min-max’:numberValue<ul>
-<li>生成一个[min,max]之间的整数，此时属性值numberValue只是用来确定类型。</li>
-</ul>
-</li>
-<li>‘name|min-max.dmin-dmax’: numberValue<ul>
-<li>生成一个整数部分在[min,max]间取值,小数保留的位数在[dmin,dmax]间取值的浮点数。同理此时属性值(value)也只是用来确定最终返回的数据的类型。</li>
-</ul>
-</li>
-</ol>
-</li>
-<li>属性值是Boolean<ol>
-<li>‘name|1’: booleanValue<ul>
-<li>随机生成一个布尔值，值为 booleanValue 的概率是 1/2，值为 !booleanValue 的概率同样是 1/2。</li>
-</ul>
-</li>
-<li>‘name|min-max’: booleanValue<ul>
-<li>随机生成一个布尔值，值为 booleanValue 的概率是 min / (min + max)，值为 !booleanValue 的概率是 max / (min + max)。此处属性值必须是Boolean类型，若为Number,则意义不同，见2</li>
-<li>“test|1-2”:true<ul>
-<li>生成一个布尔值，为true的概率为1/3，为false概率为2/3</li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-</li>
-<li>属性值是对象 Object<ol>
-<li>‘name|count’: object<ul>
-<li>返回的对象只包含从属性值object中随机选取的count个属性。</li>
-</ul>
-</li>
-<li>‘name|min-max’: object<ul>
-<li>返回的对象只包含从属性值object中随机选取的min到max个属性。</li>
-</ul>
-</li>
-</ol>
-</li>
-<li>属性值是数组 Array<ol>
-<li>‘name|1’: array<ul>
-<li>从属性值 array 中随机选取 1 个元素，作为最终值。</li>
-</ul>
-</li>
-<li>‘name|+1’: array<ul>
-<li>从属性值 array 中顺序选取 1 个元素，作为最终值。</li>
-</ul>
-</li>
-<li>‘name|min-max’: array<ul>
-<li>通过重复属性值array的值生成一个新数组，重复次数大于等于 min，小于等于 max。</li>
-</ul>
-</li>
-<li>‘name|count’: array<ul>
-<li>通过重复属性值array的值生成一个新数组，重复次数为 count。 </li>
-</ul>
-</li>
-</ol>
-</li>
-<li>属性值是函数 Function<ol>
-<li>‘name’: function<ul>
-<li>执行函数 function，取其返回值作为最终的属性值，函数的上下文为属性 ‘name’ 所在的对象。</li>
-</ul>
-</li>
-</ol>
-</li>
-<li>属性值是正则表达式 RegExp<ol>
-<li>‘name’: regexp<ul>
-<li>根据正则表达式 regexp 反向生成可以匹配它的字符串。用于生成自定义格式的字符串。</li>
-</ul>
-</li>
-</ol>
-</li>
-</ol>
-<h3 id="数据占位符定义语法"><a href="#数据占位符定义语法" class="headerlink" title="数据占位符定义语法"></a>数据占位符定义语法</h3><p>Mock中的占位符和Sass中的placeholder很像。可以直接用在数据模板的属性值中。<br>Mock中提供了很多预先定义的占位符，当然你也可以自定义占位符。</p>
-<p>基本调用格式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@占位符</div><div class="line">@占位符(参数 [, 参数])</div><div class="line"></div><div class="line">或者Mock.Random.占位符(参数 [, 参数])</div></pre></td></tr></table></figure></p>
-<h4 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h4><ul>
-<li>用@来标识其后的字符串是占位符。</li>
-<li>占位符引用的是Mock.Random中的方法。</li>
-<li>通过 Mock.Random.extend() 来扩展自定义占位符。</li>
-<li>占位符也可以引用数据模板中的属性。</li>
-<li>占位符会优先引用数据模板中的属性。</li>
-<li>占位符支持相对路径和绝对路径。</li>
-</ul>
-<h4 id="预定义的占位符"><a href="#预定义的占位符" class="headerlink" title="预定义的占位符"></a>预定义的占位符</h4><ul>
-<li>Basic         提供一些基础占位符，如布尔值、整数、自然数、字符串等</li>
-<li>Date          提供日期相关的占位符</li>
-<li>Image         提供图片相关的占位符</li>
-<li>Color         提供色值相关的占位符</li>
-<li>Text          提供文本相关的占位符</li>
-<li>Name          提供英文、中文名称相关的占位符</li>
-<li>Web           提供了url、IP、protocol等相关的占位符</li>
-<li>Address       提供省份、城市等地域相关信息的占位符</li>
-<li>Helper        提供一些常用工具如字母转换大小写等相关占位符</li>
-<li>Miscellaneous 提供了guid、身份证、自增等相关占位符号</li>
-</ul>
-<h4 id="自定义扩展符"><a href="#自定义扩展符" class="headerlink" title="自定义扩展符"></a>自定义扩展符</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Mock.Random.extend(&#123;</div><div class="line">    <span class="attr">constellation</span>: <span class="function"><span class="keyword">function</span>(<span class="params">date</span>) </span>&#123;</div><div class="line">        <span class="keyword">var</span> constellations = [<span class="string">'白羊座'</span>, <span class="string">'金牛座'</span>, <span class="string">'双子座'</span>, <span class="string">'巨蟹座'</span>, <span class="string">'狮子座'</span>, <span class="string">'处女座'</span>, <span class="string">'天秤座'</span>, <span class="string">'天蝎座'</span>, <span class="string">'射手座'</span>, <span class="string">'摩羯座'</span>, <span class="string">'水瓶座'</span>, <span class="string">'双鱼座'</span>]</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.pick(constellations)</div><div class="line">    &#125;</div><div class="line">&#125;)</div><div class="line">Mock.Random.constellation()</div><div class="line"><span class="comment">// =&gt; "水瓶座"</span></div><div class="line">Mock.mock(<span class="string">'@CONSTELLATION'</span>)</div><div class="line"><span class="comment">// =&gt; "天蝎座"</span></div><div class="line">Mock.mock(&#123;</div><div class="line">    <span class="attr">constellation</span>: <span class="string">'@CONSTELLATION'</span></div><div class="line">&#125;)</div><div class="line"><span class="comment">// =&gt; &#123; constellation: "射手座" &#125;</span></div></pre></td></tr></table></figure>
-<p>更多API请参考</p>
+        <h1 id="Graphviz的安装以及基本使用"><a href="#Graphviz的安装以及基本使用" class="headerlink" title="Graphviz的安装以及基本使用"></a>Graphviz的安装以及基本使用</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Graphviz可通过代码的方式生成图形</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>win下，可在官网<a href="http://http://www.graphviz.org/Download_windows.php" target="_blank" rel="external">http://http://www.graphviz.org/Download_windows.php</a>下载，安装好后，手动将bin文件夹添加到环境变量即可。<br>cmd 下键入<code>dot -version</code>,能出现Graphviz相关信息，则表示安装成功</p>
+<h2 id="生成图片"><a href="#生成图片" class="headerlink" title="生成图片"></a>生成图片</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">dot 源文件 -T 图片格式 -o 输出文件</div><div class="line">dot input.dot -T png -o output.png</div></pre></td></tr></table></figure>
+<p>可利用sublimeText的编译系统，实现图片实时预览</p>
 <blockquote>
-<p><a href="https://github.com/nuysoft/Mock/wiki" target="_blank" rel="external">https://github.com/nuysoft/Mock/wiki</a>‘</p>
+<p>具体可参考这篇文章<br><a href="https://zhuanlan.zhihu.com/p/22820399" target="_blank" rel="external">https://zhuanlan.zhihu.com/p/22820399</a></p>
 </blockquote>
-<p>更多实例请参考</p>
-<blockquote>
-<p><a href="http://mockjs.com/examples.html" target="_blank" rel="external">http://mockjs.com/examples.html</a></p>
+<p>新建<code>*.dot</code>文件，然后编写相应代码，再编译就能生成图</p>
+<h2 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">图类型 图名&#123;</div><div class="line">    //其他</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="无向图"><a href="#无向图" class="headerlink" title="无向图"></a>无向图</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// 无向图用--表示节点之间的关系</div><div class="line">graph graphname &#123;</div><div class="line">    a -- b--e; </div><div class="line">    b -- c;</div><div class="line">    b -- d;</div><div class="line">    d -- a;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="有向图"><a href="#有向图" class="headerlink" title="有向图"></a>有向图</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">// 有向图用a-&gt;b表示从a节点指向b节点</div><div class="line">digraph graphname&#123;</div><div class="line">	a-&gt;b</div><div class="line">	b-&gt;c</div><div class="line">	a-&gt;c</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="定义一类节点"><a href="#定义一类节点" class="headerlink" title="定义一类节点"></a>定义一类节点</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">digraph graphname&#123;</div><div class="line">    T [label=&quot;Teacher&quot;,fontcolor=&quot;red&quot;] //定义节点T，并给予属性</div><div class="line">    P [label=&quot;Pupil&quot;]  //定义节点P，并给予属性</div><div class="line"></div><div class="line">    T-&gt;P [label=&quot;Instructions&quot;, fontcolor=darkgreen] //定义边T-&gt;P，并给予属性 </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="设置属性-样式"><a href="#设置属性-样式" class="headerlink" title="设置属性(样式)"></a>设置属性(样式)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">graph G &#123;</div><div class="line">    // 设置当前图和子图的属性</div><div class="line">    fontname=&quot;Microsoft JhengHei&quot;;</div><div class="line">    fontsize=20;</div><div class="line">    label=&quot;图&quot;;</div><div class="line">    fontcolor=blue;</div><div class="line">    //设置当前大括号范围内所有节点和边的属性，包含子图里面节点和边，类css中标签选择器</div><div class="line">    node[fontname=&quot;Microsoft JhengHei&quot;,fontsize=16];</div><div class="line">    edge[fontname=&quot;Microsoft JhengHei&quot;,fontsize=16];</div><div class="line">    // 可针对某一类节点设置属性，类css中class选择器</div><div class="line">    &quot;黑海&quot;[fontcolor=&quot;pink&quot;,style =&quot;filled&quot;,fillcolor = &quot;black&quot;];</div><div class="line"></div><div class="line">    &quot;黑海&quot; -- &quot;亚速海&quot;;</div><div class="line">    &quot;黑海&quot; -- &quot;博斯普鲁斯海峡&quot;;</div><div class="line">    &quot;达达尼尔海峡&quot; -- &quot;爱琴海&quot;;</div><div class="line"></div><div class="line">    // 子图，用subgraph声明，并图名字前缀必须是cluster_否则识别失败；子图和父图的类型必须一致，父图是无向则子图也必须是无向，不能是有向</div><div class="line">    subgraph cluster_T &#123;</div><div class="line">    	// 设置子图的label属性，它的颜色继承父图的fontcolor=blue</div><div class="line">        label=&quot;黑海海峡&quot;;</div><div class="line">        &quot;达达尼尔海峡&quot; -- &quot;马尔马拉海&quot; -- &quot;博斯普鲁斯海峡&quot;;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    subgraph cluster_M &#123;</div><div class="line">        label=&quot;黑海海峡&quot;;</div><div class="line">        // 一对多，空格分隔</div><div class="line">        &quot;中部地中海&quot; -- &#123;</div><div class="line">            &quot;爱琴海&quot; &quot;爱奥尼亚海&quot; &quot;西西里海峡&quot;</div><div class="line">        &#125;;</div><div class="line">        // 一对多，并设置每对都有一个label标签说明，并把字体颜色设置为red，线条颜色设置为yellow</div><div class="line">        &quot;西部地中海&quot; -- &#123;</div><div class="line">            &quot;西西里海峡&quot; &quot;第勒尼安海&quot; &quot;利古里亚海&quot; &quot;伊比利海&quot; &quot;阿尔沃兰海&quot;</div><div class="line">        &#125;[label=&quot;标签说明&quot;,fontcolor=&quot;red&quot;,color=&quot;yellow&quot;];</div><div class="line">        &quot;爱奥尼亚海&quot; -- &quot;亚得里亚海&quot;;</div><div class="line">        &quot;阿尔沃兰海&quot; -- &quot;直布罗陀海峡&quot;;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>最终生成的<br><img src="http://i.imgur.com/bx6evhH.png" alt=""></p>
+<h3 id="中文乱码"><a href="#中文乱码" class="headerlink" title="中文乱码"></a>中文乱码</h3><p>保证.dot文件是以UTF-8编码<br>通过设置fontname为中文字体来解决</p>
+<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><blockquote>
+<p><a href="https://zhuanlan.zhihu.com/p/21993254" target="_blank" rel="external">https://zhuanlan.zhihu.com/p/21993254</a><br><a href="https://zhuanlan.zhihu.com/p/22820399" target="_blank" rel="external">https://zhuanlan.zhihu.com/p/22820399</a><br><a href="http://blog.csdn.net/xiajian2010/article/details/23748557" target="_blank" rel="external">http://blog.csdn.net/xiajian2010/article/details/23748557</a><br><a href="http://www.tuicool.com/articles/vy2Ajyu" target="_blank" rel="external">http://www.tuicool.com/articles/vy2Ajyu</a></p>
 </blockquote>
-<p>可以一边看API、一边看实例，很容易就能上手</p>
 
       
     </div>
@@ -550,9 +434,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/mock/" rel="tag"># mock</a>
+            <a href="/tags/Graphviz/" rel="tag"># Graphviz</a>
           
-            <a href="/tags/模拟数据/" rel="tag"># 模拟数据</a>
+            <a href="/tags/绘图/" rel="tag"># 绘图</a>
           
         </div>
       
@@ -565,8 +449,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/23/Markdown-Learning/" rel="next" title="Markdown-Learning">
-                <i class="fa fa-chevron-left"></i> Markdown-Learning
+              <a href="/2017/03/24/mock-js/" rel="next" title="mock-js">
+                <i class="fa fa-chevron-left"></i> mock-js
               </a>
             
           </div>
@@ -574,10 +458,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/24/Graphviz/" rel="prev" title="Graphviz">
-                Graphviz <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -713,7 +593,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Mock-js的基本用法"><span class="nav-number">1.</span> <span class="nav-text">Mock.js的基本用法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何使用"><span class="nav-number">1.1.</span> <span class="nav-text">如何使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#语法规范"><span class="nav-number">1.2.</span> <span class="nav-text">语法规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据模板定义语法"><span class="nav-number">1.2.1.</span> <span class="nav-text">数据模板定义语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#注意"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">注意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#规则"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">规则</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据占位符定义语法"><span class="nav-number">1.2.2.</span> <span class="nav-text">数据占位符定义语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#注意："><span class="nav-number">1.2.2.1.</span> <span class="nav-text">注意：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#预定义的占位符"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">预定义的占位符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义扩展符"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">自定义扩展符</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Graphviz的安装以及基本使用"><span class="nav-number">1.</span> <span class="nav-text">Graphviz的安装以及基本使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成图片"><span class="nav-number">1.3.</span> <span class="nav-text">生成图片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本语法"><span class="nav-number">1.4.</span> <span class="nav-text">基本语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#无向图"><span class="nav-number">1.4.1.</span> <span class="nav-text">无向图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有向图"><span class="nav-number">1.4.2.</span> <span class="nav-text">有向图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义一类节点"><span class="nav-number">1.4.3.</span> <span class="nav-text">定义一类节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置属性-样式"><span class="nav-number">1.4.4.</span> <span class="nav-text">设置属性(样式)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中文乱码"><span class="nav-number">1.4.5.</span> <span class="nav-text">中文乱码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考链接"><span class="nav-number">1.4.6.</span> <span class="nav-text">参考链接</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
