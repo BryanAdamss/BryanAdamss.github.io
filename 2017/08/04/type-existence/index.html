@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="timer," />
+  <meta name="keywords" content="类型检测,存在性," />
 
 
 
@@ -87,25 +87,37 @@
 
 
 
-<meta name="description" content="最近看了些关于js中定时器原理解析的文章，所以特在此做一个记录本文带有个人理解，若有错误，望指正。 
+<meta name="description" content="本来在《编写可维护性的javascript》中已经做过总结，但最近在使用上又出现一点问题，所以推翻以前的单独写篇关于类型检测和存在性检测的文章
 
-JS中的定时器(setTimeout)是如何工作的?定时器js中的setTimeout主要用来完成一些超时调用的任务，可以指定函数在未来的某个时间执行。123setTimeout(function()&amp;#123;    console.log(&apos;hi&apos;);&amp;#125;,500);
-理论情况下，">
+类型检测和存在性检测必备知识点
+哪些值会被转成false
+
+“”、0、NaN、false、null、undefined会在期待布尔值的地方被转成false;
+非上面提及的值都会被转成true；
+注意空对象(没有任何属性/方法的对象)也会视为true12">
 <meta property="og:type" content="article">
-<meta property="og:title" content="how-does-timer-work">
-<meta property="og:url" content="http://yoursite.com/2017/07/31/how-does-timer-work/index.html">
+<meta property="og:title" content="type-existence">
+<meta property="og:url" content="http://yoursite.com/2017/08/04/type-existence/index.html">
 <meta property="og:site_name" content="BryanAdamss的博客">
-<meta property="og:description" content="最近看了些关于js中定时器原理解析的文章，所以特在此做一个记录本文带有个人理解，若有错误，望指正。 
+<meta property="og:description" content="本来在《编写可维护性的javascript》中已经做过总结，但最近在使用上又出现一点问题，所以推翻以前的单独写篇关于类型检测和存在性检测的文章
 
-JS中的定时器(setTimeout)是如何工作的?定时器js中的setTimeout主要用来完成一些超时调用的任务，可以指定函数在未来的某个时间执行。123setTimeout(function()&amp;#123;    console.log(&apos;hi&apos;);&amp;#125;,500);
-理论情况下，">
-<meta property="og:updated_time" content="2017-07-31T08:20:01.660Z">
+类型检测和存在性检测必备知识点
+哪些值会被转成false
+
+“”、0、NaN、false、null、undefined会在期待布尔值的地方被转成false;
+非上面提及的值都会被转成true；
+注意空对象(没有任何属性/方法的对象)也会视为true12">
+<meta property="og:updated_time" content="2017-08-04T10:41:23.065Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="how-does-timer-work">
-<meta name="twitter:description" content="最近看了些关于js中定时器原理解析的文章，所以特在此做一个记录本文带有个人理解，若有错误，望指正。 
+<meta name="twitter:title" content="type-existence">
+<meta name="twitter:description" content="本来在《编写可维护性的javascript》中已经做过总结，但最近在使用上又出现一点问题，所以推翻以前的单独写篇关于类型检测和存在性检测的文章
 
-JS中的定时器(setTimeout)是如何工作的?定时器js中的setTimeout主要用来完成一些超时调用的任务，可以指定函数在未来的某个时间执行。123setTimeout(function()&amp;#123;    console.log(&apos;hi&apos;);&amp;#125;,500);
-理论情况下，">
+类型检测和存在性检测必备知识点
+哪些值会被转成false
+
+“”、0、NaN、false、null、undefined会在期待布尔值的地方被转成false;
+非上面提及的值都会被转成true；
+注意空对象(没有任何属性/方法的对象)也会视为true12">
 
 
 
@@ -133,13 +145,13 @@ JS中的定时器(setTimeout)是如何工作的?定时器js中的setTimeout主�
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/07/31/how-does-timer-work/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/08/04/type-existence/"/>
 
 
 
 
 
-  <title> how-does-timer-work | BryanAdamss的博客 </title>
+  <title> type-existence | BryanAdamss的博客 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -300,7 +312,7 @@ JS中的定时器(setTimeout)是如何工作的?定时器js中的setTimeout主�
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/31/how-does-timer-work/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/04/type-existence/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BryanAdamss">
@@ -321,7 +333,7 @@ JS中的定时器(setTimeout)是如何工作的?定时器js中的setTimeout主�
             
             
               
-                how-does-timer-work
+                type-existence
               
             
           </h1>
@@ -336,8 +348,8 @@ JS中的定时器(setTimeout)是如何工作的?定时器js中的setTimeout主�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-31T10:55:32+08:00">
-                2017-07-31 10:55:32
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-04T16:08:31+08:00">
+                2017-08-04 16:08:31
               </time>
             
 
@@ -395,54 +407,113 @@ JS中的定时器(setTimeout)是如何工作的?定时器js中的setTimeout主�
 
       
         <blockquote>
-<p>最近看了些关于js中定时器原理解析的文章，所以特在此做一个记录<br>本文带有个人理解，若有错误，望指正。 </p>
+<p>本来在《编写可维护性的javascript》中已经做过总结，但最近在使用上又出现一点问题，所以推翻以前的单独写篇关于类型检测和存在性检测的文章</p>
 </blockquote>
-<h1 id="JS中的定时器-setTimeout-是如何工作的"><a href="#JS中的定时器-setTimeout-是如何工作的" class="headerlink" title="JS中的定时器(setTimeout)是如何工作的?"></a>JS中的定时器(setTimeout)是如何工作的?</h1><h2 id="定时器"><a href="#定时器" class="headerlink" title="定时器"></a>定时器</h2><p>js中的setTimeout主要用来完成一些超时调用的任务，可以指定函数在未来的某个时间执行。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'hi'</span>);</div><div class="line">&#125;,<span class="number">500</span>);</div></pre></td></tr></table></figure></p>
-<p>理论情况下，’hi’会在500ms后被打印出来。</p>
-<p>考虑下面这种情况<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="number">1</span>);</div><div class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">2</span>);</div><div class="line">&#125;,<span class="number">1000</span>);</div><div class="line"><span class="built_in">console</span>.log(<span class="number">3</span>);</div></pre></td></tr></table></figure></p>
-<p>最后输出的顺序是<code>1,3,2</code>，你可能在想因为2被延迟了1000ms，所以最后输出的。</p>
-<p>再看下面的<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="number">1</span>);</div><div class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">2</span>);</div><div class="line">&#125;,<span class="number">0</span>);</div><div class="line"><span class="built_in">console</span>.log(<span class="number">3</span>);</div></pre></td></tr></table></figure></p>
-<p>这次我们将延迟的时间从1000调成了0，这次应该输出<code>1,2,3</code>了吧，但实际上最后的输出结果还是<code>1,3,2</code><br>这是为什么呢？要解释清楚这个就必须了解setTimeout的工作原理了。</p>
-<h2 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h2><p>js是单线程的，它同一时间它只能干一件事情。那你可能会问为什么不多弄几个线程，这样多管齐下，不是执行效率更高了吗？当时js的用途(交互、操作dom)决定了它只能是单线程的，如果多线程，就会存在多线程同步的问题。我在一个线程中删除了节点a，另一个线程在节点a上添加了一些内容，这样就会导致冲突，将一个简单的问题负责化了，所以最终js是单线程的。</p>
-<p>解释下下面代码的执行过程<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="number">1</span>);</div><div class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">2</span>);</div><div class="line">&#125;,<span class="number">1000</span>);</div><div class="line"><span class="built_in">console</span>.log(<span class="number">3</span>);</div></pre></td></tr></table></figure></p>
-<p>首先js中存在一个callstack(调用栈)的东西，它会将函数/方法压入(push)到栈中，并依次出栈(pop)执行。</p>
-<p>默认上面代码外围有个main函数</p>
-<ol>
-<li>main入栈</li>
-<li>console.log(1)入栈</li>
-<li>console.log(1)出栈并调用打印出1</li>
-<li>setTimeout入栈</li>
-<li>发现setTimeout是个延迟执行，出栈时，将需要延迟执行的回调函数交给浏览器的timer模块，timer模块负责观察延迟执行的回调函数是否到达触发条件，此时call stack会继续将后面的方法压入栈中</li>
-<li>console.log(3)入栈</li>
-<li>console.log(3)出栈并调用打印出3</li>
-<li>main出栈</li>
-<li>timer模块观察到延迟执行的函数到达触发条件后，将延迟执行的回调函数推入任务队列(task queue)中</li>
-<li>当调用栈处于空闲状态时，它会将任务队列中的第一个任务压入callstack中，并调用，并一直重复这个过程直到任务队列为空。这个过程称为event loop</li>
-</ol>
-<p>上面的setTimeout的延迟是1000，为0的时候其实也是一样的，只不过在timer模块中，它会立即到达触发条件，并被推入任务队列中，等待call stack空闲时，再压入到call stack中并调用。</p>
-<p>上面是关于setTimeout延迟函数的调用过程，其实js中的事件、ajax的执行流程也一样(其实你会发现他们有个共同点，都有回调函数)。只不过setTimeout有一个具体的延迟时间，延迟时间到达了触发。事件是在用户进行某种操作后(点击)，立即将回调函数推入任务队列中，call stack空闲时取第一个并执行。ajax则是在返回数据后(满足触发条件)，将回调推入任务队列中，call stack空闲时取第一个并执行。</p>
-<hr>
-<p>其实js的任务(代码)可以分为同步任务和异步任务(事件、ajax、setTimeout)，异步任务的回调一定是在所有同步任务都执行完了以后再被调用;<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="number">1</span>);</div><div class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="number">2</span>);</div><div class="line">&#125;,<span class="number">0</span>);</div><div class="line"><span class="built_in">console</span>.log(<span class="number">3</span>);</div></pre></td></tr></table></figure></p>
-<p>如上面，即使setTimeout的延迟时间为0，它的回调函数也没有直接被调用，而是等到console.log(3)执行完，call stack为空时，再被调用执行的。<br>所以setTimeour(fn,0)常用来在所有同步任务执行完后，尽可能早的执行；</p>
-<p>再看下面的代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> req = <span class="keyword">new</span> XMLHttpRequest();</div><div class="line">req.open(<span class="string">'GET'</span>, url);    </div><div class="line">req.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;&#125;;    </div><div class="line">req.onerror = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;&#125;;    </div><div class="line">req.send();</div></pre></td></tr></table></figure></p>
-<p>和<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> req = <span class="keyword">new</span> XMLHttpRequest();</div><div class="line">req.open(<span class="string">'GET'</span>, url);</div><div class="line">req.send();</div><div class="line">req.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;&#125;;    </div><div class="line">req.onerror = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;&#125;;</div></pre></td></tr></table></figure></p>
-<p>二者效果一样。</p>
-<p>onload和onerror的位置无关紧要，不用担心先send了,load和error不会触发。因为load和error事件都属于异步任务(事件)，他们的回调函数一定是在所有同步任务完成后再被调用的。</p>
-<hr>
-<p><strong>总结</strong>：</p>
-<p>通过上面可以发现，js中的异步任务(事件、ajax、setTimeout)，是需要call stack、浏览器中的对应模块(DOM Binding、network、timer)、task queue三者配合来完成异步任务；</p>
+<h1 id="类型检测和存在性检测"><a href="#类型检测和存在性检测" class="headerlink" title="类型检测和存在性检测"></a>类型检测和存在性检测</h1><h2 id="必备知识点"><a href="#必备知识点" class="headerlink" title="必备知识点"></a>必备知识点</h2><ul>
+<li><p>哪些值会被转成false</p>
 <ul>
-<li>call stack负责压入待执行的方法/函数，遇到异步任务时，会将异步任务交给对应模块处理；</li>
-<li>浏览器对应模块负责判断异步任务是否满足触发条件，若满足触发条件，则将异步任务的回调推入task queue中</li>
-<li>task queue负责保存所有已经满足触发条件可以压入call stack中执行的异步任务回调。</li>
-<li>当call stack空闲时，会将task queue中的第一个回调压入call stack中并执行，并一直循环这一过程直到task queue为空；-&gt;event loop</li>
+<li>“”、0、NaN、false、null、undefined会在期待布尔值的地方被转成false;</li>
+<li>非上面提及的值都会被转成true；</li>
+<li>注意空对象(没有任何属性/方法的对象)也会视为true<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a=&#123;&#125;;</div><div class="line"><span class="keyword">if</span>(a)&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="literal">true</span>);<span class="comment">// true</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
 </ul>
-<p>所有异步任务的回调一定是在所有同步任务都执行完了后再被调用</p>
-<p>setTimeout(fn,0)无论写在哪，它的作用都是在所有同步任务执行完后，尽可能早的执行fn</p>
-<p>参考链接</p>
-<blockquote>
-<p><a href="http://www.alloyteam.com/2015/10/turning-to-javascript-series-from-settimeout-said-the-event-loop-model/" target="_blank" rel="external">http://www.alloyteam.com/2015/10/turning-to-javascript-series-from-settimeout-said-the-event-loop-model/</a><br><a href="http://www.ruanyifeng.com/blog/2014/10/event-loop.html" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2014/10/event-loop.html</a><br><a href="https://vimeo.com/96425312" target="_blank" rel="external">https://vimeo.com/96425312</a><br><a href="http://latentflip.com/loupe/" target="_blank" rel="external">http://latentflip.com/loupe/</a></p>
-</blockquote>
+</li>
+<li><p>声明和赋值</p>
+<ul>
+<li><p>未声明(更未赋值)的变量</p>
+<ul>
+<li><p>直接使用，会报错</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">console.log(b);// Uncaught ReferenceError: b is not defined</div></pre></td></tr></table></figure>
+</li>
+<li><p>如果通过typeof b来使用，则不会报错；因为typeof存在一个特殊的安全防范机制；</p>
+</li>
+</ul>
+</li>
+<li><p>已声明未赋值的变量</p>
+<ul>
+<li>会有默认值undefined<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a;</div><div class="line"><span class="built_in">console</span>.log(a===<span class="literal">undefined</span>);<span class="comment">// true</span></div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> a);<span class="comment">// 'undefined'</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>注意:当未声明的变量使用typeof检测时，并不会报错，而且返回<code>&#39;undefined&#39;</code>；因为typeof存在一个特殊的安全防范机制；</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> b);<span class="comment">// 'undefined'，并没有报错</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>总结</p>
+<ul>
+<li><strong>未声明和已声明未赋值的变量使用typeof检测时，都会返回<code>&#39;undefined&#39;</code></strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>访问对象上不存在的属性/方法时，并不会报错，而是返回一个<code>undefined</code></strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj=&#123;</div><div class="line">    <span class="attr">a</span>:<span class="number">3</span></div><div class="line">&#125;;</div><div class="line"><span class="built_in">console</span>.log(obj.b);<span class="comment">// undefined</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>类型检测-&gt;(判断值的类型)</p>
+<ul>
+<li>首先变量是没有类型的，类型本质指的是变量持有的值的类型，一般说的变量类型，实际指的是变量持有的值的类型</li>
+<li><p>判断类型主要用来，检测输入的参数是否为想要的类型</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">fn</span>)</span>&#123;</div><div class="line">    <span class="keyword">if</span>(<span class="keyword">typeof</span> fn===<span class="string">'function'</span>)&#123;</div><div class="line">        <span class="comment">// xxxxx</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>一般值</p>
+<ul>
+<li>string、number、boolean、undefined-&gt;typeof来判断</li>
+<li>null一般不用做类型检测，只有在变量是一个可预期的null值时，才用来判断<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj=<span class="literal">null</span>;</div><div class="line"><span class="keyword">if</span>(obj===<span class="literal">null</span>)&#123;</div><div class="line">    <span class="comment">// xxx</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>引用值</p>
+<ul>
+<li><p>自定义、非数组、非函数-&gt;使用obj instanceof constructor</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">People</span>(<span class="params">name</span>)</span>&#123;</div><div class="line">    <span class="keyword">this</span>.name=name;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> p=<span class="keyword">new</span> People();</div><div class="line"><span class="built_in">console</span>.log(p <span class="keyword">instanceof</span> People);<span class="comment">// true</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> date=<span class="keyword">new</span> <span class="built_in">Date</span>();</div><div class="line"><span class="built_in">console</span>.log(date <span class="keyword">instanceof</span> <span class="built_in">Date</span>);</div></pre></td></tr></table></figure>
+</li>
+<li><p>函数-&gt;typeof</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>)</span>&#123;&#125;</div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> fn===<span class="string">'function'</span>);<span class="comment">// 'function'</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>数组</p>
+<ul>
+<li><p>es5的isArray</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> arr=[];</div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">Array</span>.isArray(arr));<span class="comment">// true</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>Object.prototype.call(this,arr);</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> arr=[];</div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype.toString.call(arr)===<span class="string">'[object Array]'</span>);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>存在性</p>
+<ul>
+<li><p>常用检测存在性的不足</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj=&#123;</div><div class="line">    <span class="attr">b</span>:<span class="number">0</span></div><div class="line">&#125;;</div><div class="line"><span class="keyword">if</span>(b)&#123;&#125;<span class="comment">// 如果b存在，则xxx；当b为"",0,NaN,false,null,undefined时，就无法检测；</span></div><div class="line">同理b&amp;&amp;b()也会出现类似问题，所以只有在明确知道要检测的值不会是<span class="string">""</span>,<span class="number">0</span>,<span class="literal">NaN</span>,<span class="literal">false</span>,<span class="literal">null</span>,<span class="literal">undefined</span>中的一种时才能用</div></pre></td></tr></table></figure>
+</li>
+<li><p>变量是否存在(是否已经声明)</p>
+<ul>
+<li><p>全局变量的存在性</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="string">'a'</span> <span class="keyword">in</span> <span class="built_in">window</span>);<span class="comment">// false;判断变量a在全局环境下是否声明</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>局部变量的存在性</p>
+<ul>
+<li>局部变量无法用in判断，只能退而求其次用typeof，typeof无法准确判断出是未声明还是已声明未赋值，如下<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a;</div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> a===<span class="string">'undefined'</span>);<span class="comment">// true;a已经声明但未赋值 </span></div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> b===<span class="string">'undefined'</span>);<span class="comment">// true;b没有声明</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>对象的属性是否存在</p>
+<ul>
+<li>一般属性-&gt;统一使用in</li>
+<li>实例属性存在性-&gt;统一使用hasOwnProperty<ul>
+<li>IE8及以下判断实例属性存在性-&gt;先判断hasOwnProperty的存在性，再调用hasOwnProperty<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj_a=&#123;</div><div class="line">    <span class="attr">test</span>:<span class="string">'测试'</span></div><div class="line">&#125;;</div><div class="line"><span class="built_in">console</span>.log(<span class="string">'test'</span> <span class="keyword">in</span> obj_a);<span class="comment">// true</span></div><div class="line"><span class="built_in">console</span>.log(<span class="string">'toString'</span> <span class="keyword">in</span> obj_a);<span class="comment">// true，能检测到原型链上的方法</span></div><div class="line"><span class="built_in">console</span>.log(obj_a.hasOwnProperty(<span class="string">'toString'</span>));<span class="comment">//false,obj_a并没有实例属性(方法)`toString`，`toString`存在于其原型对象上，hasOwnProperty无法检测到</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 
       
     </div>
@@ -466,7 +537,9 @@ JS中的定时器(setTimeout)是如何工作的?定时器js中的setTimeout主�
       
         <div class="post-tags">
           
-            <a href="/tags/timer/" rel="tag"># timer</a>
+            <a href="/tags/类型检测/" rel="tag"># 类型检测</a>
+          
+            <a href="/tags/存在性/" rel="tag"># 存在性</a>
           
         </div>
       
@@ -479,8 +552,8 @@ JS中的定时器(setTimeout)是如何工作的?定时器js中的setTimeout主�
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/13/AngularJs-todoMVC/" rel="next" title="AngularJs-todoMVC">
-                <i class="fa fa-chevron-left"></i> AngularJs-todoMVC
+              <a href="/2017/08/01/Vue-guide/" rel="next" title="Vue-guide">
+                <i class="fa fa-chevron-left"></i> Vue-guide
               </a>
             
           </div>
@@ -488,10 +561,6 @@ JS中的定时器(setTimeout)是如何工作的?定时器js中的setTimeout主�
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/08/01/Vue-guide/" rel="prev" title="Vue-guide">
-                Vue-guide <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -627,7 +696,7 @@ JS中的定时器(setTimeout)是如何工作的?定时器js中的setTimeout主�
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JS中的定时器-setTimeout-是如何工作的"><span class="nav-number">1.</span> <span class="nav-text">JS中的定时器(setTimeout)是如何工作的?</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定时器"><span class="nav-number">1.1.</span> <span class="nav-text">定时器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工作原理"><span class="nav-number">1.2.</span> <span class="nav-text">工作原理</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#类型检测和存在性检测"><span class="nav-number">1.</span> <span class="nav-text">类型检测和存在性检测</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#必备知识点"><span class="nav-number">1.1.</span> <span class="nav-text">必备知识点</span></a></li></ol></li></ol></div>
             
 
           </div>
