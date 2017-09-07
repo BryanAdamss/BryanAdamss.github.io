@@ -107,7 +107,7 @@
 “”、0、NaN、false、null、undefined会在期待布尔值的地方被转成false;
 非上面提及的值都会被转成true；
 注意空对象(没有任何属性/方法的对象)也会视为true12">
-<meta property="og:updated_time" content="2017-08-04T10:41:23.065Z">
+<meta property="og:updated_time" content="2017-08-25T11:36:43.984Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="type-existence">
 <meta name="twitter:description" content="本来在《编写可维护性的javascript》中已经做过总结，但最近在使用上又出现一点问题，所以推翻以前的单独写篇关于类型检测和存在性检测的文章
@@ -464,7 +464,7 @@
 <li><p>引用值</p>
 <ul>
 <li><p>自定义、非数组、非函数-&gt;使用obj instanceof constructor</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">People</span>(<span class="params">name</span>)</span>&#123;</div><div class="line">    <span class="keyword">this</span>.name=name;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> p=<span class="keyword">new</span> People();</div><div class="line"><span class="built_in">console</span>.log(p <span class="keyword">instanceof</span> People);<span class="comment">// true</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> date=<span class="keyword">new</span> <span class="built_in">Date</span>();</div><div class="line"><span class="built_in">console</span>.log(date <span class="keyword">instanceof</span> <span class="built_in">Date</span>);</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">People</span>(<span class="params">name</span>)</span>&#123;</div><div class="line">    <span class="keyword">this</span>.name=name;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> p=<span class="keyword">new</span> People();</div><div class="line"><span class="built_in">console</span>.log(p <span class="keyword">instanceof</span> People);<span class="comment">// true</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> date=<span class="keyword">new</span> <span class="built_in">Date</span>();</div><div class="line"><span class="built_in">console</span>.log(date <span class="keyword">instanceof</span> <span class="built_in">Date</span>);<span class="comment">// true</span></div></pre></td></tr></table></figure>
 </li>
 <li><p>函数-&gt;typeof</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>)</span>&#123;&#125;</div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> fn===<span class="string">'function'</span>);<span class="comment">// 'function'</span></div></pre></td></tr></table></figure>
@@ -474,7 +474,7 @@
 <li><p>es5的isArray</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> arr=[];</div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">Array</span>.isArray(arr));<span class="comment">// true</span></div></pre></td></tr></table></figure>
 </li>
-<li><p>Object.prototype.call(this,arr);</p>
+<li><p>Object.prototype.call(arr);</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> arr=[];</div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype.toString.call(arr)===<span class="string">'[object Array]'</span>);</div></pre></td></tr></table></figure>
 </li>
 </ul>
@@ -562,6 +562,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2017/09/07/Bootstrap-table-API/" rel="prev" title="Bootstrap-table_API">
+                Bootstrap-table_API <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -632,7 +636,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
