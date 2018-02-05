@@ -1,0 +1,956 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="vue," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/Avatar.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="幕客网音乐app学习笔记
+
+幕客网音乐app学习笔记vue-cli
+初始化
+vue init webpack vue-music，如果没有，会自动创建vue-music文件夹
+
+
+vue-cli的runtime+compiler vs runtime选择
+前者会包含编译器，适合在需要客户端编译模板的时候
+后者因为不包含编译器，最终编译出来的大小会比前者小，适用于基于.vue文件开发使用了vue-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue-music-note">
+<meta property="og:url" content="http://yoursite.com/2018/01/30/vue-music-note/index.html">
+<meta property="og:site_name" content="BryanAdamss的博客">
+<meta property="og:description" content="幕客网音乐app学习笔记
+
+幕客网音乐app学习笔记vue-cli
+初始化
+vue init webpack vue-music，如果没有，会自动创建vue-music文件夹
+
+
+vue-cli的runtime+compiler vs runtime选择
+前者会包含编译器，适合在需要客户端编译模板的时候
+后者因为不包含编译器，最终编译出来的大小会比前者小，适用于基于.vue文件开发使用了vue-">
+<meta property="og:updated_time" content="2018-02-01T06:31:58.078Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue-music-note">
+<meta name="twitter:description" content="幕客网音乐app学习笔记
+
+幕客网音乐app学习笔记vue-cli
+初始化
+vue init webpack vue-music，如果没有，会自动创建vue-music文件夹
+
+
+vue-cli的runtime+compiler vs runtime选择
+前者会包含编译器，适合在需要客户端编译模板的时候
+后者因为不包含编译器，最终编译出来的大小会比前者小，适用于基于.vue文件开发使用了vue-">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/30/vue-music-note/"/>
+
+
+
+
+
+  <title> vue-music-note | BryanAdamss的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BryanAdamss的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个伪前端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/30/vue-music-note/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BryanAdamss">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/Avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BryanAdamss的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                vue-music-note
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-30T17:08:32+08:00">
+                2018-01-30 17:08:32
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FrontEnd/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>幕客网音乐app学习笔记</p>
+</blockquote>
+<h1 id="幕客网音乐app学习笔记"><a href="#幕客网音乐app学习笔记" class="headerlink" title="幕客网音乐app学习笔记"></a>幕客网音乐app学习笔记</h1><h2 id="vue-cli"><a href="#vue-cli" class="headerlink" title="vue-cli"></a>vue-cli</h2><ul>
+<li>初始化<ul>
+<li><code>vue init webpack vue-music</code>，如果没有，会自动创建<code>vue-music</code>文件夹</li>
+</ul>
+</li>
+<li>vue-cli的<code>runtime+compiler</code> vs <code>runtime</code>选择<ul>
+<li>前者会包含编译器，适合在需要客户端编译模板的时候</li>
+<li>后者因为不包含编译器，最终编译出来的大小会比前者小，适用于基于<code>.vue</code>文件开发使用了<code>vue-loader</code>的情况。一般选择这个</li>
+</ul>
+</li>
+<li>vue-cli的<code>eslint</code>模式<ul>
+<li>使用<code>standard</code></li>
+</ul>
+</li>
+<li>基本命令<ul>
+<li>可在<code>package.json</code>的<code>scripts</code>中查询到</li>
+<li><code>npm start</code>、<code>npm run dev</code>启动开发服务器，默认在<code>localhost:8080</code>端口；若想在其他电脑查看，可配置<code>config/index.js</code>下的<code>host</code>字段为本机IP</li>
+</ul>
+</li>
+</ul>
+<h2 id="修改vue-cli目录"><a href="#修改vue-cli目录" class="headerlink" title="修改vue-cli目录"></a>修改vue-cli目录</h2><ul>
+<li><p>默认目录结构</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">/vue-music</div><div class="line">|---build/              // 存放webpack构建相关文件，一般不建议修改</div><div class="line">|---config/             // 构建的一些配置参数，如果需要对构建过程做一些修改，可以配置此文件</div><div class="line">|---node_modules/</div><div class="line">|---src/                // 存放开发的主要文件，一般需要修改这里的目录结构</div><div class="line">    assets/             // 存放一些需要webpack处理的静态文件</div><div class="line">    components/         // 存放vue的.vue组件</div><div class="line">    router/             // 存放路由文件</div><div class="line">    App.vue             // 根组件，一般做整体布局用</div><div class="line">    main.js             // 入口文件，负责渲染App.vue文件，并进行一些全局性的操作；全局性样式可在这里通过import &apos;test.scss&apos;导入</div><div class="line">|---static/             // 存放不需要webpack处理可以直接使用的静态文件</div><div class="line">|---.babelrc            // babel配置</div><div class="line">|---.editorconfig</div><div class="line">|---.eslintrc.js        // eslint配置文件</div><div class="line">|---.gitignore</div><div class="line">|---.postcssrc.js       // postcss配置</div><div class="line">|---index.html          // spa的主体html文件，需要修改一些head中代码，js代码会通过webpack自动注入</div><div class="line">|---package.json        // 保存项目所有的依赖</div><div class="line">|---README.md</div></pre></td></tr></table></figure>
+</li>
+<li><p>修改后的目录，开发时主要修改的是<code>/src/</code>目录结构</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">/vue-music</div><div class="line">|---build/</div><div class="line">|---config/</div><div class="line">|---node_modules/</div><div class="line">|---src/</div><div class="line">    api/                // 存放请求后台接口的js文件以及接口的通用配置参数文件</div><div class="line">    base/               // 存放基础(通用)组件，以文件夹做区分</div><div class="line">        base1/</div><div class="line">            base1.vue</div><div class="line">        base2/</div><div class="line">            base2.vue</div><div class="line">    common/             // 存放一些通用的js、img、字体等静态资源</div><div class="line">    components/         // 存放业务组件，组件用不同的文件夹区分，组件自身用到的资源组织到一个文件夹中</div><div class="line">        comp1/</div><div class="line">            com1Bg.jpg</div><div class="line">            comp1.vue</div><div class="line">        comp2/</div><div class="line">            comp2.vue</div><div class="line">    </div><div class="line">    router/</div><div class="line">    store/              // 存放vuex相关文件</div><div class="line">    sass/               // 存放sass样式文件</div><div class="line">    App.vue</div><div class="line">    main.js</div><div class="line">|---static/</div><div class="line">|---.babelrc</div><div class="line">|---.editorconfig</div><div class="line">|---.gitignore</div><div class="line">|---.postcssrc.js</div><div class="line">|---index.html</div><div class="line">|---package.json</div><div class="line">|---README.md</div></pre></td></tr></table></figure>
+</li>
+<li><p><code>vue-cli</code>本身不自带样式预处理器，需要手动安装<code>npm install --save-dev node-sass sass-loader</code></p>
+</li>
+<li><code>vue-cli</code>会配置路径别名<code>@</code>指向<code>/src/</code>文件夹，所以可以通过<code>@/components/comp1/comp1</code>来引用组件；也可以手动配置路径别名，减少书写量。</li>
+</ul>
+<h2 id="vue-router"><a href="#vue-router" class="headerlink" title="vue-router"></a>vue-router</h2><ul>
+<li><p>需要在<code>/src/router/index.js</code>中导入<code>vue-router</code>，并导出一个router的实例，最后在入口js(main.js)中导入并注册</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">// router/index.js</div><div class="line">import Vue from &apos;vue&apos;;</div><div class="line"></div><div class="line">import Router from &apos;vue-router&apos;;// 导入vue-router</div><div class="line"></div><div class="line">..</div><div class="line">import Recommend from &apos;components/recommend/recommend&apos;</div><div class="line">import Singer from &apos;components/singer/singer&apos;</div><div class="line">...</div><div class="line"></div><div class="line">Vue.use(Router); // 必须使用use方法来注册第三方插件</div><div class="line"></div><div class="line">export default new Router(&#123;// 导出一个vue-router实例</div><div class="line">  routes: [&#123;</div><div class="line">    path: &apos;/&apos;,</div><div class="line">    redirect: &apos;/recommend&apos;,// 没有匹配到的路径全部重定向到/recomend</div><div class="line">  &#125;, &#123;</div><div class="line">    path: &apos;/recommend&apos;,// path一定是个路径，开头必须有/</div><div class="line">    name: &apos;Recommend&apos;,</div><div class="line">    component: Recommend,</div><div class="line">    children: [&#123;// 子路由</div><div class="line">      path: &apos;:id&apos;,// 传递的参数</div><div class="line">      name: &apos;Disc&apos;,</div><div class="line">      component: Disc</div><div class="line">    &#125;]</div><div class="line">&#125;)</div><div class="line"></div><div class="line"></div><div class="line">// src/main.js</div><div class="line">import Vue from &apos;vue&apos;</div><div class="line">...</div><div class="line">import router from &apos;./router&apos;; // 导入</div><div class="line">...</div><div class="line"></div><div class="line"></div><div class="line">new Vue(&#123;</div><div class="line">  el: &apos;#app&apos;,</div><div class="line">  router,// 注册</div><div class="line">  store,</div><div class="line">  render: h =&gt; h(App)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+</li>
+<li><p><code>router-link</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;router-link tag=&quot;div&quot; class=&quot;tab-item&quot; to=&quot;/recommend&quot; active-class=&quot;is-cur&quot;&gt; // 渲染成div，跳转到/recommend路径，并在激活时添加is-cur样式类</div><div class="line">   &lt;span class=&quot;tab-link&quot;&gt;推荐&lt;/span&gt;</div><div class="line"> &lt;/router-link&gt;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="使用babel"><a href="#使用babel" class="headerlink" title="使用babel"></a>使用babel</h2><ul>
+<li><code>vue-cli</code>的babel转义不太清楚，为什么用了很多preset，难道不是用最新的<code>babel-preset-env</code>就可以了吗？疑惑中…</li>
+<li>自己总结的babel使用经验<ul>
+<li>使用<code>babel-preset-env</code>，并配置targets浏览器</li>
+<li>结合<code>useBuiltIns:usage</code>选项和<code>babel-polyfill</code>来完成按需polyfill</li>
+<li>参考 <a href="https://github.com/babel/babel/tree/master/packages/babel-preset-env" target="_blank" rel="external">https://github.com/babel/babel/tree/master/packages/babel-preset-env</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="fastclick"><a href="#fastclick" class="headerlink" title="fastclick"></a>fastclick</h2><ul>
+<li>取消移动端点击300ms延迟</li>
+<li>入口文件中导入，并绑定到body上<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// src/main.js</div><div class="line"></div><div class="line">...</div><div class="line">import fastclick from &apos;fastclick&apos;</div><div class="line">...</div><div class="line"></div><div class="line">fastclick.attach(document.body)</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="import-export"><a href="#import-export" class="headerlink" title="import/export"></a>import/export</h2><ul>
+<li>通过<code>import</code>可以导入各种模块<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">import Test from &apos;./components/test/test&apos;; // 相对路径查找</div><div class="line">import &#123;getRecommend,getDiscList&#125; from &apos;./api/recommend&apos;; // 导入特定方法</div><div class="line">import myDefault,* as myObj from &apos;./a&apos;; // 导入所有方法(默认方法+其他方法)</div><div class="line"></div><div class="line">import Vue from &apos;vue&apos;; // 直接以名字开头，会在node_modules下查找</div><div class="line">import createLogger from &apos;vuex/dist/logger&apos;; // 可以在node_modules下按路径查找</div><div class="line"></div><div class="line">// 配置了别名的情况下，可以直接使用名字开头，如果没配置别名则会在node_modules下查找</div><div class="line">// webpack.base.conf.js</div><div class="line">module.exports = &#123;</div><div class="line"> ...</div><div class="line">  resolve: &#123;</div><div class="line">    extensions: [&apos;.js&apos;, &apos;.vue&apos;, &apos;.json&apos;],</div><div class="line">    alias: &#123;</div><div class="line">      &apos;components&apos;: resolve(&apos;src/components&apos;),</div><div class="line">    &#125;</div><div class="line">  &#125;,</div><div class="line">&#125;</div><div class="line"></div><div class="line">import Test from &apos;components/test/test&apos;;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="jsonp"><a href="#jsonp" class="headerlink" title="jsonp"></a>jsonp</h2><ul>
+<li>原理:script标签没有同源策略限制。通过动态创建script标签，然后src指向api地址，并附带一个回调函数名，后端用前台传来的回调名将需要的数据包裹并传回前台，前台会自动执行提前写好的回调。jsonp其实是get请求<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vue/" rel="tag"># vue</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/18/websocket-chat/" rel="next" title="websocket_chat">
+                <i class="fa fa-chevron-left"></i> websocket_chat
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/05/same-origin-policy/" rel="prev" title="same-origin-policy">
+                same-origin-policy <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/Avatar.png"
+               alt="BryanAdamss" />
+          <p class="site-author-name" itemprop="name">BryanAdamss</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/BryanAdamss" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#幕客网音乐app学习笔记"><span class="nav-number">1.</span> <span class="nav-text">幕客网音乐app学习笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#vue-cli"><span class="nav-number">1.1.</span> <span class="nav-text">vue-cli</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改vue-cli目录"><span class="nav-number">1.2.</span> <span class="nav-text">修改vue-cli目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vue-router"><span class="nav-number">1.3.</span> <span class="nav-text">vue-router</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用babel"><span class="nav-number">1.4.</span> <span class="nav-text">使用babel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fastclick"><span class="nav-number">1.5.</span> <span class="nav-text">fastclick</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#import-export"><span class="nav-number">1.6.</span> <span class="nav-text">import/export</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jsonp"><span class="nav-number">1.7.</span> <span class="nav-text">jsonp</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BryanAdamss</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
