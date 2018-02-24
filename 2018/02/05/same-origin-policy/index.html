@@ -475,7 +475,7 @@
 <h3 id="iframe"><a href="#iframe" class="headerlink" title="iframe"></a>iframe</h3><ul>
 <li>使用iframe嵌套页面时，iframe的src不受同源策略的影响，可以加载任意地址的文档；当父页面和iframe存在同源限制时，将不能相互访问<code>window</code>和<code>DOM</code>。例如在A页面嵌套了百度，则在A页面是无法访问到百度首页的<code>window</code>和<code>DOM</code>的。父子页面同源时，能可以相互访问<code>window</code>、<code>DOM</code></li>
 <li><p>父子页面，一级域名相同，二级域名不同时，可以使用和cookie相同的办法（设置<code>documen.domain</code>）来解决，进而可以相互访问<code>window</code>和<code>DOM</code></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// http://www.test.com/a.html</span></div><div class="line">&lt;iframe src=<span class="string">"child.test.com/b.html"</span>&gt;&lt;/iframe&gt;</div><div class="line">&lt;script&gt;</div><div class="line"><span class="built_in">document</span>.domain=<span class="string">'test.com'</span>;</div><div class="line"><span class="keyword">var</span> user=<span class="string">'cgh'</span>;</div><div class="line">&lt;/script&gt;</div><div class="line"></div><div class="line"><span class="comment">// http://child.test.com/b.html</span></div><div class="line">&lt;script&gt;</div><div class="line"><span class="built_in">document</span>.domain=<span class="string">'test.com'</span>;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.parent.user);<span class="comment">// 获取父窗口的变量</span></div><div class="line">&lt;<span class="regexp">/script&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// http://www.test.com/a.html</span></div><div class="line">&lt;iframe src=<span class="string">"child.test.com/b.html"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span></div><div class="line">&lt;script&gt;</div><div class="line"><span class="built_in">document</span>.domain=<span class="string">'test.com'</span>;</div><div class="line"><span class="keyword">var</span> user=<span class="string">'cgh'</span>;</div><div class="line"><span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></div><div class="line"></div><div class="line"><span class="comment">// http://child.test.com/b.html</span></div><div class="line">&lt;script&gt;</div><div class="line"><span class="built_in">document</span>.domain=<span class="string">'test.com'</span>;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.parent.user);<span class="comment">// 获取父窗口的变量</span></div><div class="line">&lt;<span class="regexp">/script&gt;</span></div></pre></td></tr></table></figure>
 </li>
 <li><p>完全不同源的iframe可以通过以下方法实现</p>
 <ul>
@@ -581,6 +581,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2018/02/24/postman-guide/" rel="prev" title="postman-guide">
+                postman-guide <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -651,7 +655,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -669,7 +673,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">30</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
