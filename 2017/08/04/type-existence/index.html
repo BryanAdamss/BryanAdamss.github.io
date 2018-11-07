@@ -87,37 +87,18 @@
 
 
 
-<meta name="description" content="本来在《编写可维护性的javascript》中已经做过总结，但最近在使用上又出现一点问题，所以推翻以前的单独写篇关于类型检测和存在性检测的文章
-
-类型检测和存在性检测必备知识点
-哪些值会被转成false
-
-“”、0、NaN、false、null、undefined会在期待布尔值的地方被转成false;
-非上面提及的值都会被转成true；
-注意空对象(没有任何属性/方法的对象)也会视为true12">
+<meta name="description" content="本来在《编写可维护性的javascript》中已经做过总结，但最近在使用上又出现一点问题，所以推翻以前的单独写篇关于类型检测和存在性检测的文章  类型检测和存在性检测必备知识点 哪些值会被转成false  “”、0、NaN、false、null、undefined会在期待布尔值的地方被转成false; 非上面提及的值都会被转成true； 注意空对象(没有任何属性/方法的对象)也会视为true12">
+<meta name="keywords" content="类型检测,存在性">
 <meta property="og:type" content="article">
 <meta property="og:title" content="type-existence">
 <meta property="og:url" content="http://yoursite.com/2017/08/04/type-existence/index.html">
 <meta property="og:site_name" content="BryanAdamss的博客">
-<meta property="og:description" content="本来在《编写可维护性的javascript》中已经做过总结，但最近在使用上又出现一点问题，所以推翻以前的单独写篇关于类型检测和存在性检测的文章
-
-类型检测和存在性检测必备知识点
-哪些值会被转成false
-
-“”、0、NaN、false、null、undefined会在期待布尔值的地方被转成false;
-非上面提及的值都会被转成true；
-注意空对象(没有任何属性/方法的对象)也会视为true12">
-<meta property="og:updated_time" content="2017-08-25T11:36:43.984Z">
+<meta property="og:description" content="本来在《编写可维护性的javascript》中已经做过总结，但最近在使用上又出现一点问题，所以推翻以前的单独写篇关于类型检测和存在性检测的文章  类型检测和存在性检测必备知识点 哪些值会被转成false  “”、0、NaN、false、null、undefined会在期待布尔值的地方被转成false; 非上面提及的值都会被转成true； 注意空对象(没有任何属性/方法的对象)也会视为true12">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-25T11:36:43.985Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="type-existence">
-<meta name="twitter:description" content="本来在《编写可维护性的javascript》中已经做过总结，但最近在使用上又出现一点问题，所以推翻以前的单独写篇关于类型检测和存在性检测的文章
-
-类型检测和存在性检测必备知识点
-哪些值会被转成false
-
-“”、0、NaN、false、null、undefined会在期待布尔值的地方被转成false;
-非上面提及的值都会被转成true；
-注意空对象(没有任何属性/方法的对象)也会视为true12">
+<meta name="twitter:description" content="本来在《编写可维护性的javascript》中已经做过总结，但最近在使用上又出现一点问题，所以推翻以前的单独写篇关于类型检测和存在性检测的文章  类型检测和存在性检测必备知识点 哪些值会被转成false  “”、0、NaN、false、null、undefined会在期待布尔值的地方被转成false; 非上面提及的值都会被转成true； 注意空对象(没有任何属性/方法的对象)也会视为true12">
 
 
 
@@ -414,7 +395,7 @@
 <ul>
 <li>“”、0、NaN、false、null、undefined会在期待布尔值的地方被转成false;</li>
 <li>非上面提及的值都会被转成true；</li>
-<li>注意空对象(没有任何属性/方法的对象)也会视为true<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a=&#123;&#125;;</div><div class="line"><span class="keyword">if</span>(a)&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="literal">true</span>);<span class="comment">// true</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<li>注意空对象(没有任何属性/方法的对象)也会视为true<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a=&#123;&#125;;</span><br><span class="line"><span class="keyword">if</span>(a)&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="literal">true</span>);<span class="comment">// true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -423,7 +404,7 @@
 <li><p>未声明(更未赋值)的变量</p>
 <ul>
 <li><p>直接使用，会报错</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">console.log(b);// Uncaught ReferenceError: b is not defined</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(b);// Uncaught ReferenceError: b is not defined</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>如果通过typeof b来使用，则不会报错；因为typeof存在一个特殊的安全防范机制；</p>
 </li>
@@ -431,12 +412,12 @@
 </li>
 <li><p>已声明未赋值的变量</p>
 <ul>
-<li>会有默认值undefined<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a;</div><div class="line"><span class="built_in">console</span>.log(a===<span class="literal">undefined</span>);<span class="comment">// true</span></div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> a);<span class="comment">// 'undefined'</span></div></pre></td></tr></table></figure>
+<li>会有默认值undefined<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a;</span><br><span class="line"><span class="built_in">console</span>.log(a===<span class="literal">undefined</span>);<span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> a);<span class="comment">// 'undefined'</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
 <li><p>注意:当未声明的变量使用typeof检测时，并不会报错，而且返回<code>&#39;undefined&#39;</code>；因为typeof存在一个特殊的安全防范机制；</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> b);<span class="comment">// 'undefined'，并没有报错</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> b);<span class="comment">// 'undefined'，并没有报错</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>总结</p>
 <ul>
@@ -446,36 +427,36 @@
 </ul>
 </li>
 <li><p><strong>访问对象上不存在的属性/方法时，并不会报错，而是返回一个<code>undefined</code></strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj=&#123;</div><div class="line">    <span class="attr">a</span>:<span class="number">3</span></div><div class="line">&#125;;</div><div class="line"><span class="built_in">console</span>.log(obj.b);<span class="comment">// undefined</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj=&#123;</span><br><span class="line">    a:<span class="number">3</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(obj.b);<span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>类型检测-&gt;(判断值的类型)</p>
 <ul>
 <li>首先变量是没有类型的，类型本质指的是变量持有的值的类型，一般说的变量类型，实际指的是变量持有的值的类型</li>
 <li><p>判断类型主要用来，检测输入的参数是否为想要的类型</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">fn</span>)</span>&#123;</div><div class="line">    <span class="keyword">if</span>(<span class="keyword">typeof</span> fn===<span class="string">'function'</span>)&#123;</div><div class="line">        <span class="comment">// xxxxx</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">fn</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">typeof</span> fn===<span class="string">'function'</span>)&#123;</span><br><span class="line">        <span class="comment">// xxxxx</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>一般值</p>
 <ul>
 <li>string、number、boolean、undefined-&gt;typeof来判断</li>
-<li>null一般不用做类型检测，只有在变量是一个可预期的null值时，才用来判断<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj=<span class="literal">null</span>;</div><div class="line"><span class="keyword">if</span>(obj===<span class="literal">null</span>)&#123;</div><div class="line">    <span class="comment">// xxx</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<li>null一般不用做类型检测，只有在变量是一个可预期的null值时，才用来判断<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj=<span class="literal">null</span>;</span><br><span class="line"><span class="keyword">if</span>(obj===<span class="literal">null</span>)&#123;</span><br><span class="line">    <span class="comment">// xxx</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
 <li><p>引用值</p>
 <ul>
 <li><p>自定义、非数组、非函数-&gt;使用obj instanceof constructor</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">People</span>(<span class="params">name</span>)</span>&#123;</div><div class="line">    <span class="keyword">this</span>.name=name;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> p=<span class="keyword">new</span> People();</div><div class="line"><span class="built_in">console</span>.log(p <span class="keyword">instanceof</span> People);<span class="comment">// true</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> date=<span class="keyword">new</span> <span class="built_in">Date</span>();</div><div class="line"><span class="built_in">console</span>.log(date <span class="keyword">instanceof</span> <span class="built_in">Date</span>);<span class="comment">// true</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">People</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name=name;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> p=<span class="keyword">new</span> People();</span><br><span class="line"><span class="built_in">console</span>.log(p <span class="keyword">instanceof</span> People);<span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> date=<span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line"><span class="built_in">console</span>.log(date <span class="keyword">instanceof</span> <span class="built_in">Date</span>);<span class="comment">// true</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>函数-&gt;typeof</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>)</span>&#123;&#125;</div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> fn===<span class="string">'function'</span>);<span class="comment">// 'function'</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> fn===<span class="string">'function'</span>);<span class="comment">// 'function'</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>数组</p>
 <ul>
 <li><p>es5的isArray</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> arr=[];</div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">Array</span>.isArray(arr));<span class="comment">// true</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr=[];</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Array</span>.isArray(arr));<span class="comment">// true</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>Object.prototype.call(arr);</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> arr=[];</div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype.toString.call(arr)===<span class="string">'[object Array]'</span>);</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr=[];</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype.toString.call(arr)===<span class="string">'[object Array]'</span>);</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -486,16 +467,16 @@
 <li><p>存在性</p>
 <ul>
 <li><p>常用检测存在性的不足</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj=&#123;</div><div class="line">    <span class="attr">b</span>:<span class="number">0</span></div><div class="line">&#125;;</div><div class="line"><span class="keyword">if</span>(b)&#123;&#125;<span class="comment">// 如果b存在，则xxx；当b为"",0,NaN,false,null,undefined时，就无法检测；</span></div><div class="line">同理b&amp;&amp;b()也会出现类似问题，所以只有在明确知道要检测的值不会是<span class="string">""</span>,<span class="number">0</span>,<span class="literal">NaN</span>,<span class="literal">false</span>,<span class="literal">null</span>,<span class="literal">undefined</span>中的一种时才能用</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj=&#123;</span><br><span class="line">    b:<span class="number">0</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">if</span>(b)&#123;&#125;<span class="comment">// 如果b存在，则xxx；当b为"",0,NaN,false,null,undefined时，就无法检测；</span></span><br><span class="line">同理b&amp;&amp;b()也会出现类似问题，所以只有在明确知道要检测的值不会是<span class="string">""</span>,<span class="number">0</span>,<span class="literal">NaN</span>,<span class="literal">false</span>,<span class="literal">null</span>,<span class="literal">undefined</span>中的一种时才能用</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>变量是否存在(是否已经声明)</p>
 <ul>
 <li><p>全局变量的存在性</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="string">'a'</span> <span class="keyword">in</span> <span class="built_in">window</span>);<span class="comment">// false;判断变量a在全局环境下是否声明</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">'a'</span> <span class="keyword">in</span> <span class="built_in">window</span>);<span class="comment">// false;判断变量a在全局环境下是否声明</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>局部变量的存在性</p>
 <ul>
-<li>局部变量无法用in判断，只能退而求其次用typeof，typeof无法准确判断出是未声明还是已声明未赋值，如下<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a;</div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> a===<span class="string">'undefined'</span>);<span class="comment">// true;a已经声明但未赋值 </span></div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> b===<span class="string">'undefined'</span>);<span class="comment">// true;b没有声明</span></div></pre></td></tr></table></figure>
+<li>局部变量无法用in判断，只能退而求其次用typeof，typeof无法准确判断出是未声明还是已声明未赋值，如下<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> a===<span class="string">'undefined'</span>);<span class="comment">// true;a已经声明但未赋值 </span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> b===<span class="string">'undefined'</span>);<span class="comment">// true;b没有声明</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -505,7 +486,7 @@
 <ul>
 <li>一般属性-&gt;统一使用in</li>
 <li>实例属性存在性-&gt;统一使用hasOwnProperty<ul>
-<li>IE8及以下判断实例属性存在性-&gt;先判断hasOwnProperty的存在性，再调用hasOwnProperty<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj_a=&#123;</div><div class="line">    <span class="attr">test</span>:<span class="string">'测试'</span></div><div class="line">&#125;;</div><div class="line"><span class="built_in">console</span>.log(<span class="string">'test'</span> <span class="keyword">in</span> obj_a);<span class="comment">// true</span></div><div class="line"><span class="built_in">console</span>.log(<span class="string">'toString'</span> <span class="keyword">in</span> obj_a);<span class="comment">// true，能检测到原型链上的方法</span></div><div class="line"><span class="built_in">console</span>.log(obj_a.hasOwnProperty(<span class="string">'toString'</span>));<span class="comment">//false,obj_a并没有实例属性(方法)`toString`，`toString`存在于其原型对象上，hasOwnProperty无法检测到</span></div></pre></td></tr></table></figure>
+<li>IE8及以下判断实例属性存在性-&gt;先判断hasOwnProperty的存在性，再调用hasOwnProperty<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj_a=&#123;</span><br><span class="line">    test:<span class="string">'测试'</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'test'</span> <span class="keyword">in</span> obj_a);<span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'toString'</span> <span class="keyword">in</span> obj_a);<span class="comment">// true，能检测到原型链上的方法</span></span><br><span class="line"><span class="built_in">console</span>.log(obj_a.hasOwnProperty(<span class="string">'toString'</span>));<span class="comment">//false,obj_a并没有实例属性(方法)`toString`，`toString`存在于其原型对象上，hasOwnProperty无法检测到</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -636,7 +617,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -654,7 +635,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
