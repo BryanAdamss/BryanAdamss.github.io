@@ -1,0 +1,976 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="vue," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/Avatar.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="学习《vue 源码分析》笔记  Vue-analysis-note版本 vue 2.5.17-beta.0  Flow静态类型检查器检查方式 类型推断 根据调用的方法，推断入参的类型   类型注释 主动添加入参及返回值的类型   在 vue 中的配置 通过根目录下的.flowconfig进行相关配置 [libs] \n flow字段指名了flow 自定义类型定义文件的目录为根目录下的flow文件">
+<meta name="keywords" content="vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue-analysis-note">
+<meta property="og:url" content="http://yoursite.com/2019/01/20/vue-analysis-note/index.html">
+<meta property="og:site_name" content="BryanAdamss的博客">
+<meta property="og:description" content="学习《vue 源码分析》笔记  Vue-analysis-note版本 vue 2.5.17-beta.0  Flow静态类型检查器检查方式 类型推断 根据调用的方法，推断入参的类型   类型注释 主动添加入参及返回值的类型   在 vue 中的配置 通过根目录下的.flowconfig进行相关配置 [libs] \n flow字段指名了flow 自定义类型定义文件的目录为根目录下的flow文件">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-02-20T13:03:56.445Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue-analysis-note">
+<meta name="twitter:description" content="学习《vue 源码分析》笔记  Vue-analysis-note版本 vue 2.5.17-beta.0  Flow静态类型检查器检查方式 类型推断 根据调用的方法，推断入参的类型   类型注释 主动添加入参及返回值的类型   在 vue 中的配置 通过根目录下的.flowconfig进行相关配置 [libs] \n flow字段指名了flow 自定义类型定义文件的目录为根目录下的flow文件">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/20/vue-analysis-note/"/>
+
+
+
+
+
+  <title> vue-analysis-note | BryanAdamss的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BryanAdamss的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个伪前端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/20/vue-analysis-note/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BryanAdamss">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/Avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BryanAdamss的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                vue-analysis-note
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-20T16:57:33+08:00">
+                2019-01-20 16:57:33
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FrontEnd/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>学习《vue 源码分析》笔记</p>
+</blockquote>
+<h1 id="Vue-analysis-note"><a href="#Vue-analysis-note" class="headerlink" title="Vue-analysis-note"></a>Vue-analysis-note</h1><h2 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h2><ul>
+<li><code>vue 2.5.17-beta.0</code></li>
+</ul>
+<h2 id="Flow"><a href="#Flow" class="headerlink" title="Flow"></a>Flow</h2><h3 id="静态类型检查器"><a href="#静态类型检查器" class="headerlink" title="静态类型检查器"></a>静态类型检查器</h3><h4 id="检查方式"><a href="#检查方式" class="headerlink" title="检查方式"></a>检查方式</h4><ul>
+<li>类型推断<ul>
+<li>根据调用的方法，推断入参的类型</li>
+</ul>
+</li>
+<li>类型注释<ul>
+<li>主动添加入参及返回值的类型</li>
+</ul>
+</li>
+<li>在 vue 中的配置<ul>
+<li>通过根目录下的<code>.flowconfig</code>进行相关配置<ul>
+<li><code>[libs] \n flow</code>字段指名了<code>flow 自定义类型定义文件的目录</code>为根目录下的<code>flow</code>文件夹<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">flow</span><br><span class="line">  |--- compiler.js      # 编译相关</span><br><span class="line">  |--- component.js     # 组件数据结构</span><br><span class="line">  |--- global-api.js    # Global API 结构</span><br><span class="line">  |--- modules.js       # 第三方库定义</span><br><span class="line">  |--- options.js       # 选项相关</span><br><span class="line">  |--- ssr.js           # 服务端渲染相关</span><br><span class="line">  |--- vnode.js         # virtual node 相关</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><h3 id="src-目录结构"><a href="#src-目录结构" class="headerlink" title="src 目录结构"></a>src 目录结构</h3><ul>
+<li><code>vue</code> 源码存放在 <code>vue 项目</code>的 <code>src</code> 目录下<ul>
+<li><code>src</code> 目录结构如下<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">src</span><br><span class="line">|--- compiler           # 编译相关代码</span><br><span class="line">|--- core               # 核心代码</span><br><span class="line">|--- platforms          # 平台相关代码(web/weex)</span><br><span class="line">|--- server             # 服务端渲染代码</span><br><span class="line">|--- sfc                # .vue单文件编译成js对象代码</span><br><span class="line">|--- shared             # 辅助方法及常量</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="源码构建"><a href="#源码构建" class="headerlink" title="源码构建"></a>源码构建</h2><h3 id="基于-rollup-构建"><a href="#基于-rollup-构建" class="headerlink" title="基于 rollup 构建"></a>基于 rollup 构建</h3><h4 id="构建命令"><a href="#构建命令" class="headerlink" title="构建命令"></a>构建命令</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// package.json</span><br><span class="line">"scripts":&#123;</span><br><span class="line">  ...,</span><br><span class="line"></span><br><span class="line">  "build": "node scripts/build.js", // 构建web平台</span><br><span class="line">  "build:ssr": "npm run build -- web-runtime-cjs,web-server-renderer", // 构建成服务端渲染</span><br><span class="line">  "build:weex": "npm run build -- weex",// 构建成weex平台</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="生成目录"><a href="#生成目录" class="headerlink" title="生成目录"></a>生成目录</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">dist</span><br><span class="line">|--- vue.common.js</span><br><span class="line">|--- vue.esm.browser.js</span><br><span class="line">|--- vue.esm.js</span><br><span class="line">|--- vue.js</span><br><span class="line">|--- vue.min.js</span><br><span class="line">|--- vue.runtime.common.js</span><br><span class="line">|--- vue.runtime.esm.js</span><br><span class="line">|--- vue.runtime.js</span><br><span class="line">|--- vue.runtime.min.js</span><br></pre></td></tr></table></figure>
+<h4 id="目录结构解释"><a href="#目录结构解释" class="headerlink" title="目录结构解释"></a>目录结构解释</h4><table>
+<thead>
+<tr>
+<th>version</th>
+<th style="text-align:center">UMD</th>
+<th style="text-align:center">CommonJS</th>
+<th style="text-align:right">ES Module</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Full</strong></td>
+<td style="text-align:center">vue.js</td>
+<td style="text-align:center">vue.common.js</td>
+<td style="text-align:right">vue.esm.js</td>
+</tr>
+<tr>
+<td><strong>Runtime-only</strong></td>
+<td style="text-align:center">vue.runtime.js</td>
+<td style="text-align:center">vue.runtime.common.js</td>
+<td style="text-align:right">vue.runtime.esm.js</td>
+</tr>
+<tr>
+<td><strong>Full (production)</strong></td>
+<td style="text-align:center">vue.min.js</td>
+<td style="text-align:center">-</td>
+<td style="text-align:right">-</td>
+</tr>
+<tr>
+<td><strong>Runtime-only (production)</strong></td>
+<td style="text-align:center">vue.runtime.min.js</td>
+<td style="text-align:center">-</td>
+<td style="text-align:right">-</td>
+</tr>
+</tbody>
+</table>
+<h4 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h4><ul>
+<li><code>Full</code>: 包含<code>Compiler + Runtime</code></li>
+<li><code>Compiler</code>: 负责将<code>template</code>字符串编译成<code>vue render函数</code></li>
+<li><code>Runtime</code>: 负责创建vue实例、渲染、打补丁等</li>
+<li><code>UMD</code>: 可直接使用<code>&lt;script&gt;</code>标签引用的版本；<code>unpkg CDN</code>上<a href="https://unpkg.com/vue" target="_blank" rel="noopener">https://unpkg.com/vue</a>的默认为<code>compiler+runtime</code>版本(<code>vue.js</code>)</li>
+<li><code>CommonJS</code>: 供<code>browserify、webpack1</code>使用</li>
+<li><code>ES Module</code>: 供<code>webpack2、rollup</code>使用</li>
+<li><code>CommonJS</code>及<code>ES Module</code>版本未提供压缩版本，需要通过打包工具自行压缩</li>
+</ul>
+<h4 id="Runtime-Compiler-vs-Runtime-only"><a href="#Runtime-Compiler-vs-Runtime-only" class="headerlink" title="Runtime + Compiler vs. Runtime-only"></a>Runtime + Compiler vs. Runtime-only</h4><ul>
+<li><p><code>Runtime + Compiler</code></p>
+<ul>
+<li>如果需要使用vue的<code>template</code>字段，则需要使用此版本；会在运行时将<code>template</code>字符串编译成<code>render</code>函数</li>
+<li>并配置相应webpack别名<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  resolve: &#123;</span><br><span class="line">    alias: &#123;</span><br><span class="line">      <span class="string">'vue$'</span>: <span class="string">'vue/dist/vue.esm.js'</span> <span class="comment">// 'vue/dist/vue.common.js' for webpack 1</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="string">`</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>Runtime-only</code></p>
+<ul>
+<li>当使用<code>vue-loader</code>或者<code>vueify</code>时，则可以直接使用此版本，因为<code>*.vue 文件中的tempalte</code>已经在编译阶段自动编译成渲染函数了，所以并不需要<code>compiler</code>，仅需要<code>runtime</code>就可以了</li>
+<li>此版本体积比<code>Runtime + Compiler</code>版本体积&lt;~30%</li>
+</ul>
+</li>
+</ul>
+<h3 id="入口文件"><a href="#入口文件" class="headerlink" title="入口文件"></a>入口文件</h3><ul>
+<li>web平台的Full版本入口位置<ul>
+<li><code>src/platform/web/entry-runtime-with-compiler.js</code></li>
+<li><code>vue最初被定义的位置</code>-<code>src/core/instance/index.js</code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/platform/web/entry-runtime-with-compiler.js</span></span><br><span class="line"><span class="comment">/* @flow */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> config <span class="keyword">from</span> <span class="string">'core/config'</span></span><br><span class="line"><span class="keyword">import</span> &#123; warn, cached &#125; <span class="keyword">from</span> <span class="string">'core/util/index'</span></span><br><span class="line"><span class="keyword">import</span> &#123; mark, measure &#125; <span class="keyword">from</span> <span class="string">'core/util/perf'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'./runtime/index'</span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment">// src/platform/web/runtime/index.js</span></span><br><span class="line"><span class="comment">/* @flow */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'core/index'</span></span><br><span class="line"><span class="keyword">import</span> config <span class="keyword">from</span> <span class="string">'core/config'</span></span><br><span class="line"><span class="keyword">import</span> &#123; extend, noop &#125; <span class="keyword">from</span> <span class="string">'shared/util'</span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment">// src/core/index.js</span></span><br><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'./instance/index'</span></span><br><span class="line"><span class="keyword">import</span> &#123; initGlobalAPI &#125; <span class="keyword">from</span> <span class="string">'./global-api/index'</span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment">// src/core/instance/index.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; initMixin &#125; <span class="keyword">from</span> <span class="string">'./init'</span></span><br><span class="line"><span class="keyword">import</span> &#123; stateMixin &#125; <span class="keyword">from</span> <span class="string">'./state'</span></span><br><span class="line"><span class="keyword">import</span> &#123; renderMixin &#125; <span class="keyword">from</span> <span class="string">'./render'</span></span><br><span class="line"><span class="keyword">import</span> &#123; eventsMixin &#125; <span class="keyword">from</span> <span class="string">'./events'</span></span><br><span class="line"><span class="keyword">import</span> &#123; lifecycleMixin &#125; <span class="keyword">from</span> <span class="string">'./lifecycle'</span></span><br><span class="line"><span class="keyword">import</span> &#123; warn &#125; <span class="keyword">from</span> <span class="string">'../util/index'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* vue 在此处被定义 */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Vue</span>(<span class="params">options</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span> &amp;&amp; !(<span class="keyword">this</span> <span class="keyword">instanceof</span> Vue)) &#123;</span><br><span class="line">    warn(<span class="string">'Vue is a constructor and should be called with the `new` keyword'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">this</span>._init(options)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">initMixin(Vue)</span><br><span class="line">stateMixin(Vue)</span><br><span class="line">eventsMixin(Vue)</span><br><span class="line">lifecycleMixin(Vue)</span><br><span class="line">renderMixin(Vue)</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> Vue</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="数据驱动"><a href="#数据驱动" class="headerlink" title="数据驱动"></a>数据驱动</h2><h3 id="new-Vue时发生了什么"><a href="#new-Vue时发生了什么" class="headerlink" title="new Vue时发生了什么"></a>new Vue时发生了什么</h3><h4 id="初始化基本思路"><a href="#初始化基本思路" class="headerlink" title="初始化基本思路"></a>初始化基本思路</h4><ol>
+<li>调用new Vue(options)</li>
+<li>调用通过<code>initMixin(Vue)</code>方法导入的<code>_init</code>方法</li>
+<li><code>_init</code>内部调用了相关方法，做了一些初始化操作</li>
+</ol>
+<h4 id="初始化时如何代理data的"><a href="#初始化时如何代理data的" class="headerlink" title="初始化时如何代理data的?"></a>初始化时如何代理data的?</h4><ol>
+<li><code>_init</code>方法内部调用<code>initState(vm)</code>方法</li>
+<li><code>initState(vm)</code>方法中调用了<code>initData(vm)</code>方法</li>
+<li><code>initData(vm)</code>方法判断了<code>vm.$options.data</code>的类型(函数或其它)并根据data类型，将获取到的<code>data值</code>赋值给<code>vm._data</code></li>
+<li>遍历检查<code>vm._data</code>中是否有和<code>props、methods</code>重名的<code>key</code>(因为<code>props、methods、data</code>最终都要挂载到<code>vm</code>上，所以不能重名)，未重名时，判断下<code>key</code>是否是vue的保留字(vue中将以<code>$和_</code>开头的字段视为vue保留字,这也是声明data时，data中的key不能以<code>$和_</code>开头的原因)</li>
+<li>不是保留字，则调用<code>proxy(vm,&#39;_data&#39;,key)</code>方法将<code>vm.data[key]</code>代理到<code>vm._data[key]</code>上(这也说明了，vue中data申明的数据本质上保存在vm._data上的)</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/core/instance/index.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; initMixin &#125; <span class="keyword">from</span> <span class="string">'./init'</span></span><br><span class="line"><span class="keyword">import</span> &#123; stateMixin &#125; <span class="keyword">from</span> <span class="string">'./state'</span></span><br><span class="line"><span class="keyword">import</span> &#123; renderMixin &#125; <span class="keyword">from</span> <span class="string">'./render'</span></span><br><span class="line"><span class="keyword">import</span> &#123; eventsMixin &#125; <span class="keyword">from</span> <span class="string">'./events'</span></span><br><span class="line"><span class="keyword">import</span> &#123; lifecycleMixin &#125; <span class="keyword">from</span> <span class="string">'./lifecycle'</span></span><br><span class="line"><span class="keyword">import</span> &#123; warn &#125; <span class="keyword">from</span> <span class="string">'../util/index'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义vue类</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Vue</span>(<span class="params">options</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 非生产环境必须通过new 来生成vue 实例</span></span><br><span class="line">  <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span> &amp;&amp; !(<span class="keyword">this</span> <span class="keyword">instanceof</span> Vue)) &#123;</span><br><span class="line">    warn(<span class="string">'Vue is a constructor and should be called with the `new` keyword'</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 初始化，并传入参数</span></span><br><span class="line">  <span class="keyword">this</span>._init(options) <span class="comment">// 此方法在initMixin中定义</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">initMixin(Vue) <span class="comment">// 导入_init方法</span></span><br><span class="line">stateMixin(Vue)</span><br><span class="line">eventsMixin(Vue)</span><br><span class="line">lifecycleMixin(Vue)</span><br><span class="line">renderMixin(Vue)</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> Vue</span><br><span class="line"></span><br><span class="line"><span class="comment">// src/core/instance/init.js</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">initMixin</span>(<span class="params">Vue: Class&lt;Component&gt;</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 在Vue原型上定义_init方法</span></span><br><span class="line">  Vue.prototype._init = <span class="function"><span class="keyword">function</span>(<span class="params">options?: Object</span>) </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">// expose real self</span></span><br><span class="line">    vm._self = vm</span><br><span class="line">    initLifecycle(vm)</span><br><span class="line">    initEvents(vm)</span><br><span class="line">    initRender(vm)</span><br><span class="line">    callHook(vm, <span class="string">'beforeCreate'</span>)</span><br><span class="line">    initInjections(vm) <span class="comment">// resolve injections before data/props</span></span><br><span class="line">    </span><br><span class="line">    initState(vm) <span class="comment">// 初始化组件自身状态(data中定义的数据)</span></span><br><span class="line"></span><br><span class="line">    initProvide(vm) <span class="comment">// resolve provide after data/props</span></span><br><span class="line">    callHook(vm, <span class="string">'created'</span>)</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// src/core/instance/state.js</span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> sharedPropertyDefinition = &#123;</span><br><span class="line">  enumerable: <span class="literal">true</span>,</span><br><span class="line">  configurable: <span class="literal">true</span>,</span><br><span class="line">  get: noop,</span><br><span class="line">  set: noop</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 将target[key]代理到target[sourceKey][key]上，主要实现将vm.data[key]代理到vm._data[key]上的操作</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">proxy</span>(<span class="params">target: Object, sourceKey: string, key: string</span>) </span>&#123;</span><br><span class="line">  sharedPropertyDefinition.get = <span class="function"><span class="keyword">function</span> <span class="title">proxyGetter</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>[sourceKey][key]</span><br><span class="line">  &#125;</span><br><span class="line">  sharedPropertyDefinition.set = <span class="function"><span class="keyword">function</span> <span class="title">proxySetter</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>[sourceKey][key] = val</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">Object</span>.defineProperty(target, key, sharedPropertyDefinition)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">initState</span>(<span class="params">vm: Component</span>) </span>&#123;</span><br><span class="line">  vm._watchers = []</span><br><span class="line">  <span class="keyword">const</span> opts = vm.$options</span><br><span class="line">  <span class="keyword">if</span> (opts.props) initProps(vm, opts.props)</span><br><span class="line">  <span class="keyword">if</span> (opts.methods) initMethods(vm, opts.methods)</span><br><span class="line">  <span class="keyword">if</span> (opts.data) &#123;</span><br><span class="line">    initData(vm) <span class="comment">// 初始化data</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    observe((vm._data = &#123;&#125;), <span class="literal">true</span> <span class="comment">/* asRootData */</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (opts.computed) initComputed(vm, opts.computed)</span><br><span class="line">  <span class="keyword">if</span> (opts.watch &amp;&amp; opts.watch !== nativeWatch) &#123;</span><br><span class="line">    initWatch(vm, opts.watch)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initData</span>(<span class="params">vm: Component</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> data = vm.$options.data</span><br><span class="line">  data = vm._data = <span class="keyword">typeof</span> data === <span class="string">'function'</span> ? getData(data, vm) : data || &#123;&#125; <span class="comment">// 将$options中的data取出并赋值给vm._data</span></span><br><span class="line">  <span class="keyword">if</span> (!isPlainObject(data)) &#123;</span><br><span class="line">    data = &#123;&#125;</span><br><span class="line">    process.env.NODE_ENV !== <span class="string">'production'</span> &amp;&amp;</span><br><span class="line">      warn(</span><br><span class="line">        <span class="string">'data functions should return an object:\n'</span> +</span><br><span class="line">          <span class="string">'https://vuejs.org/v2/guide/components.html#data-Must-Be-a-Function'</span>,</span><br><span class="line">        vm</span><br><span class="line">      )</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// proxy data on instance</span></span><br><span class="line">  <span class="comment">// 遍历并检查_data的key是否和methods及props重名</span></span><br><span class="line">  <span class="keyword">const</span> keys = <span class="built_in">Object</span>.keys(data)</span><br><span class="line">  <span class="keyword">const</span> props = vm.$options.props</span><br><span class="line">  <span class="keyword">const</span> methods = vm.$options.methods</span><br><span class="line">  <span class="keyword">let</span> i = keys.length</span><br><span class="line">  <span class="keyword">while</span> (i--) &#123;</span><br><span class="line">    <span class="keyword">const</span> key = keys[i]</span><br><span class="line">    <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (methods &amp;&amp; hasOwn(methods, key)) &#123;</span><br><span class="line">        warn(<span class="string">`Method "<span class="subst">$&#123;key&#125;</span>" has already been defined as a data property.`</span>, vm)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (props &amp;&amp; hasOwn(props, key)) &#123;</span><br><span class="line">      process.env.NODE_ENV !== <span class="string">'production'</span> &amp;&amp;</span><br><span class="line">        warn(</span><br><span class="line">          <span class="string">`The data property "<span class="subst">$&#123;key&#125;</span>" is already declared as a prop. `</span> +</span><br><span class="line">            <span class="string">`Use prop default value instead.`</span>,</span><br><span class="line">          vm</span><br><span class="line">        )</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!isReserved(key)) &#123;</span><br><span class="line">      <span class="comment">// 若key不是vue的保留字($及_开头的默认都是vue保留字，所以vue中申明状态时，不能以$及_开头)</span></span><br><span class="line">      <span class="comment">// 代理将vm[key]代理到vm[_data][key]上</span></span><br><span class="line">      proxy(vm, <span class="string">`_data`</span>, key)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// observe data;观测数据</span></span><br><span class="line">  observe(data, <span class="literal">true</span> <span class="comment">/* asRootData */</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vue/" rel="tag"># vue</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/19/gitlab-ci/" rel="next" title="gitlab-ci">
+                <i class="fa fa-chevron-left"></i> gitlab-ci
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/Avatar.png"
+               alt="BryanAdamss" />
+          <p class="site-author-name" itemprop="name">BryanAdamss</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">44</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/BryanAdamss" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Vue-analysis-note"><span class="nav-number">1.</span> <span class="nav-text">Vue-analysis-note</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#版本"><span class="nav-number">1.1.</span> <span class="nav-text">版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flow"><span class="nav-number">1.2.</span> <span class="nav-text">Flow</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#静态类型检查器"><span class="nav-number">1.2.1.</span> <span class="nav-text">静态类型检查器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#检查方式"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">检查方式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目录结构"><span class="nav-number">1.3.</span> <span class="nav-text">目录结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#src-目录结构"><span class="nav-number">1.3.1.</span> <span class="nav-text">src 目录结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码构建"><span class="nav-number">1.4.</span> <span class="nav-text">源码构建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基于-rollup-构建"><span class="nav-number">1.4.1.</span> <span class="nav-text">基于 rollup 构建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#构建命令"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">构建命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成目录"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">生成目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#目录结构解释"><span class="nav-number">1.4.1.3.</span> <span class="nav-text">目录结构解释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#说明"><span class="nav-number">1.4.1.4.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Runtime-Compiler-vs-Runtime-only"><span class="nav-number">1.4.1.5.</span> <span class="nav-text">Runtime + Compiler vs. Runtime-only</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#入口文件"><span class="nav-number">1.4.2.</span> <span class="nav-text">入口文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据驱动"><span class="nav-number">1.5.</span> <span class="nav-text">数据驱动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#new-Vue时发生了什么"><span class="nav-number">1.5.1.</span> <span class="nav-text">new Vue时发生了什么</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化基本思路"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">初始化基本思路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化时如何代理data的"><span class="nav-number">1.5.1.2.</span> <span class="nav-text">初始化时如何代理data的?</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BryanAdamss</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
