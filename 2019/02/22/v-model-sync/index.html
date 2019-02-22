@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="类型检测,存在性," />
+  <meta name="keywords" content="vue," />
 
 
 
@@ -87,18 +87,18 @@
 
 
 
-<meta name="description" content="本来在《编写可维护性的javascript》中已经做过总结，但最近在使用上又出现一点问题，所以推翻以前的单独写篇关于类型检测和存在性检测的文章  类型检测和存在性检测必备知识点 哪些值会被转成false  “”、0、NaN、false、null、undefined会在期待布尔值的地方被转成false; 非上面提及的值都会被转成true； 注意空对象(没有任何属性/方法的对象)也会视为true12">
-<meta name="keywords" content="类型检测,存在性">
+<meta name="description" content="v-model、.sync 的异同v-model 实现双向数据绑定(数据 model 改变会自动反映到视图 view 上，视图 view 的数据变化也会同步到数据 model 中)，一般用在表单的双向数据绑定约定俗成的用在表单相关组件上 v-model 会忽略所有表单元素的 value、checked、selected 特性的初始值而总是将 Vue 实例的数据作为数据来源。在调试工具中直接修改这">
+<meta name="keywords" content="vue">
 <meta property="og:type" content="article">
-<meta property="og:title" content="type-existence">
-<meta property="og:url" content="http://yoursite.com/2017/08/04/type-existence/index.html">
+<meta property="og:title" content="v-model-sync">
+<meta property="og:url" content="http://yoursite.com/2019/02/22/v-model-sync/index.html">
 <meta property="og:site_name" content="BryanAdamss的博客">
-<meta property="og:description" content="本来在《编写可维护性的javascript》中已经做过总结，但最近在使用上又出现一点问题，所以推翻以前的单独写篇关于类型检测和存在性检测的文章  类型检测和存在性检测必备知识点 哪些值会被转成false  “”、0、NaN、false、null、undefined会在期待布尔值的地方被转成false; 非上面提及的值都会被转成true； 注意空对象(没有任何属性/方法的对象)也会视为true12">
+<meta property="og:description" content="v-model、.sync 的异同v-model 实现双向数据绑定(数据 model 改变会自动反映到视图 view 上，视图 view 的数据变化也会同步到数据 model 中)，一般用在表单的双向数据绑定约定俗成的用在表单相关组件上 v-model 会忽略所有表单元素的 value、checked、selected 特性的初始值而总是将 Vue 实例的数据作为数据来源。在调试工具中直接修改这">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-08-25T11:36:43.985Z">
+<meta property="og:updated_time" content="2019-02-22T13:35:31.450Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="type-existence">
-<meta name="twitter:description" content="本来在《编写可维护性的javascript》中已经做过总结，但最近在使用上又出现一点问题，所以推翻以前的单独写篇关于类型检测和存在性检测的文章  类型检测和存在性检测必备知识点 哪些值会被转成false  “”、0、NaN、false、null、undefined会在期待布尔值的地方被转成false; 非上面提及的值都会被转成true； 注意空对象(没有任何属性/方法的对象)也会视为true12">
+<meta name="twitter:title" content="v-model-sync">
+<meta name="twitter:description" content="v-model、.sync 的异同v-model 实现双向数据绑定(数据 model 改变会自动反映到视图 view 上，视图 view 的数据变化也会同步到数据 model 中)，一般用在表单的双向数据绑定约定俗成的用在表单相关组件上 v-model 会忽略所有表单元素的 value、checked、selected 特性的初始值而总是将 Vue 实例的数据作为数据来源。在调试工具中直接修改这">
 
 
 
@@ -126,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/08/04/type-existence/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/02/22/v-model-sync/"/>
 
 
 
 
 
-  <title> type-existence | BryanAdamss的博客 </title>
+  <title> v-model-sync | BryanAdamss的博客 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -293,7 +293,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/04/type-existence/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/22/v-model-sync/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BryanAdamss">
@@ -314,7 +314,7 @@
             
             
               
-                type-existence
+                v-model-sync
               
             
           </h1>
@@ -329,8 +329,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-04T16:08:31+08:00">
-                2017-08-04 16:08:31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-22T21:34:48+08:00">
+                2019-02-22 21:34:48
               </time>
             
 
@@ -387,113 +387,25 @@
       
 
       
-        <blockquote>
-<p>本来在《编写可维护性的javascript》中已经做过总结，但最近在使用上又出现一点问题，所以推翻以前的单独写篇关于类型检测和存在性检测的文章</p>
-</blockquote>
-<h1 id="类型检测和存在性检测"><a href="#类型检测和存在性检测" class="headerlink" title="类型检测和存在性检测"></a>类型检测和存在性检测</h1><h2 id="必备知识点"><a href="#必备知识点" class="headerlink" title="必备知识点"></a>必备知识点</h2><ul>
-<li><p>哪些值会被转成false</p>
-<ul>
-<li>“”、0、NaN、false、null、undefined会在期待布尔值的地方被转成false;</li>
-<li>非上面提及的值都会被转成true；</li>
-<li>注意空对象(没有任何属性/方法的对象)也会视为true<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a=&#123;&#125;;</span><br><span class="line"><span class="keyword">if</span>(a)&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="literal">true</span>);<span class="comment">// true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
+        <h1 id="v-model、-sync-的异同"><a href="#v-model、-sync-的异同" class="headerlink" title="v-model、.sync 的异同"></a>v-model、.sync 的异同</h1><h2 id="v-model"><a href="#v-model" class="headerlink" title="v-model"></a>v-model</h2><ul>
+<li>实现双向数据绑定(数据 model 改变会自动反映到视图 view 上，视图 view 的数据变化也会同步到数据 model 中)，一般用在表单的双向数据绑定<br>约定俗成的用在表单相关组件上</li>
+<li>v-model 会忽略所有表单元素的 value、checked、selected 特性的初始值而总是将 Vue 实例的数据作为数据来源。在调试工具中直接修改这 3 个特性值都不会生效；</li>
+<li>语法糖:默认形况下会绑定表单的 value 以及监听 input 事件；可通过 model 选项，配置 v-model 的触发机制</li>
 </ul>
-</li>
-<li><p>声明和赋值</p>
-<ul>
-<li><p>未声明(更未赋值)的变量</p>
-<ul>
-<li><p>直接使用，会报错</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(b);// Uncaught ReferenceError: b is not defined</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>如果通过typeof b来使用，则不会报错；因为typeof存在一个特殊的安全防范机制；</p>
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">&lt;input v-model=<span class="string">"searchText"</span>&gt;</span><br><span class="line"><span class="comment">// 等价于：</span></span><br><span class="line">&lt;input</span><br><span class="line">  v-bind:value=<span class="string">"searchText"</span></span><br><span class="line">  v-on:input=<span class="string">"searchText = $event.target.value"</span></span><br><span class="line">&gt;</span><br><span class="line"><span class="comment">// 用在组件上时</span></span><br><span class="line">&lt;custom-input</span><br><span class="line">  v-bind:value=<span class="string">"searchText"</span></span><br><span class="line">  v-on:input=<span class="string">"searchText = $event"</span> <span class="comment">// $event为组件内部派发出来的值</span></span><br><span class="line">&gt;<span class="xml"><span class="tag">&lt;/<span class="name">custom-input</span>&gt;</span></span></span><br><span class="line"><span class="xml">// custom-input组件必须接受value 以及在 派发input事件；即v-model默认情况下无论是用在原生表单组件还是自定义组件上，都必须绑定value以及监听input事件</span></span><br><span class="line"><span class="xml">Vue.component('custom-input', &#123;</span></span><br><span class="line"><span class="xml">  props: ['value'],</span></span><br><span class="line"><span class="xml">  template: `</span></span><br><span class="line">    &lt;input</span><br><span class="line">      v-bind:value="value"</span><br><span class="line">      v-on:input="$emit('input', $event.target.value)"</span><br><span class="line">    &gt;</span><br><span class="line">  `</span><br><span class="line">&#125;)</span><br><span class="line">// 自定义v-model的触发机制</span><br><span class="line">Vue.component('base-checkbox', &#123;</span><br><span class="line">  model: &#123; // 将v-model的机制调整为 绑定checked和监听change事件</span><br><span class="line">    prop: 'checked',</span><br><span class="line">    event: 'change'</span><br><span class="line">  &#125;,</span><br><span class="line">  props: &#123;</span><br><span class="line">    checked: Boolean</span><br><span class="line">  &#125;,</span><br><span class="line">  template: `</span><br><span class="line">    &lt;input</span><br><span class="line">      type="checkbox"</span><br><span class="line">      v-bind:checked="checked"</span><br><span class="line">      v-on:change="$emit('change', $event.target.checked)"</span><br><span class="line">    &gt;</span><br><span class="line">  `</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="sync-修饰符"><a href="#sync-修饰符" class="headerlink" title=".sync 修饰符"></a>.sync 修饰符</h2><ul>
+<li>主要用来实现父子组件间数据的双向传递</li>
+<li>单向数据传递为:props down,events up</li>
+<li>vue 中是不推荐使用双向数据传递的，因为子组件可以修改父组件，且在父组件和子组件都没有明显的改动来源，会带来维护上的问题</li>
+<li>但在特殊情况下，有一定实用价值，所以 vue 在 2.3 版本中又添加回来了</li>
+<li>本质还是个语法糖</li>
 </ul>
-</li>
-<li><p>已声明未赋值的变量</p>
-<ul>
-<li>会有默认值undefined<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a;</span><br><span class="line"><span class="built_in">console</span>.log(a===<span class="literal">undefined</span>);<span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> a);<span class="comment">// 'undefined'</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>注意:当未声明的变量使用typeof检测时，并不会报错，而且返回<code>&#39;undefined&#39;</code>；因为typeof存在一个特殊的安全防范机制；</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> b);<span class="comment">// 'undefined'，并没有报错</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>总结</p>
-<ul>
-<li><strong>未声明和已声明未赋值的变量使用typeof检测时，都会返回<code>&#39;undefined&#39;</code></strong></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>访问对象上不存在的属性/方法时，并不会报错，而是返回一个<code>undefined</code></strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj=&#123;</span><br><span class="line">    a:<span class="number">3</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(obj.b);<span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>类型检测-&gt;(判断值的类型)</p>
-<ul>
-<li>首先变量是没有类型的，类型本质指的是变量持有的值的类型，一般说的变量类型，实际指的是变量持有的值的类型</li>
-<li><p>判断类型主要用来，检测输入的参数是否为想要的类型</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">fn</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">typeof</span> fn===<span class="string">'function'</span>)&#123;</span><br><span class="line">        <span class="comment">// xxxxx</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>一般值</p>
-<ul>
-<li>string、number、boolean、undefined-&gt;typeof来判断</li>
-<li>null一般不用做类型检测，只有在变量是一个可预期的null值时，才用来判断<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj=<span class="literal">null</span>;</span><br><span class="line"><span class="keyword">if</span>(obj===<span class="literal">null</span>)&#123;</span><br><span class="line">    <span class="comment">// xxx</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>引用值</p>
-<ul>
-<li><p>自定义、非数组、非函数-&gt;使用obj instanceof constructor</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">People</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name=name;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> p=<span class="keyword">new</span> People();</span><br><span class="line"><span class="built_in">console</span>.log(p <span class="keyword">instanceof</span> People);<span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> date=<span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line"><span class="built_in">console</span>.log(date <span class="keyword">instanceof</span> <span class="built_in">Date</span>);<span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>函数-&gt;typeof</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> fn===<span class="string">'function'</span>);<span class="comment">// 'function'</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>数组</p>
-<ul>
-<li><p>es5的isArray</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr=[];</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Array</span>.isArray(arr));<span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Object.prototype.call(arr);</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr=[];</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype.toString.call(arr)===<span class="string">'[object Array]'</span>);</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>存在性</p>
-<ul>
-<li><p>常用检测存在性的不足</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj=&#123;</span><br><span class="line">    b:<span class="number">0</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">if</span>(b)&#123;&#125;<span class="comment">// 如果b存在，则xxx；当b为"",0,NaN,false,null,undefined时，就无法检测；</span></span><br><span class="line">同理b&amp;&amp;b()也会出现类似问题，所以只有在明确知道要检测的值不会是<span class="string">""</span>,<span class="number">0</span>,<span class="literal">NaN</span>,<span class="literal">false</span>,<span class="literal">null</span>,<span class="literal">undefined</span>中的一种时才能用</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>变量是否存在(是否已经声明)</p>
-<ul>
-<li><p>全局变量的存在性</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">'a'</span> <span class="keyword">in</span> <span class="built_in">window</span>);<span class="comment">// false;判断变量a在全局环境下是否声明</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>局部变量的存在性</p>
-<ul>
-<li>局部变量无法用in判断，只能退而求其次用typeof，typeof无法准确判断出是未声明还是已声明未赋值，如下<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> a===<span class="string">'undefined'</span>);<span class="comment">// true;a已经声明但未赋值 </span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> b===<span class="string">'undefined'</span>);<span class="comment">// true;b没有声明</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>对象的属性是否存在</p>
-<ul>
-<li>一般属性-&gt;统一使用in</li>
-<li>实例属性存在性-&gt;统一使用hasOwnProperty<ul>
-<li>IE8及以下判断实例属性存在性-&gt;先判断hasOwnProperty的存在性，再调用hasOwnProperty<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj_a=&#123;</span><br><span class="line">    test:<span class="string">'测试'</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'test'</span> <span class="keyword">in</span> obj_a);<span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'toString'</span> <span class="keyword">in</span> obj_a);<span class="comment">// true，能检测到原型链上的方法</span></span><br><span class="line"><span class="built_in">console</span>.log(obj_a.hasOwnProperty(<span class="string">'toString'</span>));<span class="comment">//false,obj_a并没有实例属性(方法)`toString`，`toString`存在于其原型对象上，hasOwnProperty无法检测到</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在没有.sync时，vue推荐使用下面方式实现子组件修改父组件的数据</span></span><br><span class="line">&lt;text-<span class="built_in">document</span></span><br><span class="line">  v-bind:title=<span class="string">"doc.title"</span></span><br><span class="line">  v-on:update:title=<span class="string">"doc.title = $event"</span></span><br><span class="line">&gt;<span class="xml"><span class="tag">&lt;/<span class="name">text-document</span>&gt;</span></span></span><br><span class="line"><span class="xml">Vue.component('text-document', &#123;</span></span><br><span class="line"><span class="xml">  props: &#123;</span></span><br><span class="line"><span class="xml">   title : String</span></span><br><span class="line"><span class="xml">  &#125;,</span></span><br><span class="line"><span class="xml">  template: `</span></span><br><span class="line">    &lt;div v-text="title" @click="$emit('update:title','我是新title')"&gt;</span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">  `</span></span><br><span class="line"><span class="xml">&#125;)</span></span><br><span class="line"><span class="xml">// 为了简化上述流程，推出了.sync修饰符</span></span><br><span class="line">&lt;text-document</span><br><span class="line">  v-bind:title.sync="doc.title" // 无需再监听update:title事件,但子组件仍需要派发对应自定义事件</span><br><span class="line">&gt;&lt;/text-document&gt;</span><br><span class="line">Vue.component('text-document', &#123;</span><br><span class="line">  props: &#123;</span><br><span class="line">   title : String</span><br><span class="line">  &#125;,</span><br><span class="line">  template: `</span><br><span class="line">    &lt;div v-text="title" @click="$emit('update:title','我是新title')"&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  `</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="二者异同"><a href="#二者异同" class="headerlink" title="二者异同"></a>二者异同</h2><ul>
+<li>v-model 默认情况下为 <code>value+input</code> 的组合；.sync 为任意组合</li>
+<li>v-model 常用在表单中；.sync 主要用在父子组件通信中，子组件需要修改父组件数据时</li>
+<li>可以将 v-model 理解成.sync 的一种特殊情况，二者底层的实现机制类似；v-model 做了数据传递+修改的工作；.sync 更多的是数据传递，修改需要交给用户自己</li>
+<li>可以参考  <a href="https://blog.csdn.net/Qin_Shuo/article/details/82693919" target="_blank" rel="noopener">https://blog.csdn.net/Qin_Shuo/article/details/82693919</a></li>
 </ul>
 
       
@@ -518,9 +430,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/类型检测/" rel="tag"># 类型检测</a>
-          
-            <a href="/tags/存在性/" rel="tag"># 存在性</a>
+            <a href="/tags/vue/" rel="tag"># vue</a>
           
         </div>
       
@@ -533,8 +443,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/08/01/Vue-guide/" rel="next" title="Vue-guide">
-                <i class="fa fa-chevron-left"></i> Vue-guide
+              <a href="/2019/02/22/vue-high-level-component/" rel="next" title="vue-high-level-component">
+                <i class="fa fa-chevron-left"></i> vue-high-level-component
               </a>
             
           </div>
@@ -542,10 +452,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/09/07/Bootstrap-table-API/" rel="prev" title="Bootstrap-table_API">
-                Bootstrap-table_API <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -681,7 +587,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#类型检测和存在性检测"><span class="nav-number">1.</span> <span class="nav-text">类型检测和存在性检测</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#必备知识点"><span class="nav-number">1.1.</span> <span class="nav-text">必备知识点</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#v-model、-sync-的异同"><span class="nav-number">1.</span> <span class="nav-text">v-model、.sync 的异同</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#v-model"><span class="nav-number">1.1.</span> <span class="nav-text">v-model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sync-修饰符"><span class="nav-number">1.2.</span> <span class="nav-text">.sync 修饰符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二者异同"><span class="nav-number">1.3.</span> <span class="nav-text">二者异同</span></a></li></ol></li></ol></div>
             
 
           </div>

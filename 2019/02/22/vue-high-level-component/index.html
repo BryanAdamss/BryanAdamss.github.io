@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="类型检测,存在性," />
+  <meta name="keywords" content="vue," />
 
 
 
@@ -87,18 +87,20 @@
 
 
 
-<meta name="description" content="本来在《编写可维护性的javascript》中已经做过总结，但最近在使用上又出现一点问题，所以推翻以前的单独写篇关于类型检测和存在性检测的文章  类型检测和存在性检测必备知识点 哪些值会被转成false  “”、0、NaN、false、null、undefined会在期待布尔值的地方被转成false; 非上面提及的值都会被转成true； 注意空对象(没有任何属性/方法的对象)也会视为true12">
-<meta name="keywords" content="类型检测,存在性">
+<meta name="description" content="Vue inheritAttrs、$attrs、$listeners、provide、inject、slot、slotScope不使用 vuex、eventBus 在高层级组件中传递数据 组件调用关系 A-&amp;gt;B-&amp;gt;C （A 调用 B，B 调用 C）   基本概念 inheritAttrs 默认情况下父作用域中的不被子组件认作为 props 的特性绑定 (attribute bindin">
+<meta name="keywords" content="vue">
 <meta property="og:type" content="article">
-<meta property="og:title" content="type-existence">
-<meta property="og:url" content="http://yoursite.com/2017/08/04/type-existence/index.html">
+<meta property="og:title" content="vue-high-level-component">
+<meta property="og:url" content="http://yoursite.com/2019/02/22/vue-high-level-component/index.html">
 <meta property="og:site_name" content="BryanAdamss的博客">
-<meta property="og:description" content="本来在《编写可维护性的javascript》中已经做过总结，但最近在使用上又出现一点问题，所以推翻以前的单独写篇关于类型检测和存在性检测的文章  类型检测和存在性检测必备知识点 哪些值会被转成false  “”、0、NaN、false、null、undefined会在期待布尔值的地方被转成false; 非上面提及的值都会被转成true； 注意空对象(没有任何属性/方法的对象)也会视为true12">
+<meta property="og:description" content="Vue inheritAttrs、$attrs、$listeners、provide、inject、slot、slotScope不使用 vuex、eventBus 在高层级组件中传递数据 组件调用关系 A-&amp;gt;B-&amp;gt;C （A 调用 B，B 调用 C）   基本概念 inheritAttrs 默认情况下父作用域中的不被子组件认作为 props 的特性绑定 (attribute bindin">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-08-25T11:36:43.985Z">
+<meta property="og:image" content="http://yoursite.com/2019/02/22/vue-high-level-component/code.png">
+<meta property="og:updated_time" content="2019-02-22T13:29:25.317Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="type-existence">
-<meta name="twitter:description" content="本来在《编写可维护性的javascript》中已经做过总结，但最近在使用上又出现一点问题，所以推翻以前的单独写篇关于类型检测和存在性检测的文章  类型检测和存在性检测必备知识点 哪些值会被转成false  “”、0、NaN、false、null、undefined会在期待布尔值的地方被转成false; 非上面提及的值都会被转成true； 注意空对象(没有任何属性/方法的对象)也会视为true12">
+<meta name="twitter:title" content="vue-high-level-component">
+<meta name="twitter:description" content="Vue inheritAttrs、$attrs、$listeners、provide、inject、slot、slotScope不使用 vuex、eventBus 在高层级组件中传递数据 组件调用关系 A-&amp;gt;B-&amp;gt;C （A 调用 B，B 调用 C）   基本概念 inheritAttrs 默认情况下父作用域中的不被子组件认作为 props 的特性绑定 (attribute bindin">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/22/vue-high-level-component/code.png">
 
 
 
@@ -126,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/08/04/type-existence/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/02/22/vue-high-level-component/"/>
 
 
 
 
 
-  <title> type-existence | BryanAdamss的博客 </title>
+  <title> vue-high-level-component | BryanAdamss的博客 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -293,7 +295,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/04/type-existence/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/22/vue-high-level-component/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BryanAdamss">
@@ -314,7 +316,7 @@
             
             
               
-                type-existence
+                vue-high-level-component
               
             
           </h1>
@@ -329,8 +331,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-04T16:08:31+08:00">
-                2017-08-04 16:08:31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-22T21:24:37+08:00">
+                2019-02-22 21:24:37
               </time>
             
 
@@ -387,113 +389,74 @@
       
 
       
-        <blockquote>
-<p>本来在《编写可维护性的javascript》中已经做过总结，但最近在使用上又出现一点问题，所以推翻以前的单独写篇关于类型检测和存在性检测的文章</p>
-</blockquote>
-<h1 id="类型检测和存在性检测"><a href="#类型检测和存在性检测" class="headerlink" title="类型检测和存在性检测"></a>类型检测和存在性检测</h1><h2 id="必备知识点"><a href="#必备知识点" class="headerlink" title="必备知识点"></a>必备知识点</h2><ul>
-<li><p>哪些值会被转成false</p>
-<ul>
-<li>“”、0、NaN、false、null、undefined会在期待布尔值的地方被转成false;</li>
-<li>非上面提及的值都会被转成true；</li>
-<li>注意空对象(没有任何属性/方法的对象)也会视为true<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a=&#123;&#125;;</span><br><span class="line"><span class="keyword">if</span>(a)&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="literal">true</span>);<span class="comment">// true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
+        <h1 id="Vue-inheritAttrs、-attrs、-listeners、provide、inject、slot、slotScope"><a href="#Vue-inheritAttrs、-attrs、-listeners、provide、inject、slot、slotScope" class="headerlink" title="Vue inheritAttrs、$attrs、$listeners、provide、inject、slot、slotScope"></a>Vue inheritAttrs、<code>$attrs</code>、<code>$listeners</code>、provide、inject、slot、slotScope</h1><h2 id="不使用-vuex、eventBus-在高层级组件中传递数据"><a href="#不使用-vuex、eventBus-在高层级组件中传递数据" class="headerlink" title="不使用 vuex、eventBus 在高层级组件中传递数据"></a>不使用 vuex、eventBus 在高层级组件中传递数据</h2><ul>
+<li>组件调用关系<ul>
+<li>A-&gt;B-&gt;C （A 调用 B，B 调用 C）</li>
 </ul>
 </li>
-<li><p>声明和赋值</p>
-<ul>
-<li><p>未声明(更未赋值)的变量</p>
-<ul>
-<li><p>直接使用，会报错</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(b);// Uncaught ReferenceError: b is not defined</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>如果通过typeof b来使用，则不会报错；因为typeof存在一个特殊的安全防范机制；</p>
-</li>
-</ul>
-</li>
-<li><p>已声明未赋值的变量</p>
-<ul>
-<li>会有默认值undefined<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a;</span><br><span class="line"><span class="built_in">console</span>.log(a===<span class="literal">undefined</span>);<span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> a);<span class="comment">// 'undefined'</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>注意:当未声明的变量使用typeof检测时，并不会报错，而且返回<code>&#39;undefined&#39;</code>；因为typeof存在一个特殊的安全防范机制；</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> b);<span class="comment">// 'undefined'，并没有报错</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>总结</p>
-<ul>
-<li><strong>未声明和已声明未赋值的变量使用typeof检测时，都会返回<code>&#39;undefined&#39;</code></strong></li>
+<li>基本概念<ul>
+<li><code>inheritAttrs</code><ul>
+<li>默认情况下父作用域中的<strong>不被子组件认作为 props 的</strong>特性绑定 (attribute bindings) 将会“回退”且作为普通的 HTML 特性应用在子组件的根元素上。</li>
+<li>通过设置 B 组件的 inheritAttrs 为 false，可屏蔽掉这种默认行为。B 组件仍可通过<code>$attrs</code> 访问这些<code>不被认作 props</code>的特性</li>
+<li>例子 1<ul>
+<li>例如 A 组件传递了 a,b,c,d 四个参数给 B 组件，但 B 组件实际通过 props 只接收了 a、b 两个个，那么两外两个 c、d 将做为普通 html 特性应用到子组件的根元素上。</li>
+<li>通过将 B 的<code>inheritAttrs</code>设置为 false，则可屏蔽这种行为(c、d 将不会做为普通 html 特性应用到子组件的根元素上，但 B 组件仍能接收 a、b)。B 组件仍可通过 <code>this.$attrs</code> 访问到这些不被认作 props 的特性 c、d。</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p><strong>访问对象上不存在的属性/方法时，并不会报错，而是返回一个<code>undefined</code></strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj=&#123;</span><br><span class="line">    a:<span class="number">3</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(obj.b);<span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>类型检测-&gt;(判断值的类型)</p>
-<ul>
-<li>首先变量是没有类型的，类型本质指的是变量持有的值的类型，一般说的变量类型，实际指的是变量持有的值的类型</li>
-<li><p>判断类型主要用来，检测输入的参数是否为想要的类型</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">fn</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">typeof</span> fn===<span class="string">'function'</span>)&#123;</span><br><span class="line">        <span class="comment">// xxxxx</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>一般值</p>
-<ul>
-<li>string、number、boolean、undefined-&gt;typeof来判断</li>
-<li>null一般不用做类型检测，只有在变量是一个可预期的null值时，才用来判断<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj=<span class="literal">null</span>;</span><br><span class="line"><span class="keyword">if</span>(obj===<span class="literal">null</span>)&#123;</span><br><span class="line">    <span class="comment">// xxx</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li><code>$attrs</code><ul>
+<li>包含了父作用域中不被当前组件认作为 prop 被识别 (且获取) 的特性绑定 (class 和 style 除外)。</li>
+<li>场景如例子 1<ul>
+<li>B 组件设置了<code>inheritAttrs</code>为 false 后，仍可通过<code>this.$attrs</code>访问到那些不被认作 props 的特性 c、d。</li>
+<li>B 组件可在调用 C 组件时，通过在 C 组件上编写<code>v-bind=&quot;$attrs&quot;</code>将这些参数传递到 C 组件中。(<strong>这样就可以避免在 B 组件调用 C 组件时，需要在 B 组件的 data 中事先声明 C 组件需要的参数，让 B 组件尽可能的保持 Dry</strong>)</li>
+<li>通过上述流程其实就完成了 A 组件的参数传递到了更深层次的 C 组件中。</li>
+</ul>
 </li>
 </ul>
 </li>
-<li><p>引用值</p>
-<ul>
-<li><p>自定义、非数组、非函数-&gt;使用obj instanceof constructor</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">People</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name=name;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> p=<span class="keyword">new</span> People();</span><br><span class="line"><span class="built_in">console</span>.log(p <span class="keyword">instanceof</span> People);<span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> date=<span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line"><span class="built_in">console</span>.log(date <span class="keyword">instanceof</span> <span class="built_in">Date</span>);<span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<li><code>$listeners</code><ul>
+<li>包含了父作用域中的 (不含 .native 修饰器的) 挂载在当前组件上的 <code>v-on</code> 事件监听器。</li>
+<li>在 B 组件中访问<code>$listeners</code>，将会得到 A 组件写在 B 组件上的所有监听器。</li>
+<li>例子 2<ul>
+<li>A 调用 B 组件，A 在 B 组件上通过@监听了<code>click、enter</code>两个事件，则在 B 组件访问<code>$listeners</code>将会得到<code>click、enter</code>这两个事件监听器，并能直接调用他们。</li>
+<li>B 组件调用 C 组件时，可通过在 C 组件上编写<code>v-on=&quot;$listeners&quot;</code>将这些事件监听器传递到 C 组件中。</li>
+<li>通过上述流程就实现了 A 组件监听 C 组件触发的事件效果<strong>这样就避免了 B 组件需要监听 C 组件的事件，然后做一层转发，进而传递给 A 组件</strong>。</li>
+</ul>
 </li>
-<li><p>函数-&gt;typeof</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> fn===<span class="string">'function'</span>);<span class="comment">// 'function'</span></span><br></pre></td></tr></table></figure>
+</ul>
 </li>
-<li><p>数组</p>
-<ul>
-<li><p>es5的isArray</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr=[];</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Array</span>.isArray(arr));<span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<li><code>provide/inject</code><ul>
+<li>以允许一个<strong>祖先组件</strong>向其<strong>所有子孙后代</strong>注入一个依赖，不论组件层次有多深，并在起上下游关系成立的时间里始终生效<ul>
+<li>可以理解为一个<strong>加强版的 props</strong></li>
+</ul>
 </li>
-<li><p>Object.prototype.call(arr);</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr=[];</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype.toString.call(arr)===<span class="string">'[object Array]'</span>);</span><br></pre></td></tr></table></figure>
+<li>props 只能完成父向子传递数据，无法完成更深层级组件间的数据传递。</li>
+<li><code>provide/inject</code>二者通常配套使用</li>
+<li><code>provide/inject</code><strong>提供的数据是不可响应的，并且是单向的（祖先-&gt;子孙）。</strong></li>
+<li>例子 3<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 父级A组件提供 'foo'</span></span><br><span class="line"><span class="keyword">var</span> Provider = &#123;</span><br><span class="line">  provide: &#123;</span><br><span class="line">    foo: <span class="string">'bar'</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 子孙组件B和C都可以注入 'foo'</span></span><br><span class="line"><span class="keyword">var</span> Child = &#123;</span><br><span class="line">  inject: [<span class="string">'foo'</span>],</span><br><span class="line">  created() &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.foo) <span class="comment">// =&gt; "bar"</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 设置inject默认值</span></span><br><span class="line"><span class="keyword">const</span> Child = &#123;</span><br><span class="line">  inject: &#123;</span><br><span class="line">    foo: &#123; <span class="attr">default</span>: <span class="string">'foo'</span> &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 如果它需要从一个不同名字的属性注入，则使用 from 来表示其源属性</span></span><br><span class="line"><span class="keyword">const</span> Child = &#123;</span><br><span class="line">  inject: &#123;</span><br><span class="line">    foo: &#123;</span><br><span class="line">      <span class="keyword">from</span>: <span class="string">'bar'</span>,</span><br><span class="line">      <span class="keyword">default</span>: <span class="string">'foo'</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 与 prop 的默认值类似，你需要对非原始值使用一个工厂方法</span></span><br><span class="line"><span class="keyword">const</span> Child = &#123;</span><br><span class="line">  inject: &#123;</span><br><span class="line">    foo: &#123;</span><br><span class="line">      <span class="keyword">from</span>: <span class="string">'bar'</span>,</span><br><span class="line">      <span class="keyword">default</span>: <span class="function"><span class="params">()</span> =&gt;</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
-</li>
-<li><p>存在性</p>
-<ul>
-<li><p>常用检测存在性的不足</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj=&#123;</span><br><span class="line">    b:<span class="number">0</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">if</span>(b)&#123;&#125;<span class="comment">// 如果b存在，则xxx；当b为"",0,NaN,false,null,undefined时，就无法检测；</span></span><br><span class="line">同理b&amp;&amp;b()也会出现类似问题，所以只有在明确知道要检测的值不会是<span class="string">""</span>,<span class="number">0</span>,<span class="literal">NaN</span>,<span class="literal">false</span>,<span class="literal">null</span>,<span class="literal">undefined</span>中的一种时才能用</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>变量是否存在(是否已经声明)</p>
-<ul>
-<li><p>全局变量的存在性</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">'a'</span> <span class="keyword">in</span> <span class="built_in">window</span>);<span class="comment">// false;判断变量a在全局环境下是否声明</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>局部变量的存在性</p>
-<ul>
-<li>局部变量无法用in判断，只能退而求其次用typeof，typeof无法准确判断出是未声明还是已声明未赋值，如下<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> a===<span class="string">'undefined'</span>);<span class="comment">// true;a已经声明但未赋值 </span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> b===<span class="string">'undefined'</span>);<span class="comment">// true;b没有声明</span></span><br></pre></td></tr></table></figure>
-</li>
+<h2 id="在深层级组件中传递-slot"><a href="#在深层级组件中传递-slot" class="headerlink" title="在深层级组件中传递 slot"></a>在深层级组件中传递 slot</h2><ul>
+<li>slot 元素可通过设置 name 来标识其为一个具名插槽，<strong>其本身还可以设置一个 slot 特性用来表示它将应用到子组件的哪个插槽中</strong>。</li>
+<li>利用上述特性就可以实现在深层级组件中传递 slot</li>
+<li>例子 4<ul>
+<li>A-&gt;B-&gt;C （A 调用 B，B 调用 C）</li>
+<li>C 中有一个名为 <code>cHd</code> 的具名插槽</li>
+<li>B 中有一个名为 <code>bHd</code> 的具名插槽，并设置了 <code>slot</code> 特性为 <code>cHd</code></li>
+<li>A 在调用 B 组件时，传入了一个 <code>h1</code> 并设置 <code>slot</code> 特性为 <code>bHd</code></li>
+<li>最终此 <code>h1</code> 将会传递到 C 组件的 <code>cHd</code> 插槽中</li>
+<li><img src="/2019/02/22/vue-high-level-component/code.png" alt="demo"></li>
 </ul>
 </li>
 </ul>
-</li>
-<li><p>对象的属性是否存在</p>
-<ul>
-<li>一般属性-&gt;统一使用in</li>
-<li>实例属性存在性-&gt;统一使用hasOwnProperty<ul>
-<li>IE8及以下判断实例属性存在性-&gt;先判断hasOwnProperty的存在性，再调用hasOwnProperty<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj_a=&#123;</span><br><span class="line">    test:<span class="string">'测试'</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'test'</span> <span class="keyword">in</span> obj_a);<span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'toString'</span> <span class="keyword">in</span> obj_a);<span class="comment">// true，能检测到原型链上的方法</span></span><br><span class="line"><span class="built_in">console</span>.log(obj_a.hasOwnProperty(<span class="string">'toString'</span>));<span class="comment">//false,obj_a并没有实例属性(方法)`toString`，`toString`存在于其原型对象上，hasOwnProperty无法检测到</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
+<h2 id="slotScope"><a href="#slotScope" class="headerlink" title="slotScope"></a>slotScope</h2><ul>
+<li>可参考<a href="https://www.jianshu.com/p/0645bc9033a5" target="_blank" rel="noopener">https://www.jianshu.com/p/0645bc9033a5</a>、<a href="https://segmentfault.com/a/1190000015884505" target="_blank" rel="noopener">https://segmentfault.com/a/1190000015884505</a></li>
+<li>slot-scope 是应用在组件封装者不知道调用者如何使用组件的情况下，开放了一个接口给调用者让其 DIY（自定义样式、业务逻辑）</li>
 </ul>
 
       
@@ -518,9 +481,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/类型检测/" rel="tag"># 类型检测</a>
-          
-            <a href="/tags/存在性/" rel="tag"># 存在性</a>
+            <a href="/tags/vue/" rel="tag"># vue</a>
           
         </div>
       
@@ -533,8 +494,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/08/01/Vue-guide/" rel="next" title="Vue-guide">
-                <i class="fa fa-chevron-left"></i> Vue-guide
+              <a href="/2019/02/21/flip/" rel="next" title="flip">
+                <i class="fa fa-chevron-left"></i> flip
               </a>
             
           </div>
@@ -543,8 +504,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/09/07/Bootstrap-table-API/" rel="prev" title="Bootstrap-table_API">
-                Bootstrap-table_API <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/22/v-model-sync/" rel="prev" title="v-model-sync">
+                v-model-sync <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -681,7 +642,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#类型检测和存在性检测"><span class="nav-number">1.</span> <span class="nav-text">类型检测和存在性检测</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#必备知识点"><span class="nav-number">1.1.</span> <span class="nav-text">必备知识点</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Vue-inheritAttrs、-attrs、-listeners、provide、inject、slot、slotScope"><span class="nav-number">1.</span> <span class="nav-text">Vue inheritAttrs、$attrs、$listeners、provide、inject、slot、slotScope</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#不使用-vuex、eventBus-在高层级组件中传递数据"><span class="nav-number">1.1.</span> <span class="nav-text">不使用 vuex、eventBus 在高层级组件中传递数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在深层级组件中传递-slot"><span class="nav-number">1.2.</span> <span class="nav-text">在深层级组件中传递 slot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#slotScope"><span class="nav-number">1.3.</span> <span class="nav-text">slotScope</span></a></li></ol></li></ol></div>
             
 
           </div>
