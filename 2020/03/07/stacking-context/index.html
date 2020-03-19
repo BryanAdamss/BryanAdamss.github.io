@@ -100,7 +100,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/03/07/stacking-context/example1.png">
 <meta property="og:image" content="http://yoursite.com/2020/03/07/stacking-context/example2.png">
 <meta property="og:image" content="http://yoursite.com/2020/03/07/stacking-context/tool.png">
-<meta property="og:updated_time" content="2020-03-07T08:11:27.263Z">
+<meta property="og:updated_time" content="2020-03-19T14:26:43.774Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="stacking-context">
 <meta name="twitter:description" content="stacking contextz 轴 网页其实是一个三维的，拥有x、y、z三个轴 如下图所示；  z 轴正方向正对着屏幕； 当 html 中的元素发生层叠时，就需要确定元素哪个在上(离用户近)，哪个在下(离用户远)； 而决定元素在 z 轴顺序的因素有 元素的类型(float, block-level, inline-level, absolutely positioned) 元素在当前stack">
@@ -510,7 +510,7 @@
 <li>再看，如果将 box2 的 z-index 去掉，child1、child2 的覆盖关系又如何<ul>
 <li>先看结论</li>
 <li><img src="/2020/03/07/stacking-context/example2.png" alt="example2.png"></li>
-<li>此时 child1 处于 box1 创建的层叠上下文中，而 child2 由于 box2 去掉了 z-index，box2 没有产生层叠上下文，所以 child2 处于 html 创建的根层叠上下文中，此时二者上下文不同，无法比较，必须找到拥有相同层叠上下文的祖先元素进行比较；box1、box2、child2 都处于根层叠上下文中，三者可以比较，由于三者都为定位过的盒子，直接比较 z-index，由于 z-index 相同，所以处于 DOM 树后面的 child2 覆盖在 box1 上了，box2 没有 z-index 属性默认为 auto ,在同一层叠上下文中 auto 可当做 0 对待，所以三者 z-index 顺序为 child2&gt;box1&gt;box2，child2 在最上面，box1 在中(因为 child1 处于 box1 的层叠上下文中，所以 child1 的层叠顺序跟 box1 一致)，box2 在最下面</li>
+<li>此时 child1 处于 box1 创建的层叠上下文中，而 child2 由于 box2 去掉了 z-index，box2 没有产生层叠上下文，所以 child2 处于 html 创建的根层叠上下文中，此时二者上下文不同，无法比较，必须找到拥有相同层叠上下文的祖先元素进行比较；box1、box2、child2 都处于根层叠上下文中，三者可以比较，由于三者都为定位过的盒子，直接比较 z-index，由于 child2、box1 的 z-index 相同，所以处于 DOM 树后面的 child2 覆盖在 box1 上了，box2 没有 z-index 属性默认为 auto ,在同一层叠上下文中 auto 可当做 0 对待，所以三者 z-index 顺序为 child2&gt;box1&gt;box2，child2 在最上面，box1 在中(因为 child1 处于 box1 的层叠上下文中，所以 child1 的层叠顺序跟 box1 一致)，box2 在最下面</li>
 </ul>
 </li>
 <li>总结<ul>
