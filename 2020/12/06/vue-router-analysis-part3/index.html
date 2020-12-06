@@ -1,0 +1,1190 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="vue,vue-router,源码解析," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/Avatar.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="vue-router 源码解析 | 6k 字 | 多图预警 - 【下】 各位好，我是光辉 😎 本篇是vue-router源码解析的下篇，即收尾篇 本篇主要介绍了下面几点 介绍了vue-router是如何处理滚动的 view、link组件都怎么实现的？ 路由变化又是怎么触发重新渲染的等等   另外还是要说一下 第一次做源码解析，肯定有很多错误或理解不到位的地方，欢迎指正 🤞   项目地址 htt">
+<meta name="keywords" content="vue,vue-router,源码解析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue-router-analysis-part3">
+<meta property="og:url" content="http://yoursite.com/2020/12/06/vue-router-analysis-part3/index.html">
+<meta property="og:site_name" content="BryanAdamss的博客">
+<meta property="og:description" content="vue-router 源码解析 | 6k 字 | 多图预警 - 【下】 各位好，我是光辉 😎 本篇是vue-router源码解析的下篇，即收尾篇 本篇主要介绍了下面几点 介绍了vue-router是如何处理滚动的 view、link组件都怎么实现的？ 路由变化又是怎么触发重新渲染的等等   另外还是要说一下 第一次做源码解析，肯定有很多错误或理解不到位的地方，欢迎指正 🤞   项目地址 htt">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/917b376a388f43faa6c8f8d81f730bcb~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:updated_time" content="2020-12-06T04:24:44.886Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue-router-analysis-part3">
+<meta name="twitter:description" content="vue-router 源码解析 | 6k 字 | 多图预警 - 【下】 各位好，我是光辉 😎 本篇是vue-router源码解析的下篇，即收尾篇 本篇主要介绍了下面几点 介绍了vue-router是如何处理滚动的 view、link组件都怎么实现的？ 路由变化又是怎么触发重新渲染的等等   另外还是要说一下 第一次做源码解析，肯定有很多错误或理解不到位的地方，欢迎指正 🤞   项目地址 htt">
+<meta name="twitter:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/917b376a388f43faa6c8f8d81f730bcb~tplv-k3u1fbpfcp-watermark.image">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/12/06/vue-router-analysis-part3/"/>
+
+
+
+
+
+  <title> vue-router-analysis-part3 | BryanAdamss的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BryanAdamss的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个伪前端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/06/vue-router-analysis-part3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BryanAdamss">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/Avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BryanAdamss的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                vue-router-analysis-part3
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-06T12:13:35+08:00">
+                2020-12-06 12:13:35
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FrontEnd/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="vue-router-源码解析-6k-字-多图预警-【下】"><a href="#vue-router-源码解析-6k-字-多图预警-【下】" class="headerlink" title="vue-router 源码解析 | 6k 字 | 多图预警 - 【下】"></a>vue-router 源码解析 | 6k 字 | 多图预警 - 【下】</h1><ul>
+<li>各位好，我是光辉 😎</li>
+<li>本篇是<code>vue-router</code>源码解析的下篇，即收尾篇</li>
+<li>本篇主要介绍了下面几点<ul>
+<li>介绍了<code>vue-router</code>是如何处理滚动的</li>
+<li><code>view、link</code>组件都怎么实现的？</li>
+<li>路由变化又是怎么触发重新渲染的等等</li>
+</ul>
+</li>
+<li>另外还是要说一下<ul>
+<li>第一次做源码解析，肯定有很多错误或理解不到位的地方，欢迎指正 🤞</li>
+</ul>
+</li>
+<li>项目地址<ul>
+<li><code>https://github.com/BryanAdamss/vue-router-for-analysis</code></li>
+<li>如果觉得对你有帮助，记得给我一个<code>star</code>✨</li>
+</ul>
+</li>
+<li>uml 图源文件<ul>
+<li><code>https://github.com/BryanAdamss/vue-router-for-analysis/blob/dev/vue-router.EAP</code></li>
+</ul>
+</li>
+<li>关联文章链接<ul>
+<li><a href="https://juejin.cn/post/6880529850159874062" target="_blank" rel="noopener">vue-router 源码解析 | 1.3w 字 | 多图预警 - 【上】</a></li>
+<li><a href="https://juejin.cn/post/6901047675227996167" target="_blank" rel="noopener">vue-router 源码解析 | 1.5w 字 | 多图预警 - 【中】</a></li>
+<li><a href="https://juejin.cn/post/6902992939115855880" target="_blank" rel="noopener">vue-router 源码解析 | 6k 字 - 【下】</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="滚动处理"><a href="#滚动处理" class="headerlink" title="滚动处理"></a>滚动处理</h2><ul>
+<li>我们知道<code>vue-router</code>可以处理一些滚动行为，例如记录页面滚动位置，然后在切换路由时滚到顶部或保持原先位置；<ul>
+<li><a href="https://router.vuejs.org/zh/guide/advanced/scroll-behavior.html#滚动行为" target="_blank" rel="noopener">https://router.vuejs.org/zh/guide/advanced/scroll-behavior.html#滚动行为</a></li>
+</ul>
+</li>
+<li>它主要接收一个<code>scrollBehavior</code>参数，<code>scrollBehavior</code>有以下玩法</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> router = <span class="keyword">new</span> VueRouter(&#123;</span><br><span class="line">      routes: [...],</span><br><span class="line">      scrollBehavior (to, <span class="keyword">from</span>, savedPosition) &#123;</span><br><span class="line">        <span class="comment">// return 期望滚动到哪个的位置</span></span><br><span class="line">      &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 滚动到指定坐标</span></span><br><span class="line">scrollBehavior (to, <span class="keyword">from</span>, savedPosition) &#123;</span><br><span class="line">  <span class="keyword">return</span> &#123; x: <span class="number">0</span>, y: <span class="number">0</span> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 滚动到指定页面锚点</span></span><br><span class="line">scrollBehavior (to, <span class="keyword">from</span>, savedPosition) &#123;</span><br><span class="line">  <span class="keyword">if</span> (to.hash) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      selector: to.hash</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// v2.8.0+ 异步滚动</span></span><br><span class="line">scrollBehavior (to, <span class="keyword">from</span>, savedPosition) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">          resolve(&#123; x: <span class="number">0</span>, y: <span class="number">0</span> &#125;)</span><br><span class="line">        &#125;, <span class="number">500</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>既支持滚动到指定位置，也可以滚动页面某个页面锚点位置和异步滚动</li>
+<li>那它是如何做到呢?具体的逻辑又是怎样的呢？</li>
+<li>我们前面都知道<code>HTML5History</code>在初始化时和<code>HashHistory</code>在<code>setupListener</code>时都会调用<code>setupScroll</code>函数，初始化滚动相关的逻辑</li>
+<li>并在<code>popstate</code>或<code>hashchange</code>事件触发路由跳转时，调用<code>handleScroll</code>处理滚动行为</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/history/hash.js</span></span><br><span class="line"></span><br><span class="line"> setupListeners () &#123;</span><br><span class="line">    <span class="keyword">const</span> router = <span class="keyword">this</span>.router</span><br><span class="line">    <span class="keyword">const</span> expectScroll = router.options.scrollBehavior</span><br><span class="line">    <span class="keyword">const</span> supportsScroll = supportsPushState &amp;&amp; expectScroll</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 若支持scroll,初始化scroll相关逻辑</span></span><br><span class="line">    <span class="keyword">if</span> (supportsScroll) &#123;</span><br><span class="line">      setupScroll()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 添加事件监听</span></span><br><span class="line">    <span class="built_in">window</span>.addEventListener(</span><br><span class="line">      supportsPushState ? <span class="string">'popstate'</span> : <span class="string">'hashchange'</span>, <span class="comment">// 优先使用popstate</span></span><br><span class="line">      () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> current = <span class="keyword">this</span>.current</span><br><span class="line">        <span class="keyword">if</span> (!ensureSlash()) &#123;</span><br><span class="line">          <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">this</span>.transitionTo(getHash(), <span class="function"><span class="params">route</span> =&gt;</span> &#123;</span><br><span class="line">          <span class="keyword">if</span> (supportsScroll) &#123;</span><br><span class="line">            handleScroll(<span class="keyword">this</span>.router, <span class="comment">/* to*/</span>route, <span class="comment">/* from*/</span>current, <span class="literal">true</span>)</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="comment">// 不支持pushState，直接替换记录</span></span><br><span class="line">          <span class="keyword">if</span> (!supportsPushState) &#123;</span><br><span class="line">            replaceHash(route.fullPath)</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>我们先看滚动的初始化</li>
+</ul>
+<h3 id="setupScroll"><a href="#setupScroll" class="headerlink" title="setupScroll"></a>setupScroll</h3><ul>
+<li>代码位于<code>src/util/scroll.js</code></li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 初始化滚动相关逻辑</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">setupScroll</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Fix for #1585 for Firefox</span></span><br><span class="line">  <span class="comment">// Fix for #2195 Add optional third attribute to workaround a bug in safari https://bugs.webkit.org/show_bug.cgi?id=182678</span></span><br><span class="line">  <span class="comment">// Fix for #2774 Support for apps loaded from Windows file shares not mapped to network drives: replaced location.origin with</span></span><br><span class="line">  <span class="comment">// window.location.protocol + '//' + window.location.host</span></span><br><span class="line">  <span class="comment">// location.host contains the port and location.hostname doesn't</span></span><br><span class="line">  <span class="keyword">const</span> protocolAndPath = <span class="built_in">window</span>.location.protocol + <span class="string">'//'</span> + <span class="built_in">window</span>.location.host</span><br><span class="line">  <span class="keyword">const</span> absolutePath = <span class="built_in">window</span>.location.href.replace(protocolAndPath, <span class="string">''</span>) <span class="comment">// preserve existing history state as it could be overriden by the user // 拷贝一份state，防止用户覆盖</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> stateCopy = extend(&#123;&#125;, <span class="built_in">window</span>.history.state)</span><br><span class="line">  stateCopy.key = getStateKey() <span class="comment">// 语法定义:history.replaceState(stateObj, title[, url]);</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">window</span>.history.replaceState(stateCopy, <span class="string">''</span>, absolutePath) <span class="comment">// 监听popstate(只能通过浏览器的 前进/后退 按钮触发)，保存滚动位置，更新stateKey</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">window</span>.addEventListener(<span class="string">'popstate'</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">    saveScrollPosition()</span><br><span class="line">    <span class="keyword">if</span> (e.state &amp;&amp; e.state.key) &#123;</span><br><span class="line">      setStateKey(e.state.key)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>可以看到其利用<code>History API</code>的来完成位置的保存<ul>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/History/replaceState" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/API/History/replaceState</a></li>
+</ul>
+</li>
+<li>在<code>popstate</code>时记录滚动位置并更新状态<code>obj</code>的<code>key</code></li>
+<li>这个<code>key</code>是用来在<code>state</code>中标识每个路由用的</li>
+<li>可以看下<code>key</code>的存取</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/util/state-key.js</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// use User Timing api (if present) for more accurate key precision</span></span><br><span class="line"><span class="keyword">const</span> Time =</span><br><span class="line">  inBrowser &amp;&amp; <span class="built_in">window</span>.performance &amp;&amp; <span class="built_in">window</span>.performance.now</span><br><span class="line">    ? <span class="built_in">window</span>.performance</span><br><span class="line">    : <span class="built_in">Date</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 生成唯一key，用来在state中标识每个路由</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">genStateKey</span>(<span class="params"></span>): <span class="title">string</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> Time.now().toFixed(<span class="number">3</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> _key: <span class="built_in">string</span> = genStateKey()</span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">getStateKey</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> _key</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">setStateKey</span>(<span class="params">key: <span class="built_in">string</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (_key = key)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>可以看到声明了一个<code>_key</code>，其是一个三位的时间戳，更新和读取都是操作这一个<code>_key</code></li>
+<li><code>setupScroll</code>时，首先拷贝了当前的<code>state</code>，并为其生成一个唯一<code>key</code></li>
+<li>通过<code>replaceState</code>将添加了<code>key</code>的<code>state</code>保存到当前路由的<code>absolutePath</code>上</li>
+<li>然后监听<code>popstate</code>事件，其只能通过浏览器的   前进/后退   按钮触发</li>
+<li>触发后会保存当前位置，并更新<code>_key</code></li>
+<li>这样就可以在路由发生变化触发<code>popstate</code>时，保存当前位置并设置唯一<code>_key</code></li>
+<li>看下其是如何存取位置信息的</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/util/scroll.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> positionStore = <span class="built_in">Object</span>.create(<span class="literal">null</span>) <span class="comment">// 保存页面滚动位置</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">saveScrollPosition</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> key = getStateKey()</span><br><span class="line">  <span class="keyword">if</span> (key) &#123;</span><br><span class="line">    positionStore[key] = &#123;</span><br><span class="line">      x: <span class="built_in">window</span>.pageXOffset,</span><br><span class="line">      y: <span class="built_in">window</span>.pageYOffset,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>其利用<code>positionStore</code>对象配合唯一的<code>_key</code>来存取位置</li>
+<li>在<code>handleScroll</code>时就可以通过<code>_key</code>取出之前保存的位置</li>
+</ul>
+<h3 id="handleScroll"><a href="#handleScroll" class="headerlink" title="handleScroll"></a>handleScroll</h3><ul>
+<li>处理滚动的代码位于<code>src/util/scroll.js</code></li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">handleScroll</span> (<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  router: Router,</span></span></span><br><span class="line"><span class="function"><span class="params">  to: Route,</span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">from</span>: Route,</span></span></span><br><span class="line"><span class="function"><span class="params">  isPop: <span class="built_in">boolean</span><span class="comment">// 是否popstate，只有浏览器的 前进/后退 按钮才会触发，也只有popstate时，才会保存滚动位置</span></span></span></span><br><span class="line"><span class="function"><span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (!router.app) &#123;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> behavior = router.options.scrollBehavior</span><br><span class="line">  <span class="keyword">if</span> (!behavior) &#123;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span>) &#123;</span><br><span class="line">    assert(<span class="keyword">typeof</span> behavior === <span class="string">'function'</span>, <span class="string">`scrollBehavior must be a function`</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// wait until re-render finishes before scrolling</span></span><br><span class="line">  <span class="comment">// 重新渲染结束，再处理滚动</span></span><br><span class="line">  router.app.$nextTick(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> position = getScrollPosition() <span class="comment">// 获取之前保存的滚动位置</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// https://router.vuejs.org/zh/guide/advanced/scroll-behavior.html#%E6%BB%9A%E5%8A%A8%E8%A1%8C%E4%B8%BA</span></span><br><span class="line">    <span class="keyword">const</span> shouldScroll = behavior.call(</span><br><span class="line">      router,</span><br><span class="line">      to,</span><br><span class="line">      <span class="keyword">from</span>,</span><br><span class="line">      isPop ? position : <span class="literal">null</span> <span class="comment">// 第三个参数 savedPosition 当且仅当 popstate 导航 (通过浏览器的 前进/后退 按钮触发) 时才可用。,所以是popstate时，才有savedPosition</span></span><br><span class="line">    )</span><br><span class="line">    <span class="comment">// 返回一个falsy值时，代表不需要滚动</span></span><br><span class="line">    <span class="keyword">if</span> (!shouldScroll) &#123;</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// v.2.8.0支持异步滚动</span></span><br><span class="line">    <span class="comment">// https://router.vuejs.org/zh/guide/advanced/scroll-behavior.html#%E5%BC%82%E6%AD%A5%E6%BB%9A%E5%8A%A8</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> shouldScroll.then === <span class="string">'function'</span>) &#123;</span><br><span class="line">      shouldScroll</span><br><span class="line">        .then(<span class="function"><span class="params">shouldScroll</span> =&gt;</span> &#123;</span><br><span class="line">          scrollToPosition((shouldScroll: <span class="built_in">any</span>), position)</span><br><span class="line">        &#125;)</span><br><span class="line">        .catch(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">          <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span>) &#123;</span><br><span class="line">            assert(<span class="literal">false</span>, err.toString())</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      scrollToPosition(shouldScroll, position)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在<code>$nextTick</code>中调用<code>getScrollPosition</code>获取之前保存好的位置</li>
+<li>再调用我们传入的<code>scrollBehavior</code>查看其返回值来确定是否需要进行滚动</li>
+<li>还判断了一波是否是异步滚动</li>
+<li>若是，则等待其<code>resolved</code>再调用<code>scrollToPosition</code></li>
+<li>否则直接调用<code>scrollToPosition</code></li>
+<li><code>getScrollPosition</code>、<code>scrollToPosition</code>代码如下</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/util/scroll.js</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取保存的滚动位置</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getScrollPosition</span>(<span class="params"></span>): ?<span class="title">Object</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> key = getStateKey() <span class="comment">// 取唯一key</span></span><br><span class="line">  <span class="keyword">if</span> (key) &#123;</span><br><span class="line">    <span class="keyword">return</span> positionStore[key] <span class="comment">// 取位置</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 滚动到指定位置，支持滚动到特定元素</span></span><br><span class="line"><span class="comment">// https://router.vuejs.org/zh/guide/advanced/scroll-behavior.html#%E6%BB%9A%E5%8A%A8%E8%A1%8C%E4%B8%BA</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">scrollToPosition</span>(<span class="params">shouldScroll, position</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> isObject = <span class="keyword">typeof</span> shouldScroll === <span class="string">'object'</span> <span class="comment">// 滚动到特定dom</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (isObject &amp;&amp; <span class="keyword">typeof</span> shouldScroll.selector === <span class="string">'string'</span>) &#123;</span><br><span class="line">    <span class="comment">// getElementById would still fail if the selector contains a more complicated query like #main[data-attr]</span></span><br><span class="line">    <span class="comment">// but at the same time, it doesn't make much sense to select an element with an id and an extra selector</span></span><br><span class="line">    <span class="keyword">const</span> el = hashStartsWithNumberRE.test(shouldScroll.selector) <span class="comment">// $flow-disable-line</span></span><br><span class="line">      ? <span class="built_in">document</span>.getElementById(shouldScroll.selector.slice(<span class="number">1</span>)) <span class="comment">// $flow-disable-line</span></span><br><span class="line">      : <span class="built_in">document</span>.querySelector(shouldScroll.selector)</span><br><span class="line">    <span class="keyword">if</span> (el) &#123;</span><br><span class="line">      <span class="keyword">let</span> offset =</span><br><span class="line">        shouldScroll.offset &amp;&amp; <span class="keyword">typeof</span> shouldScroll.offset === <span class="string">'object'</span></span><br><span class="line">          ? shouldScroll.offset</span><br><span class="line">          : &#123;&#125;</span><br><span class="line">      offset = normalizeOffset(offset)</span><br><span class="line">      position = getElementPosition(el, offset)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isValidPosition(shouldScroll)) &#123;</span><br><span class="line">      position = normalizePosition(shouldScroll)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isObject &amp;&amp; isValidPosition(shouldScroll)) &#123;</span><br><span class="line">    <span class="comment">// 直接滚动到指定位置</span></span><br><span class="line">    position = normalizePosition(shouldScroll)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (position) &#123;</span><br><span class="line">    <span class="built_in">window</span>.scrollTo(position.x, position.y)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>获取滚动位置，是利用<code>_key</code>从<code>positionStore</code>上读取之前保存的位置信息</li>
+<li><code>scrollToPosition</code>的逻辑很清晰，其处理了滚动到指定<code>dom</code>和直接滚动到特定位置的场景</li>
+</ul>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><ul>
+<li><code>vue-router</code>处理滚动主要利用了<code>History API</code>可以保存状态的特性实现</li>
+<li>在路由进入前保存滚动位置，并在下次路由变化时，尝试取回之前位置，在<code>$nextTick</code>中真正的处理滚动</li>
+<li>其支持滚动到指定位置、指定 DOM、异步滚动等场景</li>
+</ul>
+<h2 id="view-组件"><a href="#view-组件" class="headerlink" title="view 组件"></a>view 组件</h2><ul>
+<li><code>vue-router</code>内置了<code>router-view</code>、<code>router-link</code>两个组件</li>
+<li>前者负责在匹配到路由记录后将对应路由组件渲染出来</li>
+<li>后者支持用户在具有路由功能的应用中 (点击) 导航</li>
+<li>我们先来看<code>router-view</code>组件</li>
+</ul>
+<h3 id="router-view"><a href="#router-view" class="headerlink" title="router-view"></a>router-view</h3><ul>
+<li><code>router-view</code>的主要职责就是将路由组件渲染出来</li>
+<li>定义位于<code>src/components/view.js</code></li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/components/view.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  name: <span class="string">'RouterView'</span>,</span><br><span class="line">  <span class="function"><span class="keyword">function</span><span class="title">al</span>: <span class="title">true</span>, // 函数式组件，没有<span class="title">this</span>；<span class="title">https</span>://<span class="title">cn</span>.<span class="title">vuejs</span>.<span class="title">org</span>/<span class="title">v2</span>/<span class="title">guide</span>/<span class="title">render</span>-<span class="function"><span class="keyword">function</span>.<span class="title">html</span>#函数式组件</span></span></span><br><span class="line"><span class="function"><span class="function">  <span class="title">props</span>: </span>&#123;</span></span><br><span class="line"><span class="function">    <span class="title">name</span>: </span>&#123;</span><br><span class="line">      <span class="keyword">type</span>: <span class="built_in">String</span>,</span><br><span class="line">      <span class="keyword">default</span>: <span class="string">'default'</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;, <span class="comment">// _为h即createElement，但router-view没有使用自身的h，而是使用了父节点的h</span></span><br><span class="line">  render(<span class="comment">/* h*/</span> _, <span class="comment">/* context*/</span> &#123; props, children, parent, data &#125;) &#123;</span><br><span class="line">    <span class="comment">// used by devtools to display a router-view badge</span></span><br><span class="line">    data.routerView = <span class="literal">true</span> <span class="comment">// 标识当前组件为router-view // directly use parent context's createElement() function // so that components rendered by router-view can resolve named slots</span></span><br><span class="line">    <span class="keyword">const</span> h = parent.$createElement <span class="comment">// 使用父节点的渲染函数</span></span><br><span class="line">    <span class="keyword">const</span> name = props.name <span class="comment">// 命名视图</span></span><br><span class="line">    <span class="keyword">const</span> route = parent.$route <span class="comment">// 依赖父节点的$route，而在install.js中我们知道,所有组件访问到的$route其实都是_routerRoot._route，即Vue根实例上的_route；当路由被确认后，调用updateRoute时，会更新_routerRoot._route，进而导致router-view组件重新渲染 // 缓存</span></span><br><span class="line">    <span class="keyword">const</span> cache = parent._routerViewCache || (parent._routerViewCache = &#123;&#125;) <span class="comment">// determine current view depth, also check to see if the tree // has been toggled inactive but kept-alive.</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> depth = <span class="number">0</span> <span class="comment">// 当前router-view嵌套深度</span></span><br><span class="line">    <span class="keyword">let</span> inactive = <span class="literal">false</span> <span class="comment">// 是否被keep-alive包裹并处于非激活状态 // 向上查找，计算depth、inactive // 当parent指向Vue根实例结束循环</span></span><br><span class="line">    <span class="keyword">while</span> (parent &amp;&amp; parent._routerRoot !== parent) &#123;</span><br><span class="line">      <span class="keyword">const</span> vnodeData = parent.$vnode ? parent.$vnode.data : &#123;&#125;</span><br><span class="line">      <span class="keyword">if</span> (vnodeData.routerView) &#123;</span><br><span class="line">        depth++</span><br><span class="line">      &#125; <span class="comment">// 处理keep-alive // keep-alive组件会添加keepAlive=true标识 // https://github.com/vuejs/vue/blob/52719ccab8fccffbdf497b96d3731dc86f04c1ce/src/core/components/keep-alive.js#L120</span></span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (vnodeData.keepAlive &amp;&amp; parent._directInactive &amp;&amp; parent._inactive) &#123;</span><br><span class="line">        inactive = <span class="literal">true</span></span><br><span class="line">      &#125;</span><br><span class="line">      parent = parent.$parent</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    data.routerViewDepth = depth <span class="comment">// render previous view if the tree is inactive and kept-alive // 如果当前组件树被keep-alive包裹，且处于非激活状态，则渲染之前保存的视图</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (inactive) &#123;</span><br><span class="line">      <span class="keyword">const</span> cachedData = cache[name]</span><br><span class="line">      <span class="keyword">const</span> cachedComponent = cachedData &amp;&amp; cachedData.component <span class="comment">// 找到缓存的组件</span></span><br><span class="line">      <span class="keyword">if</span> (cachedComponent) &#123;</span><br><span class="line">        <span class="comment">// #2301</span></span><br><span class="line">        <span class="comment">// pass props</span></span><br><span class="line">        <span class="comment">// 传递缓存的props</span></span><br><span class="line">        <span class="keyword">if</span> (cachedData.configProps) &#123;</span><br><span class="line">          fillPropsinData(</span><br><span class="line">            cachedComponent,</span><br><span class="line">            data,</span><br><span class="line">            cachedData.route,</span><br><span class="line">            cachedData.configProps</span><br><span class="line">          )</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> h(cachedComponent, data, children)</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 未找到缓存的组件</span></span><br><span class="line">        <span class="comment">// render previous empty view</span></span><br><span class="line">        <span class="keyword">return</span> h()</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="comment">// 通过depth获取匹配的route record // 由于formatMatch是通过unshift添加父route record的 // 所以route.matched[depth]正好能取到匹配的route record</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> matched = route.matched[depth]</span><br><span class="line">    <span class="keyword">const</span> component = matched &amp;&amp; matched.components[name] <span class="comment">// 取出路由组件 // render empty node if no matched route or no config component // 找不到，渲染空组件</span></span><br><span class="line">    <span class="keyword">if</span> (!matched || !component) &#123;</span><br><span class="line">      cache[name] = <span class="literal">null</span></span><br><span class="line">      <span class="keyword">return</span> h()</span><br><span class="line">    &#125; <span class="comment">// cache component // 缓存组件</span></span><br><span class="line"></span><br><span class="line">    cache[name] = &#123; component &#125; <span class="comment">// attach instance registration hook // this will be called in the instance's injected lifecycle hooks // 为路由记录绑定路由组件，在所有组件的beforeCreate、destoryed hook中调用，见install.js中的registerInstance方法 // 此方法只在router-view上定义了 // vm，val都为路由组件实例 // 如下 // matched.instances:&#123; //   default:VueComp, //   hd:VueComp2, //   bd:VueComp3 // &#125;</span></span><br><span class="line"></span><br><span class="line">    data.registerRouteInstance = <span class="function">(<span class="params">vm, val</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">// val could be undefined for unregistration</span></span><br><span class="line">      <span class="keyword">const</span> current = matched.instances[name]</span><br><span class="line">      <span class="keyword">if</span> (</span><br><span class="line">        (val &amp;&amp; current !== vm) || <span class="comment">// 绑定</span></span><br><span class="line">        (!val &amp;&amp; current === vm)</span><br><span class="line">      ) &#123;</span><br><span class="line">        <span class="comment">// 若val不存在，则可视为解绑</span></span><br><span class="line">        matched.instances[name] = val</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="comment">// also register instance in prepatch hook // in case the same component instance is reused across different routes // 当相同组件在不同路由间复用时，也需要为router-view绑定路由组件</span></span><br><span class="line">    ;<span class="function">(<span class="params">data.hook || (<span class="params">data.hook = &#123;&#125;</span>)</span>).<span class="params">prepatch</span> = (<span class="params">_, vnode</span>) =&gt;</span> &#123;</span><br><span class="line">      matched.instances[name] = vnode.componentInstance</span><br><span class="line">    &#125; <span class="comment">// register instance in init hook // in case kept-alive component be actived when routes changed // keep-alive组件被激活时，需要为router-view注册路由组件</span></span><br><span class="line"></span><br><span class="line">    data.hook.init = <span class="function">(<span class="params">vnode</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (</span><br><span class="line">        vnode.data.keepAlive &amp;&amp;</span><br><span class="line">        vnode.componentInstance &amp;&amp;</span><br><span class="line">        vnode.componentInstance !== matched.instances[name]</span><br><span class="line">      ) &#123;</span><br><span class="line">        matched.instances[name] = vnode.componentInstance</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="comment">// route record设置了路由传参；动态路由传参；https://router.vuejs.org/zh/guide/essentials/passing-props.</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> configProps = matched.props &amp;&amp; matched.props[name] <span class="comment">// save route and configProps in cachce // 如果设置了路由传参，则缓存起来，并将填充props</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (configProps) &#123;</span><br><span class="line">      extend(cache[name], &#123;</span><br><span class="line">        route,</span><br><span class="line">        configProps,</span><br><span class="line">      &#125;)</span><br><span class="line">      fillPropsinData(component, data, route, configProps)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> h(component, data, children)</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>其被定义成一个函数式组件，这代表它没有状态和实例(this 上下文)，只接收了<code>name</code>来做命名视图</li>
+<li>我们重点看下<code>render</code>方法</li>
+<li>由于其是一个函数式组件，所以很多操作是借助父节点来完成的<ul>
+<li>为了支持解析命名插槽，其没有使用自己的<code>createElement</code>方法，而是使用父节点的<code>createElement</code>方法</li>
+<li>由于没有 this 上下文，无法通过<code>this.$route</code>获得当前路由对象，干脆就直接使用父节点的<code>$route</code></li>
+</ul>
+</li>
+<li>可以看到添加了一个标志量<code>routerView</code>，主要用来在<code>vue-devtools</code>中标识<code>view</code>组件和在查找深度时用</li>
+<li>然后声明了一个缓存对象<code>_routerViewCache</code>并赋值给<code>cache</code>变量，用来在<code>keep-alive</code>激活时快速取出被缓存的路由组件</li>
+<li>开始从当前节点往上查找<code>Vue根实例</code>，在查找的过程中计算出<code>view</code>组件的深度以及是否被<code>kepp-alive</code>包裹并处于<code>inative</code>状态</li>
+<li><code>depth</code>主要用来获取当前<code>view</code>对应的路由记录<ul>
+<li>前面说过，<code>vue-router</code>是支持嵌套路由的，对应的<code>view</code>也是可以嵌套的</li>
+<li>而且在匹配路由记录时，有下面的逻辑，<code>当一个路由记录匹配了，如果其还有父路由记录，则父路由记录肯定也是匹配的</code>，其会一直向上查找，找到一个父记录，就通过<code>unshift</code>塞入<code>route.matched</code>数组中的，所以父记录肯定在前，子记录在后，当前精准匹配的记录在最后<ul>
+<li>见<code>src/util/route.js formatMatch方法</code></li>
+</ul>
+</li>
+<li><code>depth</code>的计算在遇到<code>父view</code>组件时，自增 1，通过不断向上查找，不断自增<code>depth</code>，直到找到<code>Vue根实例</code>才停止</li>
+<li>停止时<code>route.matched[depth]</code>值就是当前<code>view</code>对应的路由记录</li>
+<li>有了路由记录，我们就可以从上取出对应的路由组件实例，然后渲染即可<ul>
+<li>关于路由记录和路由组件实例是如何绑定的，我们下面会讲</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>我们先看<code>非inactive</code>状态是如何渲染路由组件实例的<ul>
+<li>通过<code>route.matched[depth]</code>取出当前<code>view</code>匹配的路由记录</li>
+<li>然后再取出对应的路由组件实例</li>
+<li>如果路由记录和路由组件实例有一个不存在，则渲染空结点，并重置<code>cache[name]</code>值</li>
+<li>如果都能找到，则先把组件实例缓存下来<ul>
+<li>如果有配置动态路由参数，则把路由参数缓存到路由组件实例上，并调用<code>fillPropsinData</code>填充<code>props</code></li>
+</ul>
+</li>
+<li>调用<code>h</code>渲染对应的路由组件实例即可</li>
+</ul>
+</li>
+<li>当组件处于<code>inactive</code>状态时，我们就可以从<code>cache</code>中取出之前缓存的路由组件实例和路由参数，然后渲染就可以了</li>
+<li>主流程如上，但还有一个重要的点没提<ul>
+<li>路由记录和路由组件实例是如何绑定的？</li>
+<li>相信你已经注意到<code>data.registerRouteInstance</code>方法，没错，他就是用来为路由记录绑定路由组件实例的</li>
+</ul>
+</li>
+</ul>
+<h3 id="registerInstance"><a href="#registerInstance" class="headerlink" title="registerInstance"></a>registerInstance</h3><ul>
+<li>我们先看下调用的地方</li>
+<li>主要在<code>src/install.js</code>的全局混入中</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">install</span>(<span class="params">Vue</span>)</span>&#123;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment">// 注册全局混入</span></span><br><span class="line">  Vue.mixin(&#123;</span><br><span class="line">    beforeCreate () &#123;</span><br><span class="line">        ... </span><br><span class="line"></span><br><span class="line">      <span class="comment">// 为router-view组件关联路由组件</span></span><br><span class="line">      registerInstance(<span class="keyword">this</span>, <span class="keyword">this</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">    destroyed () &#123;</span><br><span class="line">      <span class="comment">// destroyed hook触发时，取消router-view和路由组件的关联</span></span><br><span class="line">      registerInstance(<span class="keyword">this</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>可以看到其在全局混入的<code>beforeCreate</code>、<code>destroyed</code>钩子中都有被调用</li>
+<li>前者传入了两个 vm 实例，后者只传入了一个 vm 实例</li>
+<li>我们看下实现，代码也位于<code>src/install.js</code>中</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 为路由记录、router-view关联路由组件</span></span><br><span class="line"><span class="keyword">const</span> registerInstance = <span class="function">(<span class="params">vm, callVal</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> i = vm.$options._parentVnode <span class="comment">// 调用vm.$options._parentVnode.data.registerRouteInstance方法 // 而这个方法只在router-view组件中存在，router-view组件定义在(../components/view.js @71行) // 所以，如果vm的父节点为router-view，则为router-view关联当前vm，即将当前vm做为router-view的路由组件</span></span><br><span class="line">  <span class="keyword">if</span> (isDef(i) &amp;&amp; isDef((i = i.data)) &amp;&amp; isDef((i = i.registerRouteInstance))) &#123;</span><br><span class="line">    i(vm, callVal)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>可以看到其接收一个<code>vm实例</code>和<code>callVal</code>做为入参</li>
+<li>然后取了<code>vm</code>的父节点做为 i 的初值</li>
+<li>接着一步一步给<code>i赋值</code>，同时判断<code>i</code>是否定义</li>
+<li>到最后，<code>i</code>的值为<code>vm.$options._parentVnode.data.registerRouteInstance</code></li>
+<li>然后将两个入参传入<code>i</code>中调用</li>
+<li><strong>注意，这时的 i 是 vm 父节点上的方法，并不是 vm 上的方法</strong></li>
+<li>我们全局检索下<code>registerRouteInstance</code>关键字，发现其只被定义在了<code>view.js</code>中，也就是<code>router-view</code>组件中<ul>
+<li>结合上面一条，i 即<code>registerRouteInstance</code>是<code>vm父节点</code>上的方法，而只有<code>router-view</code>组件定义了<code>registerRouteInstance</code></li>
+<li>所以，只有当<code>vm</code>是<code>router-view</code>的子节点时，<code>registerRouteInstance</code>方法才会被调用</li>
+<li><code>i(vm, callVal)</code>可以表达为<code>vm._parentVnode.registerRouteInstance(vm,vm)</code></li>
+</ul>
+</li>
+<li>看下<code>registerRouteInstance</code>的实现</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/components/view.js</span></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line"><span class="comment">// 为路由记录绑定路由组件，在所有组件的beforeCreate、destoryed hook中调用，见install.js中的registerInstance方法</span></span><br><span class="line">    <span class="comment">// 此方法只在router-view上定义了</span></span><br><span class="line">    <span class="comment">// vm，val都为路由组件实例</span></span><br><span class="line">    <span class="comment">// 如下</span></span><br><span class="line">    <span class="comment">// matched.instances:&#123;</span></span><br><span class="line">    <span class="comment">//   default:VueComp,</span></span><br><span class="line">    <span class="comment">//   hd:VueComp2,</span></span><br><span class="line">    <span class="comment">//   bd:VueComp3</span></span><br><span class="line">    <span class="comment">// &#125;</span></span><br><span class="line">    data.registerRouteInstance = <span class="function">(<span class="params">vm, val</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">// val could be undefined for unregistration</span></span><br><span class="line">      <span class="keyword">const</span> current = matched.instances[name]</span><br><span class="line">      <span class="keyword">if</span> (</span><br><span class="line">        (val &amp;&amp; current !== vm) || <span class="comment">// 绑定</span></span><br><span class="line">        (!val &amp;&amp; current === vm) <span class="comment">// 若val不存在，则可视为解绑</span></span><br><span class="line">      ) &#123;</span><br><span class="line">        matched.instances[name] = val</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>matched</code>保存的是当前匹配到的路由记录，<code>name</code>是命名视图名</li>
+<li>如果<code>val</code>存在，并且当前路由组件和传入的不同，重新赋值</li>
+<li>如果<code>val</code>不存在，且当前路由组件和传入的相同，也重新赋值，但是此时 val 为<code>undefined</code>，相当于解绑</li>
+<li>可以看到参数数量不同，一个函数实现了绑定和解绑的双重操作</li>
+<li>通过这个方法就完成了路由记录和路由组件实例的绑定与解绑操作</li>
+<li>这样就可以在<code>view</code>组件<code>render</code>时，通过<code>route.matched[depth].components[name]</code>取到路由组件进行渲染</li>
+<li>还有些场景也需要进行绑定<ul>
+<li>当相同组件在不同路由间复用时，需要为路由记录绑定路由组件</li>
+<li><code>keep-alive</code>组件被激活时，需要为路由记录绑定路由组件</li>
+</ul>
+</li>
+</ul>
+<h4 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h4><ul>
+<li><code>router-view</code>是一个函数式组件，有时需要借助父节点的能力，例如使用父节点的渲染函数来解析命名插槽</li>
+<li>通过<code>routerView</code>来标识<code>view</code>组件，方便<code>vue-devtools</code>识别出<code>view</code>组件和确定<code>view</code>组件深度</li>
+<li>通过向上查找，确定当前<code>view</code>的深度<code>depth</code>，通过<code>depth</code>取到对应的路由记录</li>
+<li>再取出通过<code>registerInstance</code>绑定的路由组件实例</li>
+<li>如果有动态路由参数，则先填充<code>props</code>然后再渲染</li>
+<li>如果<code>view</code>被<code>keep-alive</code>包裹并且处于<code>inactive</code>状态，则从缓存中取出路由组件实例并渲染</li>
+</ul>
+<h3 id="如何触发重新渲染"><a href="#如何触发重新渲染" class="headerlink" title="如何触发重新渲染"></a>如何触发重新渲染</h3><ul>
+<li>在导航解析的章节，我们提过，导航解析成功后</li>
+<li>会调用<code>updateRoute</code>方法，重新为全局的<code>_routerRoot._route</code>即<code>$route</code>赋值</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/history/base.js</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 更新路由，触发afterEach钩子</span></span><br><span class="line">  updateRoute (route: Route) &#123;</span><br><span class="line">    <span class="keyword">const</span> prev = <span class="keyword">this</span>.current</span><br><span class="line">    <span class="keyword">this</span>.current = route<span class="comment">// 更新current</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.cb &amp;&amp; <span class="keyword">this</span>.cb(route) <span class="comment">// 调用updateRoute回调，回调中会重新为_routerRoot._route赋值，进而触发router-view的重新渲染</span></span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在<code>view</code>组件中，会使用<code>$parent.$route</code>即全局的<code>_routerRoot._route</code></li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">// src/components/view.js</span></span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">  render (<span class="comment">/* h*/</span>_, <span class="comment">/* context*/</span>&#123; props, children, parent, data &#125;) &#123;</span><br><span class="line">      ...</span><br><span class="line"></span><br><span class="line">      <span class="keyword">const</span> route = parent.$route <span class="comment">// 依赖父节点的$route，而在install.js中我们知道,所有组件访问到的$route其实都是_routerRoot._route，即Vue根实例上的_route；当路由被确认后，调用updateRoute时，会更新_routerRoot._route，进而导致router-view组件重新渲染</span></span><br><span class="line"></span><br><span class="line">      ...</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>而在<code>install.js</code>的全局混入中，将<code>_route</code>定义为响应式的，依赖了<code>_route</code>的地方，在<code>_route</code>发生变化时，都会重新渲染</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/install.js</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 注册全局混入</span></span><br><span class="line">  Vue.mixin(&#123;</span><br><span class="line">    beforeCreate () &#123;</span><br><span class="line">         ...</span><br><span class="line">        <span class="comment">// 响应式定义_route属性，保证_route发生变化时，组件(router-view)会重新渲染</span></span><br><span class="line">        Vue.util.defineReactive(<span class="keyword">this</span>, <span class="string">'_route'</span>, <span class="keyword">this</span>._router.history.current)</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>这样就完成了渲染的闭环,<code>view</code>依赖<code>$route</code>,导航解析成功更新<code>$route</code>，触发<code>view</code>渲染</li>
+<li>看完了<code>view</code>组件，我们来看下另外一个组件<code>router-link</code></li>
+</ul>
+<h2 id="link-组件"><a href="#link-组件" class="headerlink" title="link 组件"></a>link 组件</h2><ul>
+<li><code>router-link</code>组件被定义在<code>src/components/link.js</code>中</li>
+<li>主要用来支持用户在具有路由功能的应用中 (点击) 导航</li>
+</ul>
+<h3 id="router-link"><a href="#router-link" class="headerlink" title="router-link"></a>router-link</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* @flow */</span></span><br><span class="line"><span class="keyword">import</span> &#123; createRoute, isSameRoute, isIncludedRoute &#125; <span class="keyword">from</span> <span class="string">'../util/route'</span></span><br><span class="line"><span class="keyword">import</span> &#123; extend &#125; <span class="keyword">from</span> <span class="string">'../util/misc'</span></span><br><span class="line"><span class="keyword">import</span> &#123; normalizeLocation &#125; <span class="keyword">from</span> <span class="string">'../util/location'</span></span><br><span class="line"><span class="keyword">import</span> &#123; warn &#125; <span class="keyword">from</span> <span class="string">'../util/warn'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// work around weird flow bug</span></span><br><span class="line"><span class="keyword">const</span> toTypes: <span class="built_in">Array</span>&lt;<span class="built_in">Function</span>&gt; = [<span class="built_in">String</span>, <span class="built_in">Object</span>]</span><br><span class="line"><span class="keyword">const</span> eventTypes: <span class="built_in">Array</span>&lt;<span class="built_in">Function</span>&gt; = [<span class="built_in">String</span>, <span class="built_in">Array</span>]</span><br><span class="line"><span class="keyword">const</span> noop = <span class="function"><span class="params">()</span> =&gt;</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  name: <span class="string">'RouterLink'</span>,</span><br><span class="line">  props: &#123;</span><br><span class="line">    to: &#123;</span><br><span class="line">      <span class="keyword">type</span>: toTypes, <span class="comment">// string | Location</span></span><br><span class="line">      required: <span class="literal">true</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    tag: &#123;</span><br><span class="line">      <span class="keyword">type</span>: <span class="built_in">String</span>,</span><br><span class="line">      <span class="keyword">default</span>: <span class="string">'a'</span>, <span class="comment">// 默认a标签</span></span><br><span class="line">    &#125;,</span><br><span class="line">    exact: <span class="built_in">Boolean</span>, <span class="comment">// 是否精确匹配</span></span><br><span class="line">    append: <span class="built_in">Boolean</span>, <span class="comment">// 是否追加</span></span><br><span class="line">    replace: <span class="built_in">Boolean</span>, <span class="comment">// 为true，调用router.replace否则调用router.push</span></span><br><span class="line">    activeClass: <span class="built_in">String</span>, <span class="comment">// 激活的类名</span></span><br><span class="line">    exactActiveClass: <span class="built_in">String</span>, <span class="comment">// 精确匹配的类名</span></span><br><span class="line">    ariaCurrentValue: &#123;</span><br><span class="line">      <span class="comment">// 无障碍化</span></span><br><span class="line">      <span class="keyword">type</span>: <span class="built_in">String</span>,</span><br><span class="line">      <span class="keyword">default</span>: <span class="string">'page'</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    event: &#123;</span><br><span class="line">      <span class="keyword">type</span>: eventTypes, <span class="comment">// 触发导航的事件</span></span><br><span class="line">      <span class="keyword">default</span>: <span class="string">'click'</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  render(h: <span class="built_in">Function</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> router = <span class="keyword">this</span>.$router</span><br><span class="line">    <span class="keyword">const</span> current = <span class="keyword">this</span>.$route</span><br><span class="line">    <span class="keyword">const</span> &#123; location, route, href &#125; = router.resolve(</span><br><span class="line">      <span class="keyword">this</span>.to,</span><br><span class="line">      current,</span><br><span class="line">      <span class="keyword">this</span>.append</span><br><span class="line">    ) <span class="comment">// 解析目标位置</span></span><br><span class="line">    <span class="keyword">const</span> classes = &#123;&#125;</span><br><span class="line">    <span class="keyword">const</span> globalActiveClass = router.options.linkActiveClass</span><br><span class="line">    <span class="keyword">const</span> globalExactActiveClass = router.options.linkExactActiveClass <span class="comment">// Support global empty active class</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> activeClassFallback =</span><br><span class="line">      globalActiveClass == <span class="literal">null</span> ? <span class="string">'router-link-active'</span> : globalActiveClass</span><br><span class="line">    <span class="keyword">const</span> exactActiveClassFallback =</span><br><span class="line">      globalExactActiveClass == <span class="literal">null</span></span><br><span class="line">        ? <span class="string">'router-link-exact-active'</span></span><br><span class="line">        : globalExactActiveClass</span><br><span class="line">    <span class="keyword">const</span> activeClass =</span><br><span class="line">      <span class="keyword">this</span>.activeClass == <span class="literal">null</span> ? activeClassFallback : <span class="keyword">this</span>.activeClass</span><br><span class="line">    <span class="keyword">const</span> exactActiveClass =</span><br><span class="line">      <span class="keyword">this</span>.exactActiveClass == <span class="literal">null</span></span><br><span class="line">        ? exactActiveClassFallback</span><br><span class="line">        : <span class="keyword">this</span>.exactActiveClass <span class="comment">// 目标route，用来比较是否和当前route是相同route</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> compareTarget = route.redirectedFrom</span><br><span class="line">      ? createRoute(<span class="literal">null</span>, normalizeLocation(route.redirectedFrom), <span class="literal">null</span>, router)</span><br><span class="line">      : route</span><br><span class="line">    classes[exactActiveClass] = isSameRoute(current, compareTarget)</span><br><span class="line">    classes[activeClass] = <span class="keyword">this</span>.exact</span><br><span class="line">      ? classes[exactActiveClass]</span><br><span class="line">      : isIncludedRoute(current, compareTarget) <span class="comment">// 非精准匹配时，判断目标route path是否包含当前route path</span></span><br><span class="line">    <span class="keyword">const</span> ariaCurrentValue = classes[exactActiveClass]</span><br><span class="line">      ? <span class="keyword">this</span>.ariaCurrentValue</span><br><span class="line">      : <span class="literal">null</span> <span class="comment">// 事件处理</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> handler = <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (guardEvent(e)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.replace) &#123;</span><br><span class="line">          router.replace(location, noop)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          router.push(location, noop)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> on = &#123; click: guardEvent &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(<span class="keyword">this</span>.event)) &#123;</span><br><span class="line">      <span class="keyword">this</span>.event.forEach(<span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">        on[e] = handler</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      on[<span class="keyword">this</span>.event] = handler</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> data: <span class="built_in">any</span> = &#123; <span class="keyword">class</span>: classes &#125; <span class="comment">// 读取作用域插槽</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> scopedSlot =</span><br><span class="line">      !<span class="keyword">this</span>.$scopedSlots.$hasNormal &amp;&amp;</span><br><span class="line">      <span class="keyword">this</span>.$scopedSlots.default &amp;&amp;</span><br><span class="line">      <span class="keyword">this</span>.$scopedSlots.default(&#123;</span><br><span class="line">        href,</span><br><span class="line">        route,</span><br><span class="line">        navigate: handler,</span><br><span class="line">        isActive: classes[activeClass],</span><br><span class="line">        isExactActive: classes[exactActiveClass],</span><br><span class="line">      &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (scopedSlot) &#123;</span><br><span class="line">      <span class="comment">// 作用域插槽仅有一个子元素</span></span><br><span class="line">      <span class="keyword">if</span> (scopedSlot.length === <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> scopedSlot[<span class="number">0</span>]</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (scopedSlot.length &gt; <span class="number">1</span> || !scopedSlot.length) &#123;</span><br><span class="line">        <span class="comment">// 作用域插槽提供多个后代或未提供后，给予提示</span></span><br><span class="line">        <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span>) &#123;</span><br><span class="line">          warn(</span><br><span class="line">            <span class="literal">false</span>,</span><br><span class="line">            <span class="string">`RouterLink with to="<span class="subst">$&#123;this.to&#125;</span>" is trying to use a scoped slot but it didn't provide exactly one child. Wrapping the content with a span element.`</span></span><br><span class="line">          )</span><br><span class="line">        &#125; <span class="comment">// 有多个后代时，在外层用一个span包裹</span></span><br><span class="line">        <span class="keyword">return</span> scopedSlot.length === <span class="number">0</span> ? h() : h(<span class="string">'span'</span>, &#123;&#125;, scopedSlot)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="comment">// tag为a</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.tag === <span class="string">'a'</span>) &#123;</span><br><span class="line">      data.on = on</span><br><span class="line">      data.attrs = &#123; href, <span class="string">'aria-current'</span>: ariaCurrentValue &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// tag不为a，则找后代首个a绑定事件</span></span><br><span class="line">      <span class="comment">// find the first &lt;a&gt; child and apply listener and href</span></span><br><span class="line"></span><br><span class="line">      <span class="keyword">const</span> a = findAnchor(<span class="keyword">this</span>.$slots.default)</span><br><span class="line">      <span class="keyword">if</span> (a) &#123;</span><br><span class="line">        <span class="comment">// in case the &lt;a&gt; is a static node</span></span><br><span class="line">        a.isStatic = <span class="literal">false</span></span><br><span class="line">        <span class="keyword">const</span> aData = (a.data = extend(&#123;&#125;, a.data))</span><br><span class="line">        aData.on = aData.on || &#123;&#125; <span class="comment">// transform existing events in both objects into arrays so we can push later // a上可能还绑定有其他事件，需要兼容</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">const</span> event <span class="keyword">in</span> aData.on) &#123;</span><br><span class="line">          <span class="keyword">const</span> handler = aData.on[event]</span><br><span class="line">          <span class="keyword">if</span> (event <span class="keyword">in</span> on) &#123;</span><br><span class="line">            aData.on[event] = <span class="built_in">Array</span>.isArray(handler) ? handler : [handler]</span><br><span class="line">          &#125;</span><br><span class="line">        &#125; <span class="comment">// append new listeners for router-link // 绑定其他事件处理器</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">const</span> event <span class="keyword">in</span> on) &#123;</span><br><span class="line">          <span class="keyword">if</span> (event <span class="keyword">in</span> aData.on) &#123;</span><br><span class="line">            <span class="comment">// on[event] is always a function</span></span><br><span class="line">            aData.on[event].push(on[event])</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            aData.on[event] = handler</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">const</span> aAttrs = (a.data.attrs = extend(&#123;&#125;, a.data.attrs))</span><br><span class="line">        aAttrs.href = href</span><br><span class="line">        aAttrs[<span class="string">'aria-current'</span>] = ariaCurrentValue</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// doesn't have &lt;a&gt; child, apply listener to self</span></span><br><span class="line">        <span class="comment">// 没找到，则给当前元素绑定事件</span></span><br><span class="line">        data.on = on</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> h(<span class="keyword">this</span>.tag, data, <span class="keyword">this</span>.$slots.default)</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 特殊场景，点击不做跳转响应</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">guardEvent</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// don't redirect with control keys</span></span><br><span class="line">  <span class="keyword">if</span> (e.metaKey || e.altKey || e.ctrlKey || e.shiftKey) <span class="keyword">return</span> <span class="comment">// don't redirect when preventDefault called</span></span><br><span class="line">  <span class="keyword">if</span> (e.defaultPrevented) <span class="keyword">return</span> <span class="comment">// don't redirect on right click</span></span><br><span class="line">  <span class="keyword">if</span> (e.button !== <span class="literal">undefined</span> &amp;&amp; e.button !== <span class="number">0</span>) <span class="keyword">return</span> <span class="comment">// don't redirect if `target="_blank"`</span></span><br><span class="line">  <span class="keyword">if</span> (e.currentTarget &amp;&amp; e.currentTarget.getAttribute) &#123;</span><br><span class="line">    <span class="keyword">const</span> target = e.currentTarget.getAttribute(<span class="string">'target'</span>)</span><br><span class="line">    <span class="keyword">if</span> (<span class="regexp">/\b_blank\b/i</span>.test(target)) <span class="keyword">return</span></span><br><span class="line">  &#125; <span class="comment">// this may be a Weex event which doesn't have this method</span></span><br><span class="line">  <span class="keyword">if</span> (e.preventDefault) &#123;</span><br><span class="line">    e.preventDefault()</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 递归查找后代a标签</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">findAnchor</span>(<span class="params">children</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (children) &#123;</span><br><span class="line">    <span class="keyword">let</span> child</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; children.length; i++) &#123;</span><br><span class="line">      child = children[i]</span><br><span class="line">      <span class="keyword">if</span> (child.tag === <span class="string">'a'</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> child</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (child.children &amp;&amp; (child = findAnchor(child.children))) &#123;</span><br><span class="line">        <span class="keyword">return</span> child</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>其实现就是一个普通的组件，实现了点击时跳转到<code>to</code>对应的路由功能</li>
+<li>由于支持点击时需要标识样式类、精准匹配<code>exact</code>场景，所以通过<code>sameRoute</code>、<code>isIncludedRoute</code>来实现样式类的标识和精准匹配标识</li>
+<li>在点击时，屏蔽了部分特殊场景，如点击时同时按下<code>ctrl</code>、<code>alt</code>、<code>shift</code>等<code>control keys</code>时，不做跳转</li>
+<li>看完组件后，我们再来看看<code>router</code>还给我们提供哪些实例方法</li>
+</ul>
+<h2 id="实例属性、方法"><a href="#实例属性、方法" class="headerlink" title="实例属性、方法"></a>实例属性、方法</h2><ul>
+<li><code>router</code>对外暴露了很多属性和方法</li>
+<li>这些属性和方法在前面的源码部分也都有用过</li>
+</ul>
+<h3 id="实例属性"><a href="#实例属性" class="headerlink" title="实例属性"></a>实例属性</h3><ul>
+<li><code>router.app</code><ul>
+<li>配置了  router  的 Vue 根实例</li>
+</ul>
+</li>
+<li><code>router.mode</code><ul>
+<li>路由使用的模式</li>
+</ul>
+</li>
+<li><code>router.currentRoute</code><ul>
+<li>当前路由对象，等同于<code>this.$route</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="实例方法"><a href="#实例方法" class="headerlink" title="实例方法"></a>实例方法</h3><ul>
+<li>用注册全局导航守卫<ul>
+<li><code>router.beforeEach</code></li>
+<li><code>router.beforeResolve</code></li>
+<li><code>router.afterEach</code></li>
+</ul>
+</li>
+<li>编程式导航相关<ul>
+<li><code>router.push</code></li>
+<li><code>router.replace</code></li>
+<li><code>router.go</code></li>
+<li><code>router.back</code></li>
+<li><code>router.forward</code></li>
+</ul>
+</li>
+<li>服务端渲染相关<ul>
+<li><code>router.getMatchedComponents</code><ul>
+<li>返回目标位置或是当前路由匹配的组件数组 (是数组的定义/构造类，不是实例)</li>
+</ul>
+</li>
+<li><code>router.onReady</code><ul>
+<li>该方法把一个回调排队，在路由完成初始导航时调用，这意味着它可以解析所有的异步进入钩子和路由初始化相关联的异步组件</li>
+</ul>
+</li>
+<li><code>router.onError</code><ul>
+<li>注册一个回调，该回调会在路由导航过程中出错时被调用</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>动态路由<ul>
+<li><code>router.addRoutes</code><ul>
+<li>动态添加路由规则</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>解析<ul>
+<li><code>router.resolve</code> - 传入一个对象，尝试解析并返回一个目标位置</li>
+</ul>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>至此，我们完成了<code>vue-router@2</code>的所有源码分析 🎉</li>
+<li>如果您觉得还可以，记得帮我点个赞 👍</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://github.com/dwqs/blog/issues/53" target="_blank" rel="noopener">https://github.com/dwqs/blog/issues/53</a></li>
+<li><a href="https://github.com/dwqs/blog/issues/54" target="_blank" rel="noopener">https://github.com/dwqs/blog/issues/54</a></li>
+<li><a href="https://github.com/dwqs/blog/issues/55" target="_blank" rel="noopener">https://github.com/dwqs/blog/issues/55</a></li>
+<li><a href="https://github.com/vuejs/vue-router/issues/2184#issuecomment-393484643" target="_blank" rel="noopener">https://github.com/vuejs/vue-router/issues/2184#issuecomment-393484643</a></li>
+<li><a href="https://juejin.im/post/5e456513f265da573c0c6d4b" target="_blank" rel="noopener">https://juejin.im/post/5e456513f265da573c0c6d4b</a></li>
+<li><a href="https://juejin.im/post/584040e1ac502e006cbedb23" target="_blank" rel="noopener">https://juejin.im/post/584040e1ac502e006cbedb23</a></li>
+<li><a href="https://juejin.im/post/5df0ada0f265da33d56d1a2f" target="_blank" rel="noopener">https://juejin.im/post/5df0ada0f265da33d56d1a2f</a></li>
+<li><a href="https://juejin.im/post/5dbed0bef265da4cff701f68" target="_blank" rel="noopener">https://juejin.im/post/5dbed0bef265da4cff701f68</a></li>
+<li><a href="https://www.jianshu.com/p/29e8214d0bee" target="_blank" rel="noopener">https://www.jianshu.com/p/29e8214d0bee</a></li>
+<li><a href="https://ustbhuangyi.github.io/vue-analysis/v2/vue-router/" target="_blank" rel="noopener">https://ustbhuangyi.github.io/vue-analysis/v2/vue-router/</a></li>
+<li><a href="https://blog.liuyunzhuge.com/2020/04/08/vue-router源码：create-matcher/" target="_blank" rel="noopener">https://blog.liuyunzhuge.com/2020/04/08/vue-router 源码：create-matcher/</a></li>
+</ul>
+<h2 id="PS"><a href="#PS" class="headerlink" title="PS"></a>PS</h2><ul>
+<li>后面还会介绍其余部分，如果觉得还行，可以给个赞哦 ✨</li>
+<li>个人<code>github</code>，也总结了一些东西，欢迎 star</li>
+<li>基于 canvas 的绘图板<a href="https://github.com/BryanAdamss/drawing-board" target="_blank" rel="noopener">drawing-board</a></li>
+<li>前端入门 demo、最佳实践集合 <a href="https://github.com/BryanAdamss/fe-awesome-demos" target="_blank" rel="noopener">fe-awesome-demos</a></li>
+<li>一个自动生成别名的<code>vue-cli-plugin</code><a href="https://www.npmjs.com/package/vue-cli-plugin-auto-alias" target="_blank" rel="noopener">https://www.npmjs.com/package/vue-cli-plugin-auto-alias</a></li>
+</ul>
+<h2 id="npm-包"><a href="#npm-包" class="headerlink" title="npm 包"></a>npm 包</h2><ul>
+<li><a href="https://www.npmjs.com/package/vue-cli-plugin-auto-alias" target="_blank" rel="noopener">vue-cli-plugin-auto-alias</a></li>
+<li><a href="https://www.npmjs.com/package/@bryanadamss/drawing-board" target="_blank" rel="noopener">@bryanadamss/drawing-board</a></li>
+<li><a href="https://www.npmjs.com/package/@bryanadamss/num2chn" target="_blank" rel="noopener">@bryanadamss/num2chn</a></li>
+<li><a href="https://www.npmjs.com/package/ant-color-converter" target="_blank" rel="noopener">ant-color-converter</a></li>
+</ul>
+<h2 id="交流"><a href="#交流" class="headerlink" title="交流"></a>交流</h2><ul>
+<li>如果有问题，可以加微信交流，共同成长，共同进步~</li>
+<li><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/917b376a388f43faa6c8f8d81f730bcb~tplv-k3u1fbpfcp-watermark.image" alt=""></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vue/" rel="tag"># vue</a>
+          
+            <a href="/tags/vue-router/" rel="tag"># vue-router</a>
+          
+            <a href="/tags/源码解析/" rel="tag"># 源码解析</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/12/01/x5-video-summary/" rel="next" title="x5-video-summary">
+                <i class="fa fa-chevron-left"></i> x5-video-summary
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/Avatar.png"
+               alt="BryanAdamss" />
+          <p class="site-author-name" itemprop="name">BryanAdamss</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/BryanAdamss" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#vue-router-源码解析-6k-字-多图预警-【下】"><span class="nav-number">1.</span> <span class="nav-text">vue-router 源码解析 | 6k 字 | 多图预警 - 【下】</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#滚动处理"><span class="nav-number">1.1.</span> <span class="nav-text">滚动处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#setupScroll"><span class="nav-number">1.1.1.</span> <span class="nav-text">setupScroll</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#handleScroll"><span class="nav-number">1.1.2.</span> <span class="nav-text">handleScroll</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">1.1.3.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#view-组件"><span class="nav-number">1.2.</span> <span class="nav-text">view 组件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#router-view"><span class="nav-number">1.2.1.</span> <span class="nav-text">router-view</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#registerInstance"><span class="nav-number">1.2.2.</span> <span class="nav-text">registerInstance</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#小结-1"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何触发重新渲染"><span class="nav-number">1.2.3.</span> <span class="nav-text">如何触发重新渲染</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#link-组件"><span class="nav-number">1.3.</span> <span class="nav-text">link 组件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#router-link"><span class="nav-number">1.3.1.</span> <span class="nav-text">router-link</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实例属性、方法"><span class="nav-number">1.4.</span> <span class="nav-text">实例属性、方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例属性"><span class="nav-number">1.4.1.</span> <span class="nav-text">实例属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例方法"><span class="nav-number">1.4.2.</span> <span class="nav-text">实例方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.6.</span> <span class="nav-text">参考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PS"><span class="nav-number">1.7.</span> <span class="nav-text">PS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#npm-包"><span class="nav-number">1.8.</span> <span class="nav-text">npm 包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#交流"><span class="nav-number">1.9.</span> <span class="nav-text">交流</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BryanAdamss</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

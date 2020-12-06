@@ -1,0 +1,1517 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="sql,mysql," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/Avatar.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="SQL基础数据库表组成 库db 表table 行(记录)1 列(字段,field)1，列(字段,field)2   行(记录)2 列(字段,field)1，列(字段,field)2        注意项大小写不敏感 SQL对大小写不敏感 SELECT和select是一样的    SQL执行顺序 SQL语句执行的时候是有一定顺序的。 from 先选择一个表，构成一个结果集。 where 对结果集进行">
+<meta name="keywords" content="sql,mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sql-basic">
+<meta property="og:url" content="http://yoursite.com/2019/10/16/sql-basic/index.html">
+<meta property="og:site_name" content="BryanAdamss的博客">
+<meta property="og:description" content="SQL基础数据库表组成 库db 表table 行(记录)1 列(字段,field)1，列(字段,field)2   行(记录)2 列(字段,field)1，列(字段,field)2        注意项大小写不敏感 SQL对大小写不敏感 SELECT和select是一样的    SQL执行顺序 SQL语句执行的时候是有一定顺序的。 from 先选择一个表，构成一个结果集。 where 对结果集进行">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/10/16/sql-basic/sql.png">
+<meta property="og:updated_time" content="2019-10-16T13:34:29.432Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="sql-basic">
+<meta name="twitter:description" content="SQL基础数据库表组成 库db 表table 行(记录)1 列(字段,field)1，列(字段,field)2   行(记录)2 列(字段,field)1，列(字段,field)2        注意项大小写不敏感 SQL对大小写不敏感 SELECT和select是一样的    SQL执行顺序 SQL语句执行的时候是有一定顺序的。 from 先选择一个表，构成一个结果集。 where 对结果集进行">
+<meta name="twitter:image" content="http://yoursite.com/2019/10/16/sql-basic/sql.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/10/16/sql-basic/"/>
+
+
+
+
+
+  <title> sql-basic | BryanAdamss的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BryanAdamss的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个伪前端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/16/sql-basic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BryanAdamss">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/Avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BryanAdamss的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                sql-basic
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-16T21:30:13+08:00">
+                2019-10-16 21:30:13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/other/" itemprop="url" rel="index">
+                    <span itemprop="name">其他</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="SQL基础"><a href="#SQL基础" class="headerlink" title="SQL基础"></a>SQL基础</h1><h2 id="数据库表组成"><a href="#数据库表组成" class="headerlink" title="数据库表组成"></a>数据库表组成</h2><ul>
+<li>库db<ul>
+<li>表table<ul>
+<li>行(记录)1<ul>
+<li>列(字段,field)1，列(字段,field)2</li>
+</ul>
+</li>
+<li>行(记录)2<ul>
+<li>列(字段,field)1，列(字段,field)2</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="注意项"><a href="#注意项" class="headerlink" title="注意项"></a>注意项</h2><h3 id="大小写不敏感"><a href="#大小写不敏感" class="headerlink" title="大小写不敏感"></a>大小写不敏感</h3><ul>
+<li>SQL对大小写不敏感<ul>
+<li><code>SELECT</code>和<code>select</code>是一样的</li>
+</ul>
+</li>
+</ul>
+<h3 id="SQL执行顺序"><a href="#SQL执行顺序" class="headerlink" title="SQL执行顺序"></a>SQL执行顺序</h3><ul>
+<li>SQL语句执行的时候是有一定顺序的。<ul>
+<li>from 先选择一个表，构成一个结果集。</li>
+<li>where 对结果集进行筛选，筛选出需要的信息形成新的结果集。</li>
+<li>group by 对新的结果集分组。</li>
+<li>having 筛选出想要的分组。</li>
+<li>select 选择列。</li>
+<li>order by 当所有的条件都弄完了。最后排序。</li>
+</ul>
+</li>
+<li>当一条查询语句中包含所有的子句，执行顺序依下列子句次序：<ul>
+<li><code>FROM 子句</code>：执行顺序为从后往前、从右到左。数据量较少的表尽量放在后面。</li>
+<li><code>WHERE子句</code>：执行顺序为自下而上、从右到左。将能过滤掉最大数量记录的条件写在WHERE 子句的最右。</li>
+<li><code>GROUP BY</code>：执行顺序从左往右分组，最好在GROUP BY前使用WHERE将不需要的记录在GROUP BY之前过滤掉。</li>
+<li><code>HAVING 子句</code>：消耗资源。尽量避免使用，HAVING 会在检索出所有记录之后才对结果集进行过滤，需要排序等操作。</li>
+<li><code>SELECT子句</code>：少用<code>*</code>号，尽量取字段名称。ORACLE 在解析的过程中, 通过查询数据字典将<code>*</code>号依次转换成所有的列名, 消耗时间。</li>
+<li><code>ORDER BY子句</code>：执行顺序为从左到右排序，消耗资源。 </li>
+</ul>
+</li>
+</ul>
+<h2 id="常用语句"><a href="#常用语句" class="headerlink" title="常用语句"></a>常用语句</h2><h3 id="SELECT-选取数据"><a href="#SELECT-选取数据" class="headerlink" title="SELECT(选取数据)"></a>SELECT(选取数据)</h3><ul>
+<li><code>SELECT</code>语句用于从数据库中选取数据。结果被存储在一个结果表中，称为结果集<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> column_name,column_name <span class="keyword">FROM</span> table_name;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 选取所有列*/</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> table_name;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="SELECT-DISTINCT-去除列中重复值"><a href="#SELECT-DISTINCT-去除列中重复值" class="headerlink" title="SELECT DISTINCT(去除列中重复值)"></a>SELECT DISTINCT(去除列中重复值)</h3><ul>
+<li>在表中，一个列可能会包含多个重复值，有时您也许希望仅仅列出不同（distinct）的值。DISTINCT 关键词用于返回唯一不同的值(去掉列的重复值)<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> column_name,column_name <span class="keyword">FROM</span> table_name;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> country <span class="keyword">FROM</span> Websites;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="WHERE子句-类似if"><a href="#WHERE子句-类似if" class="headerlink" title="WHERE子句(类似if)"></a>WHERE子句(类似if)</h3><ul>
+<li><p><code>WHERE</code>子句用于过滤记录</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> column_name,column_name <span class="keyword">FROM</span> table_name <span class="keyword">WHERE</span> column_name <span class="keyword">operator</span> <span class="keyword">value</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*从Websites表中查出所有country为'CN'的记录(行)*/</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> Websites <span class="keyword">WHERE</span> country=<span class="string">'CN'</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>常用operator(操作符)</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>操作符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>=</td>
+<td>等于</td>
+</tr>
+<tr>
+<td>&lt;&gt;、!=</td>
+<td>不等于</td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td>大于</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>小于</td>
+</tr>
+<tr>
+<td>&gt;=</td>
+<td>大于等于</td>
+</tr>
+<tr>
+<td>&lt;=</td>
+<td>小于等于</td>
+</tr>
+<tr>
+<td>BETWEEN</td>
+<td>在某个范围</td>
+</tr>
+<tr>
+<td>LIKE</td>
+<td>搜索某种模式(用于正则匹配)</td>
+</tr>
+<tr>
+<td>IN</td>
+<td>指定针对某个列的多个可能值(枚举值)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="AND-amp-OR运算符-逻辑运算"><a href="#AND-amp-OR运算符-逻辑运算" class="headerlink" title="AND&amp;OR运算符(逻辑运算)"></a>AND&amp;OR运算符(逻辑运算)</h3><ul>
+<li>逻辑运算符，基于多个条件对记录进行过滤<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*country为CN并alexa大于50*/</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> Websites <span class="keyword">WHERE</span> country=<span class="string">'CN'</span> <span class="keyword">AND</span> alexa &gt; <span class="number">50</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*alexa大于15并且country为CN或USA*/</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> Websites <span class="keyword">WHERE</span> alexa &gt; <span class="number">15</span> <span class="keyword">AND</span> (country=<span class="string">'CN'</span> <span class="keyword">OR</span> country=<span class="string">'USA'</span>);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="ORDER-BY-排序"><a href="#ORDER-BY-排序" class="headerlink" title="ORDER BY(排序)"></a>ORDER BY(排序)</h3><ul>
+<li><p>ORDER BY 关键字用于对结果集进行排序。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> column_name,column_name <span class="keyword">FROM</span> table_name <span class="keyword">ORDER</span> <span class="keyword">BY</span> column_name,column_name <span class="keyword">ASC</span> | <span class="keyword">DESC</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>顺序</p>
+<ul>
+<li>ASC<ul>
+<li>升序(默认)</li>
+</ul>
+</li>
+<li>DESC<ul>
+<li>降序</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>多列排序<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*结果集，先按country升序（默认），再按alexa升序（默认）*/</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> Websites <span class="keyword">ORDER</span> <span class="keyword">BY</span> country,alexa;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*结果集，先按country降序，再按alexa升序（默认）*/</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> Websites <span class="keyword">ORDER</span> <span class="keyword">BY</span> country <span class="keyword">DESC</span>,alexa;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="INSERT-INTO-插入记录"><a href="#INSERT-INTO-插入记录" class="headerlink" title="INSERT INTO(插入记录)"></a>INSERT INTO(插入记录)</h3><ul>
+<li>INSERT INTO 语句用于向表中插入新记录。<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*第一种形式无需指定要插入数据的列名，只需提供被插入的值即可：*/</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> table_name</span><br><span class="line"><span class="keyword">VALUES</span> (value1,value2,value3,...);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*第二种形式需要指定列名及被插入的值：*/</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> table_name (column1,column2,column3,...)</span><br><span class="line"><span class="keyword">VALUES</span> (value1,value2,value3,...);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="UPDATE-更新记录"><a href="#UPDATE-更新记录" class="headerlink" title="UPDATE(更新记录)"></a>UPDATE(更新记录)</h3><ul>
+<li><p>UPDATE 语句用于更新表中的记录。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> table_name <span class="keyword">SET</span> column1=value1,column2=value2,...WHERE some_column=some_value;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>注意</p>
+<ul>
+<li><strong><code>WHERE 子句</code>规定哪条记录或者哪些记录需要更新。如果您省略了 <code>WHERE 子句</code>，所有的记录都将被更新！</strong></li>
+<li>在 MySQL 中可以通过设置 sql_safe_updates 这个自带的参数来解决，当该参数开启的情况下，你必须在update 语句后携带 where 条件，否则就会报错。set sql_safe_updates=1; 表示开启该参数</li>
+</ul>
+</li>
+</ul>
+<h3 id="DELETE-删除记录"><a href="#DELETE-删除记录" class="headerlink" title="DELETE(删除记录)"></a>DELETE(删除记录)</h3><ul>
+<li><p>DELETE 语句用于删除表中的行。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> table_name <span class="keyword">WHERE</span> some_column=some_value;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>WHERE 子句规定哪条记录或者哪些记录需要删除。如果您省略了 WHERE 子句，所有的记录都将被删除！</strong></p>
+</li>
+</ul>
+<h3 id="LIMIT、TOP、ROWNUM-规定返回的记录数目"><a href="#LIMIT、TOP、ROWNUM-规定返回的记录数目" class="headerlink" title="LIMIT、TOP、ROWNUM(规定返回的记录数目)"></a>LIMIT、TOP、ROWNUM(规定返回的记录数目)</h3><ul>
+<li>MySQL 支持 LIMIT 语句来选取指定的条数数据， Oracle 可以使用 ROWNUM 来选取。<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> column_name(s) <span class="keyword">FROM</span> table_name <span class="keyword">LIMIT</span> <span class="built_in">number</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*从Persons中取出记录的前5条*/</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> Persons <span class="keyword">LIMIT</span> <span class="number">5</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="LIKE-搜索指定模式"><a href="#LIKE-搜索指定模式" class="headerlink" title="LIKE(搜索指定模式)"></a>LIKE(搜索指定模式)</h3><ul>
+<li>LIKE 操作符用于在 WHERE 子句中搜索列中的指定模式。</li>
+<li><p>类似win中搜索时用的搜索模式(类似*.png)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> column_name(s) <span class="keyword">FROM</span> table_nameWHERE column_name <span class="keyword">LIKE</span> pattern;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">%在SQL中代表任意数量的任意字符(任意通配符)，类似*的作用 </span></span><br><span class="line"><span class="comment">下面语句代表搜索所有name为G开头的记录</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> Websites <span class="keyword">WHERE</span> <span class="keyword">name</span> <span class="keyword">LIKE</span> <span class="string">'G%'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*k结尾*/</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> Websites <span class="keyword">WHERE</span> <span class="keyword">name</span> <span class="keyword">LIKE</span> <span class="string">'%k'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*中间包含oo*/</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> Websites <span class="keyword">WHERE</span> <span class="keyword">name</span> <span class="keyword">LIKE</span> <span class="string">'%oo%'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*中间不包含oo*/</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> Websites <span class="keyword">WHERE</span> <span class="keyword">name</span> <span class="keyword">NOT</span> <span class="keyword">LIKE</span> <span class="string">'%oo%'</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>常用通配符</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>通配符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>%</td>
+<td>替代 0 个或多个字符</td>
+</tr>
+<tr>
+<td>_</td>
+<td>替代一个字符</td>
+</tr>
+<tr>
+<td>[charlist]</td>
+<td>字符列中的任何单一字符(类比正则[a-zA-Z])</td>
+</tr>
+<tr>
+<td>[^charlist]或[!charlist]</td>
+<td>不在字符列中的任何单一字符(类比[^a-zA-Z])</td>
+</tr>
+</tbody>
+</table>
+<h3 id="RLIKE、REGEXP-正则匹配"><a href="#RLIKE、REGEXP-正则匹配" class="headerlink" title="RLIKE、REGEXP(正则匹配)"></a>RLIKE、REGEXP(正则匹配)</h3><ul>
+<li>MySQL 中使用 REGEXP 或 NOT REGEXP 运算符 (或 RLIKE 和 NOT RLIKE) 来操作正则表达式<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*选取name以G、F、s开头记录*/</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> Websites <span class="keyword">WHERE</span> <span class="keyword">name</span> REGEXP <span class="string">'^[GFs]'</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="IN操作符-枚举匹配"><a href="#IN操作符-枚举匹配" class="headerlink" title="IN操作符(枚举匹配)"></a>IN操作符(枚举匹配)</h3><ul>
+<li>IN 操作符允许您在 WHERE 子句中规定多个值。<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*column_name必须是IN规避的值其中之一*/</span></span><br><span class="line"><span class="keyword">SELECT</span> column_name(s) <span class="keyword">FROM</span> table_name <span class="keyword">WHERE</span> column_name <span class="keyword">IN</span> (value1,value2,...);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*name必须是Google，BaiDu其中之一*/</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> Websites <span class="keyword">WHERE</span> <span class="keyword">name</span> <span class="keyword">IN</span> (<span class="string">'Google'</span>,<span class="string">'BaiDu'</span>);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="BETWEEN操作符-选取区间值"><a href="#BETWEEN操作符-选取区间值" class="headerlink" title="BETWEEN操作符(选取区间值)"></a>BETWEEN操作符(选取区间值)</h3><ul>
+<li>BETWEEN 操作符用于选取介于两个值之间的数据范围内的值。<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> column_name(s) <span class="keyword">FROM</span> table_name <span class="keyword">WHERE</span> column_name <span class="keyword">BETWEEN</span> value1 <span class="keyword">AND</span> value2;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*选取alexa &gt;=1&amp;&amp;&lt;=20的记录*/</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> Websites <span class="keyword">WHERE</span> alexa <span class="keyword">BETWEEN</span> <span class="number">1</span> <span class="keyword">AND</span> <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*选取alexa 不是&gt;=1&amp;&amp;&lt;=20的记录*/</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> Websites <span class="keyword">WHERE</span> alexa <span class="keyword">NOT</span> <span class="keyword">BETWEEN</span> <span class="number">1</span> <span class="keyword">AND</span> <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*alexa&gt;=1&amp;&amp;&lt;=20 且country不为'USA','IND'*/</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> Websites <span class="keyword">WHERE</span> (alexa <span class="keyword">BETWEEN</span> <span class="number">1</span> <span class="keyword">AND</span> <span class="number">20</span>) <span class="keyword">AND</span> country <span class="keyword">NOT</span> <span class="keyword">IN</span> (<span class="string">'USA'</span>, <span class="string">'IND'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*选取 name 以介于 'A' 和 'H' 之间字母开始的所有网站：*/</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> Websites <span class="keyword">WHERE</span> <span class="keyword">name</span> <span class="keyword">BETWEEN</span> <span class="string">'A'</span> <span class="keyword">AND</span> <span class="string">'H'</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*选取 date 介于 '2016-05-10' 和 '2016-05-14' 之间的所有访问记录*/</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> access_log <span class="keyword">WHERE</span> <span class="built_in">date</span> <span class="keyword">BETWEEN</span> <span class="string">'2016-05-10'</span> <span class="keyword">AND</span> <span class="string">'2016-05-14'</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="别名"><a href="#别名" class="headerlink" title="别名"></a>别名</h3><ul>
+<li><p>通过使用 SQL，可以为表名称或列名称指定别名。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*列别名*/</span></span><br><span class="line"><span class="keyword">SELECT</span> column_name <span class="keyword">AS</span> alias_name <span class="keyword">FROM</span> table_name;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*name、country输出到结果集时分别为n c*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">name</span> <span class="keyword">AS</span> n, country <span class="keyword">AS</span> c <span class="keyword">FROM</span> Websites;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*表别名*/</span></span><br><span class="line"><span class="keyword">SELECT</span> column_name(s) <span class="keyword">FROM</span> table_name <span class="keyword">AS</span> alias_name;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*表Websites别名为w，可直接使用*/</span></span><br><span class="line"><span class="keyword">SELECT</span> w.name, w.url, a.count, a.date <span class="keyword">FROM</span> Websites <span class="keyword">AS</span> w, access_log <span class="keyword">AS</span> a <span class="keyword">WHERE</span> a.site_id=w.id <span class="keyword">and</span> w.name=<span class="string">"测试"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*合并url,alexa,country并重命名为site_info*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">name</span>, <span class="keyword">CONCAT</span>(<span class="keyword">url</span>, <span class="string">', '</span>, alexa, <span class="string">', '</span>, country) <span class="keyword">AS</span> site_info <span class="keyword">FROM</span> Websites;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用场景</p>
+<ul>
+<li>在查询中涉及超过一个表</li>
+<li>在查询中使用了函数</li>
+<li>列名称很长或者可读性差</li>
+<li>需要把两个列或者多个列结合在一起</li>
+</ul>
+<h3 id="JOIN-关联"><a href="#JOIN-关联" class="headerlink" title="JOIN(关联)"></a>JOIN(关联)</h3><ul>
+<li>JOIN主要用于关联查询，一般进行关联查询的表都有共同字段<ul>
+<li>基于共同字段，将多个表合并成一个临时表再查询</li>
+<li>一般使用<code>ON</code>来确定共同字段</li>
+</ul>
+</li>
+<li>语法<ul>
+<li><code>table1 JOIN table2 ON table1.field=table2.field2</code></li>
+</ul>
+</li>
+<li>不同的关联<ul>
+<li><code>INNER JOIN</code><ul>
+<li>内关联</li>
+<li>返回两个表的交集</li>
+</ul>
+</li>
+<li><code>LEFT JOIN</code><ul>
+<li>以左表为基准表，添加右表中共同字段对应的记录</li>
+<li>返回结果集为：左表所有记录+右表中有左表共同字段的记录</li>
+</ul>
+</li>
+<li><code>RIGHT JOIN</code><ul>
+<li>以右表为基准表，添加左表中共同字段对应的记录</li>
+<li>返回结果集为：右表所有记录+左表中有右表共同字段的记录</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2019/10/16/sql-basic/sql.png" alt=""></p>
+<h3 id="UNION-合并多个结果集"><a href="#UNION-合并多个结果集" class="headerlink" title="UNION(合并多个结果集)"></a>UNION(合并多个结果集)</h3><ul>
+<li>UNION 操作符合并两个或多个 SELECT 语句的结果。</li>
+<li>默认地，UNION 操作符选取不同的值。如果允许重复的值，请使用 UNION ALL</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> column_name(s) <span class="keyword">FROM</span> table1 <span class="keyword">UNION</span> <span class="keyword">SELECT</span> column_name(s) <span class="keyword">FROM</span> table2;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> column_name(s) <span class="keyword">FROM</span> table1 <span class="keyword">UNION</span> ALL <span class="keyword">SELECT</span> column_name(s) <span class="keyword">FROM</span> table2;</span><br></pre></td></tr></table></figure>
+<h3 id="SELECT-INTO、INSERT-INTO-…-SELECT-复制表"><a href="#SELECT-INTO、INSERT-INTO-…-SELECT-复制表" class="headerlink" title="SELECT INTO、INSERT INTO … SELECT(复制表)"></a>SELECT INTO、INSERT INTO … SELECT(复制表)</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*复制所有的列插入到新表中*/</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">INTO</span> newtable [<span class="keyword">IN</span> externaldb] <span class="keyword">FROM</span> table1;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*只复制希望的列插入到新表中*/</span></span><br><span class="line"><span class="keyword">SELECT</span> column_name(s) <span class="keyword">INTO</span> newtable [<span class="keyword">IN</span> externaldb] <span class="keyword">FROM</span> table1;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*MySql支持的复制表*/</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> table2 <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> table1;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*拷贝特定列*/</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> table2(column_name(s)) <span class="keyword">SELECT</span> column_name(s) <span class="keyword">FROM</span> table1;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*拷贝表结构及数据也可以用下面的*/</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> 新表</span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> 旧表</span><br></pre></td></tr></table></figure>
+<h3 id="CREATE-DATABASE-创建数据库"><a href="#CREATE-DATABASE-创建数据库" class="headerlink" title="CREATE DATABASE(创建数据库)"></a>CREATE DATABASE(创建数据库)</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> dbname;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*创建名为my_db的数据库*/</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> my_db;</span><br></pre></td></tr></table></figure>
+<h3 id="CREATE-TABLE-创建表"><a href="#CREATE-TABLE-创建表" class="headerlink" title="CREATE TABLE(创建表)"></a>CREATE TABLE(创建表)</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> table_name (</span><br><span class="line">column_name1 data_type (<span class="keyword">size</span>),</span><br><span class="line">column_name2 data_type (<span class="keyword">size</span>),</span><br><span class="line">column_name3 data_type (<span class="keyword">size</span>)</span><br><span class="line">,....);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Persons (</span><br><span class="line">PersonID <span class="built_in">int</span>,</span><br><span class="line">LastName <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line">FirstName <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line">Address <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line">City <span class="built_in">varchar</span>(<span class="number">255</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h3 id="约束-规定数据的规则"><a href="#约束-规定数据的规则" class="headerlink" title="约束(规定数据的规则)"></a>约束(规定数据的规则)</h3><ul>
+<li><p>SQL 约束用于规定表中的数据规则。如果存在违反约束的数据行为，行为会被约束终止。约束可以在创建表时规定（通过 CREATE TABLE 语句），或者在表创建之后规定（通过 ALTER TABLE 语句）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> table_name (</span><br><span class="line">column_name1 data_type (<span class="keyword">size</span>) constraint_name,</span><br><span class="line">column_name2 data_type (<span class="keyword">size</span>) constraint_name,</span><br><span class="line">column_name3 data_type (<span class="keyword">size</span>) constraint_name</span><br><span class="line">,....);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>常用约束</p>
+<ul>
+<li><code>NOT NULL</code><ul>
+<li>指示某列不能存储 NULL 值。</li>
+</ul>
+</li>
+<li><code>UNIQUE</code><ul>
+<li>保证某列的每行必须有唯一的值</li>
+</ul>
+</li>
+<li><code>PRIMARY KEY</code>主键<ul>
+<li>NOT NULL 和 UNIQUE 的结合。确保某列（或两个列多个列的结合）有唯一标识，有助于更容易更快速地找到表中的一个特定的记录</li>
+</ul>
+</li>
+<li><code>FOREIGN KEY</code>外键<ul>
+<li>保证一个表中的数据匹配另一个表中的值的参照完整性</li>
+</ul>
+</li>
+<li><code>CHECK</code><ul>
+<li>CHECK 约束用于限制列中的值的范围</li>
+</ul>
+</li>
+<li><code>DEFAULT</code><ul>
+<li>规定列的默认值<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Persons</span><br><span class="line">(</span><br><span class="line">P_Id <span class="built_in">int</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>, <span class="comment">/* P_Id 不能为空*/</span></span><br><span class="line">LastName <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">FirstName <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line">Address <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line">City <span class="built_in">varchar</span>(<span class="number">255</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Persons</span><br><span class="line">(P_Id <span class="built_in">int</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">LastName <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">FirstName <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line">Address <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line">City <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line"><span class="keyword">UNIQUE</span> (P_Id)) <span class="comment">/*P_Id要保证唯一性*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Persons(</span><br><span class="line">P_Id <span class="built_in">int</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">LastName <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">FirstName <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line">Address <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line">City <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line">PRIMARY <span class="keyword">KEY</span> (P_Id))<span class="comment">/*设置主键*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Persons(</span><br><span class="line">P_Id <span class="built_in">int</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">LastName <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">FirstName <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line">Address <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line">City <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line"><span class="keyword">CHECK</span> (P_Id&gt;<span class="number">0</span>)) <span class="comment">/*P_Id必须&gt;0*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Persons(</span><br><span class="line">    P_Id <span class="built_in">int</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">    LastName <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">    FirstName <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line">    Address <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line">    City <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">DEFAULT</span> <span class="string">'HeF'</span>) <span class="comment">/*City列未设置值时默认值为HeF*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*创建后添加约束*/</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> Persons <span class="keyword">ADD</span> <span class="keyword">UNIQUE</span> (P_Id)</span><br><span class="line"></span><br><span class="line"><span class="comment">/*创建后删除约束*/</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> Persons <span class="keyword">DROP</span> <span class="keyword">INDEX</span> uc_PersonID</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="INDEX-加快检索速度"><a href="#INDEX-加快检索速度" class="headerlink" title="INDEX(加快检索速度)"></a>INDEX(加快检索速度)</h3><ul>
+<li><code>CREATE INDEX</code> 语句用于在表中创建索引。在不读取整个表的情况下，索引使数据库应用程序可以更快地查找数据</li>
+<li>用户无法看到索引，它们只能被用来加速搜索/查询。</li>
+<li>更新一个包含索引的表需要比更新一个没有索引的表花费更多的时间，这是由于索引本身也需要更新。因此，理想的做法是仅仅在常常被搜索的列（以及表）上面创建索引<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*创建索引*/</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">INDEX</span> index_name <span class="keyword">ON</span> table_name (column_name)</span><br><span class="line"></span><br><span class="line"><span class="comment">/*创建唯一索引*/</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">UNIQUE</span> <span class="keyword">INDEX</span> index_name <span class="keyword">ON</span> table_name (column_name)</span><br><span class="line"></span><br><span class="line"><span class="comment">/*在 "Persons" 表的 "LastName" 列上创建一个名为 "PIndex" 的索引*/</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">INDEX</span> PIndex <span class="keyword">ON</span> Persons (LastName)</span><br><span class="line"></span><br><span class="line"><span class="comment">/*基于LastName、FirstName创建索引PIndex*/</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">INDEX</span> PIndex <span class="keyword">ON</span> Persons (LastName, FirstName)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="DROP-常用于删除操作"><a href="#DROP-常用于删除操作" class="headerlink" title="DROP(常用于删除操作)"></a>DROP(常用于删除操作)</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*删除索引*/</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">INDEX</span> index_name <span class="keyword">ON</span> table_name</span><br><span class="line"></span><br><span class="line"><span class="comment">/*删除表*/</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> table_name</span><br><span class="line"></span><br><span class="line"><span class="comment">/*删除数据库*/</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">DATABASE</span> database_name</span><br><span class="line"></span><br><span class="line"><span class="comment">/*仅仅删除表内的数据，但并不删除表本身*/</span></span><br><span class="line"><span class="keyword">TRUNCATE</span> <span class="keyword">TABLE</span> table_name</span><br></pre></td></tr></table></figure>
+<h3 id="ALTER-修改列"><a href="#ALTER-修改列" class="headerlink" title="ALTER(修改列)"></a>ALTER(修改列)</h3><ul>
+<li>ALTER TABLE 语句用于在已有的表中添加、删除或修改列<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*添加列*/</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> table_name <span class="keyword">ADD</span> column_name datatype</span><br><span class="line"></span><br><span class="line"><span class="comment">/*删除列*/</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> table_name <span class="keyword">DROP</span> <span class="keyword">COLUMN</span> column_name</span><br><span class="line"></span><br><span class="line"><span class="comment">/*修改列的datatype*/</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> table_name <span class="keyword">MODIFY</span> <span class="keyword">COLUMN</span> column_name datatype</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="AUTO-INCREMENT-自增"><a href="#AUTO-INCREMENT-自增" class="headerlink" title="AUTO INCREMENT (自增)"></a>AUTO INCREMENT (自增)</h3><ul>
+<li>Auto-increment 会在新记录插入表中时生成一个唯一的数字</li>
+<li>常用在生成一个唯一id时使用<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Persons(</span><br><span class="line"><span class="keyword">ID</span> <span class="built_in">int</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT ,<span class="comment">/*id不为空并自增，开始值为1*/</span></span><br><span class="line">LastName <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">FirstName <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line">Address <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line">City <span class="built_in">varchar</span>(<span class="number">255</span>),</span><br><span class="line">PRIMARY <span class="keyword">KEY</span> (<span class="keyword">ID</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="视图-结果集的子集"><a href="#视图-结果集的子集" class="headerlink" title="视图(结果集的子集)"></a>视图(结果集的子集)</h3><ul>
+<li>有时，你并不希望客户端通过返回的数据结构，推测出数据库表的结构。这时，可以返回给客户端一个结果集的子集，只给客户端提供它需要的字段，视图就是干这个的；类比过滤器</li>
+<li>视图包含行和列，就像一个真实的表。视图中的字段就是来自一个或多个数据库中的真实的表中的字段。您可以向视图添加 SQL 函数、WHERE 以及 JOIN 语句，也可以呈现数据，就像这些数据来自于某个单一的表一样</li>
+<li>视图总是显示最新的数据！每当用户查询视图时，数据库引擎通过使用视图的 SQL 语句重建数据。</li>
+<li>视图隐藏了底层的表结构，简化了数据访问操作，客户端不再需要知道底层表的结构及其之间的关系。</li>
+<li>视图提供了一个统一访问数据的接口。（即可以允许用户通过视图访问数据的安全机制，而不授予用户直接访问底层表的权限） 从而加强了安全性，使用户只能看到视图所显示的数据。</li>
+<li>视图还可以被嵌套，一个视图中可以嵌套另一个视图。<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*创建语法*/</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">VIEW</span> view_name <span class="keyword">AS</span> <span class="keyword">SELECT</span> column_name(s) <span class="keyword">FROM</span> table_name <span class="keyword">WHERE</span> condition</span><br><span class="line"></span><br><span class="line"><span class="comment">/*视图 "Current Product List" 会从 "Products" 表列出所有正在使用的产品（未停产的产品）*/</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">VIEW</span> [<span class="keyword">Current</span> Product <span class="keyword">List</span>] <span class="keyword">AS</span> <span class="keyword">SELECT</span> ProductID,ProductName <span class="keyword">FROM</span> Products <span class="keyword">WHERE</span>  Discontinued=<span class="keyword">No</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*我们可以像这样查询上面这个视图：*/</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> [<span class="keyword">Current</span> Product <span class="keyword">List</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">/*更新视图，为视图添加Category列*/</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">VIEW</span> [<span class="keyword">Current</span> Product <span class="keyword">List</span>] <span class="keyword">AS</span> <span class="keyword">SELECT</span> ProductID,ProductName,<span class="keyword">Category</span> <span class="keyword">FROM</span> Products <span class="keyword">WHERE</span> Discontinued=<span class="keyword">No</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*删除视图*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">VIEW</span> view_name</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="SQL日期函数"><a href="#SQL日期函数" class="headerlink" title="SQL日期函数"></a>SQL日期函数</h3><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NOW()</td>
+<td>返回当前的日期和时间</td>
+</tr>
+<tr>
+<td>CURDATE()</td>
+<td>返回当前的日期</td>
+</tr>
+<tr>
+<td>CURTIME()</td>
+<td>返回当前的时间</td>
+</tr>
+<tr>
+<td>DATE()</td>
+<td>提取日期或日期/时间表达式的日期部分</td>
+</tr>
+<tr>
+<td>EXTRACT()</td>
+<td>返回日期/时间的单独部分</td>
+</tr>
+<tr>
+<td>DATE_ADD()</td>
+<td>向日期添加指定的时间间隔</td>
+</tr>
+<tr>
+<td>DATE_SUB()</td>
+<td>从日期减去指定的时间间隔</td>
+</tr>
+<tr>
+<td>DATEDIFF()</td>
+<td>返回两个日期之间的天数</td>
+</tr>
+<tr>
+<td>DATE_FORMAT()</td>
+<td>用不同的格式显示日期/时间</td>
+</tr>
+</tbody>
+</table>
+<h3 id="NULL"><a href="#NULL" class="headerlink" title="NULL"></a>NULL</h3><ul>
+<li>如果表中的某个列是可选的，那么我们可以在不向该列添加值的情况下插入新记录或更新已有的记录。这意味着该字段将以 NULL 值保存</li>
+<li>NULL 用作未知的或不适用的值的占位符</li>
+<li>无法比较 NULL 和 0；它们是不等价的</li>
+<li>无法使用比较运算符来测试 NULL 值，比如 =、&lt; 或 &lt;&gt;</li>
+<li>在MySql中可以使用<code>IFNULL或COALESCE</code>在计算时，给NULL赋予特定的值，避免计算出错<ul>
+<li>必须使用<code>IS NULL、IS NOT NULL</code><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*找出Address为NULL的记录*/</span></span><br><span class="line"><span class="keyword">SELECT</span> LastName,FirstName,Address <span class="keyword">FROM</span> Persons <span class="keyword">WHERE</span> Address <span class="keyword">IS</span> <span class="literal">NULL</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*找出Address不为NULL的记录*/</span></span><br><span class="line"><span class="keyword">SELECT</span> LastName,FirstName,Address <span class="keyword">FROM</span> Persons <span class="keyword">WHERE</span> Address <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*如果alexa列为null值，则赋予0，否则，取原值*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">id</span>,<span class="keyword">name</span>,<span class="keyword">url</span>,<span class="keyword">IFNULL</span>(alexa,<span class="number">0</span>) <span class="keyword">FROM</span> websites;</span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">id</span>,<span class="keyword">name</span>,<span class="keyword">url</span>,<span class="keyword">COALESCE</span>(alexa,<span class="number">0</span>) <span class="keyword">FROM</span> websites;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><ul>
+<li>SQL 开发人员必须在创建 SQL 表时决定表中的每个列将要存储的数据的类型。数据类型是一个标签，是便于 SQL 了解每个列期望存储什么类型的数据的指南，它也标识了 SQL 如何与存储的数据进行交互</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CHARACTER(n)</td>
+<td>字符/字符串。固定长度 n。</td>
+</tr>
+<tr>
+<td>VARCHAR(n) 或 CHARACTER VARYING(n)</td>
+<td>字符/字符串。可变长度。最大长度 n。</td>
+</tr>
+<tr>
+<td>BINARY(n)</td>
+<td>二进制串。固定长度 n。</td>
+</tr>
+<tr>
+<td>BOOLEAN</td>
+<td>存储 TRUE 或 FALSE 值</td>
+</tr>
+<tr>
+<td>VARBINARY(n) 或BINARY VARYING(n)</td>
+<td>二进制串。可变长度。最大长度 n。</td>
+</tr>
+<tr>
+<td>INTEGER(p)</td>
+<td>整数值（没有小数点）。精度 p。</td>
+</tr>
+<tr>
+<td>SMALLINT</td>
+<td>整数值（没有小数点）。精度 5。</td>
+</tr>
+<tr>
+<td>INTEGER</td>
+<td>整数值（没有小数点）。精度 10。</td>
+</tr>
+<tr>
+<td>BIGINT</td>
+<td>整数值（没有小数点）。精度 19。</td>
+</tr>
+<tr>
+<td>DECIMAL(p,s)</td>
+<td>精确数值，精度 p，小数点后位数 s。例如：decimal(5,2) 是一个小数点前有 3 位数，小数点后有 2 位数的数字。</td>
+</tr>
+<tr>
+<td>NUMERIC(p,s)</td>
+<td>精确数值，精度 p，小数点后位数 s。（与 DECIMAL 相同）</td>
+</tr>
+<tr>
+<td>FLOAT(p)</td>
+<td>近似数值，尾数精度 p。一个采用以 10 为基数的指数计数法的浮点数。该类型的 size 参数由一个指定最小精度的单一数字组成。</td>
+</tr>
+<tr>
+<td>REAL</td>
+<td>近似数值，尾数精度 7。</td>
+</tr>
+<tr>
+<td>FLOAT</td>
+<td>近似数值，尾数精度 16。</td>
+</tr>
+<tr>
+<td>DOUBLE PRECISION</td>
+<td>近似数值，尾数精度 16。</td>
+</tr>
+<tr>
+<td>DATE</td>
+<td>存储年、月、日的值。</td>
+</tr>
+<tr>
+<td>TIME</td>
+<td>存储小时、分、秒的值。</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>存储年、月、日、小时、分、秒的值。</td>
+</tr>
+<tr>
+<td>INTERVAL</td>
+<td>由一些整数字段组成，代表一段时间，取决于区间的类型。</td>
+</tr>
+<tr>
+<td>ARRAY</td>
+<td>元素的固定长度的有序集合</td>
+</tr>
+<tr>
+<td>MULTISET</td>
+<td>元素的可变长度的无序集合</td>
+</tr>
+<tr>
+<td>XML</td>
+<td>存储 XML 数据</td>
+</tr>
+</tbody>
+</table>
+<h3 id="MySql数据类型"><a href="#MySql数据类型" class="headerlink" title="MySql数据类型"></a>MySql数据类型</h3><ul>
+<li>在 MySQL 中，有三种主要的类型：Text（文本）、Number（数字）和 Date/Time（日期/时间）类型</li>
+<li>Text 类型</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CHAR(size)</td>
+<td>保存固定长度的字符串（可包含字母、数字以及特殊字符）。在括号中指定字符串的长度。最多 255 个字符。</td>
+</tr>
+<tr>
+<td>VARCHAR(size)</td>
+<td>保存可变长度的字符串（可包含字母、数字以及特殊字符）。在括号中指定字符串的最大长度。最多 255 个字符。注释：如果值的长度大于 255，则被转换为 TEXT 类型。</td>
+</tr>
+<tr>
+<td>TINYTEXT</td>
+<td>存放最大长度为 255 个字符的字符串。</td>
+</tr>
+<tr>
+<td>TEXT</td>
+<td>存放最大长度为 65,535 个字符的字符串。</td>
+</tr>
+<tr>
+<td>BLOB</td>
+<td>用于 BLOBs（Binary Large OBjects）。存放最多 65,535 字节的数据。</td>
+</tr>
+<tr>
+<td>MEDIUMTEXT</td>
+<td>存放最大长度为 16,777,215 个字符的字符串。</td>
+</tr>
+<tr>
+<td>MEDIUMBLOB</td>
+<td>用于 BLOBs（Binary Large OBjects）。存放最多 16,777,215 字节的数据。</td>
+</tr>
+<tr>
+<td>LONGTEXT</td>
+<td>存放最大长度为 4,294,967,295 个字符的字符串。</td>
+</tr>
+<tr>
+<td>LONGBLOB</td>
+<td>用于 BLOBs (Binary Large OBjects)。存放最多 4,294,967,295 字节的数据。</td>
+</tr>
+<tr>
+<td>ENUM(x,y,z,etc.)</td>
+<td>允许您输入可能值的列表。可以在 ENUM 列表中列出最大 65535 个值。如果列表中不存在插入的值，则插入空值。 注释：这些值是按照您输入的顺序排序的。可以按照此格式输入可能的值： ENUM(‘X’,’Y’,’Z’)</td>
+</tr>
+<tr>
+<td>SET</td>
+<td>与 ENUM 类似，不同的是，SET 最多只能包含 64 个列表项且 SET 可存储一个以上的选择。</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Number类型<ul>
+<li>下面的size代表的并不是存储在数据库中的具体的长度，如 int(4) 并不是只能存储4个长度的数字。实际上int(size)所占多少存储空间并无任何关系。int(3)、int(4)、int(8) 在磁盘上都是占用 4 btyes 的存储空间。就是在显示给用户的方式有点不同外，int(M) 跟 int 数据类型是相同的。就是显示的长度不一样而已 都是占用四个字节的空间<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int（9）显示结果为000000010</span><br><span class="line">int（3）显示结果为010</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TINYINT(size)</td>
+<td>带符号-128到127 ，无符号0到255。</td>
+</tr>
+<tr>
+<td>SMALLINT(size)</td>
+<td>带符号范围-32768到32767，无符号0到65535, size 默认为 6。</td>
+</tr>
+<tr>
+<td>MEDIUMINT(size)</td>
+<td>带符号范围-8388608到8388607，无符号的范围是0到16777215。 size 默认为9</td>
+</tr>
+<tr>
+<td>INT(size)</td>
+<td>带符号范围-2147483648到2147483647，无符号的范围是0到4294967295。 size 默认为 11</td>
+</tr>
+<tr>
+<td>BIGINT(size)</td>
+<td>带符号的范围是-9223372036854775808到9223372036854775807，无符号的范围是0到18446744073709551615。size 默认为 20</td>
+</tr>
+<tr>
+<td>FLOAT(size,d)</td>
+<td>带有浮动小数点的小数字。在 size 参数中规定显示最大位数。在 d 参数中规定小数点右侧的最大位数。</td>
+</tr>
+<tr>
+<td>DOUBLE(size,d)</td>
+<td>带有浮动小数点的大数字。在 size 参数中规显示定最大位数。在 d 参数中规定小数点右侧的最大位数。</td>
+</tr>
+<tr>
+<td>DECIMAL(size,d)</td>
+<td>作为字符串存储的 DOUBLE 类型，允许固定的小数点。在 size 参数中规定显示最大位数。在 d 参数中规定小数点右侧的最大位数。</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Date 类型</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DATE()</td>
+<td>日期。格式：YYYY-MM-DD 注释：支持的范围是从 ‘1000-01-01’ 到 ‘9999-12-31’</td>
+</tr>
+<tr>
+<td>DATETIME()</td>
+<td>日期和时间的组合。格式：YYYY-MM-DD HH:MM:SS 注释：支持的范围是从 ‘1000-01-01 00:00:00’ 到 ‘9999-12-31 23:59:59’</td>
+</tr>
+<tr>
+<td>TIMESTAMP()</td>
+<td>时间戳。TIMESTAMP 值使用 Unix 纪元(‘1970-01-01 00:00:00’ UTC) 至今的秒数来存储。格式：YYYY-MM-DD HH:MM:SS 注释：支持的范围是从 ‘1970-01-01 00:00:01’ UTC 到 ‘2038-01-09 03:14:07’ UTC</td>
+</tr>
+<tr>
+<td>TIME()</td>
+<td>时间。格式：HH:MM:SS 注释：支持的范围是从 ‘-838:59:59’ 到 ‘838:59:59’</td>
+</tr>
+<tr>
+<td>YEAR()</td>
+<td>2 位或 4 位格式的年。 注释：4 位格式所允许的值：1901 到 2155。2 位格式所允许的值：70 到 69，表示从 1970 到 2069。</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>即便 DATETIME 和 TIMESTAMP 返回相同的格式，它们的工作方式很不同。在 INSERT 或 UPDATE 查询中，TIMESTAMP 自动把自身设置为当前的日期和时间。TIMESTAMP 也接受不同的格式，比如 YYYYMMDDHHMMSS、YYMMDDHHMMSS、YYYYMMDD 或 YYMMDD</li>
+</ul>
+<h3 id="SQL函数"><a href="#SQL函数" class="headerlink" title="SQL函数"></a>SQL函数</h3><ul>
+<li>SQL内置一些函数</li>
+<li>SQL Aggregate 函数<ul>
+<li>SQL Aggregate 函数计算从列中取得的值，返回一个单一的值  <ul>
+<li>AVG() - 返回平均值</li>
+<li>COUNT() - 返回返回匹配指定条件的行数,NULL 不计入</li>
+<li>FIRST() - 返回第一个记录的值</li>
+<li>LAST() - 返回最后一个记录的值</li>
+<li>MAX() - 返回最大值</li>
+<li>MIN() - 返回最小值</li>
+<li>SUM() - 返回总和</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>SQL Scalar 函数<ul>
+<li>SQL Scalar 函数基于输入值，返回一个单一的值<ul>
+<li>UCASE() - 将某个字段转换为大写</li>
+<li>LCASE() - 将某个字段转换为小写</li>
+<li>MID() - 从某个文本字段提取字符，MySql 中使用SubString(字段，1，end) - 从某个文本字段提取字符</li>
+<li>LEN() - 返回某个文本字段的长度</li>
+<li>ROUND() - 对某个数值字段进行指定小数位数的四舍五入</li>
+<li>NOW() - 返回当前的系统日期和时间</li>
+<li>FORMAT() - 格式化某个字段的显示方式<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*从 "access_log" 表的 "count" 列获取平均值*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">AVG</span>(<span class="keyword">count</span>) <span class="keyword">AS</span> CountAverage <span class="keyword">FROM</span> access_log;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* "access_log" 表中 "site_id"=3 的总访问量，NULL 不计入*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">COUNT</span>(<span class="keyword">count</span>) <span class="keyword">AS</span> nums <span class="keyword">FROM</span> access_log <span class="keyword">WHERE</span> site_id=<span class="number">3</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* "access_log" 表中总记录数*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">COUNT</span>(*) <span class="keyword">AS</span> nums <span class="keyword">FROM</span> access_log;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* "access_log" 表中不同 site_id 的记录数*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">COUNT</span>(<span class="keyword">DISTINCT</span> site_id) <span class="keyword">AS</span> nums <span class="keyword">FROM</span> access_log;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*First()只有 MS Access支持。MySql中可通过LIMIT返回首条记录*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*选取 "Websites" 表的 "name" 列中第一个记录的值*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">name</span> <span class="keyword">AS</span> FirstSite <span class="keyword">FROM</span> Websites <span class="keyword">LIMIT</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*只有 MS Access 支持 LAST() 函数，MySql中可通过降序+LIMIT拿到最后一个记录*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">name</span> <span class="keyword">FROM</span> WebsitesORDER <span class="keyword">BY</span> <span class="keyword">id</span> <span class="keyword">DESC</span> <span class="keyword">LIMIT</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*从 "Websites" 表的 "alexa" 列获取最大值*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">MAX</span>(alexa) <span class="keyword">AS</span> max_alexa <span class="keyword">FROM</span> Websites;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*从 "Websites" 表的 "alexa" 列获取最小值*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">MIN</span>(alexa) <span class="keyword">AS</span> min_alexa <span class="keyword">FROM</span> Websites;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*查找 "access_log" 表的 "count" 字段的总数*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">SUM</span>(<span class="keyword">count</span>) <span class="keyword">AS</span> nums <span class="keyword">FROM</span> access_log;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*从 "Websites" 表中选取 "name" 和 "url" 列，并把 "name" 列的值转换为大写*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">UCASE</span>(<span class="keyword">name</span>) <span class="keyword">AS</span> site_title, <span class="keyword">url</span> <span class="keyword">FROM</span> Websites;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*从 "Websites" 表中选取 "name" 和 "url" 列，并把 "name" 列的值转换为小写*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">LCASE</span>(<span class="keyword">name</span>) <span class="keyword">AS</span> site_title, urlFROM Websites;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*从 "Websites" 表的 "name" 列中提取前 4 个字符*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">MID</span>(<span class="keyword">name</span>,<span class="number">1</span>,<span class="number">4</span>) <span class="keyword">AS</span> ShortTitleFROM Websites;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*从 "Websites" 表中选取 "name" 和 "url" 列中值的长度*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">name</span>, <span class="keyword">LENGTH</span>(<span class="keyword">url</span>) <span class="keyword">as</span> LengthOfURLFROM Websites;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*假设price为1.32*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">ROUND</span>(price, <span class="number">1</span>) <span class="keyword">FROM</span> base_price <span class="comment">/*1.3*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">ROUND</span>(price, <span class="number">0</span>) <span class="keyword">FROM</span> base_price<span class="comment">/*1*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">ROUND</span>(price) <span class="keyword">FROM</span> base_price <span class="comment">/*1.3*/</span></span><br><span class="line">        </span><br><span class="line"><span class="comment">/*从 "Websites" 表中选取 name，url，及当天日期*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">name</span>, <span class="keyword">url</span>, <span class="keyword">Now</span>() <span class="keyword">AS</span> dateFROM Websites;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*从 "Websites" 表中选取 name, url 以及格式化为 YYYY-MM-DD 的日期*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">name</span>, <span class="keyword">url</span>, <span class="keyword">DATE_FORMAT</span>(<span class="keyword">Now</span>(),<span class="string">'%Y-%m-%d'</span>) <span class="keyword">AS</span> dateFROM Websites;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="GROUP-BY、HAVING-聚合、分组"><a href="#GROUP-BY、HAVING-聚合、分组" class="headerlink" title="GROUP BY、HAVING(聚合、分组)"></a>GROUP BY、HAVING(聚合、分组)</h3><ul>
+<li>GROUP BY 语句用于结合聚合函数，根据一个或多个列对结果集进行分组<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*将SELECT结果集根据site_id分组聚合*/</span></span><br><span class="line"><span class="keyword">SELECT</span> site_id, <span class="keyword">SUM</span>(access_log.count) <span class="keyword">AS</span> nums <span class="keyword">FROM</span> access_log <span class="keyword">GROUP</span> <span class="keyword">BY</span> site_id;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*关联多个表进行分组*/</span></span><br><span class="line"><span class="keyword">SELECT</span> Websites.name,<span class="keyword">COUNT</span>(access_log.aid) <span class="keyword">AS</span> nums <span class="keyword">FROM</span> access_log <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> WebsitesON access_log.site_id=Websites.id <span class="keyword">GROUP</span> <span class="keyword">BY</span> Websites.name;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*分组后筛选出count&gt;200的记录*/</span></span><br><span class="line"><span class="keyword">SELECT</span> Websites.name, Websites.url, <span class="keyword">SUM</span>(access_log.count) <span class="keyword">AS</span> nums <span class="keyword">FROM</span> (access_logINNER <span class="keyword">JOIN</span> Websites <span class="keyword">ON</span> access_log.site_id=Websites.id) <span class="keyword">GROUP</span> <span class="keyword">BY</span> Websites.name <span class="keyword">HAVING</span> <span class="keyword">SUM</span>(access_log.count) &gt; <span class="number">200</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
+<p><a href="https://www.runoob.com/sql/sql-tutorial.html" target="_blank" rel="noopener">https://www.runoob.com/sql/sql-tutorial.html</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/sql/" rel="tag"># sql</a>
+          
+            <a href="/tags/mysql/" rel="tag"># mysql</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/16/latex-clean-use-client/" rel="next" title="latex-clean-use-client">
+                <i class="fa fa-chevron-left"></i> latex-clean-use-client
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/10/16/work-time-assessment/" rel="prev" title="work-time-assessment">
+                work-time-assessment <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/Avatar.png"
+               alt="BryanAdamss" />
+          <p class="site-author-name" itemprop="name">BryanAdamss</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/BryanAdamss" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SQL基础"><span class="nav-number">1.</span> <span class="nav-text">SQL基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库表组成"><span class="nav-number">1.1.</span> <span class="nav-text">数据库表组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意项"><span class="nav-number">1.2.</span> <span class="nav-text">注意项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#大小写不敏感"><span class="nav-number">1.2.1.</span> <span class="nav-text">大小写不敏感</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL执行顺序"><span class="nav-number">1.2.2.</span> <span class="nav-text">SQL执行顺序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用语句"><span class="nav-number">1.3.</span> <span class="nav-text">常用语句</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SELECT-选取数据"><span class="nav-number">1.3.1.</span> <span class="nav-text">SELECT(选取数据)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SELECT-DISTINCT-去除列中重复值"><span class="nav-number">1.3.2.</span> <span class="nav-text">SELECT DISTINCT(去除列中重复值)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WHERE子句-类似if"><span class="nav-number">1.3.3.</span> <span class="nav-text">WHERE子句(类似if)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AND-amp-OR运算符-逻辑运算"><span class="nav-number">1.3.4.</span> <span class="nav-text">AND&amp;OR运算符(逻辑运算)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ORDER-BY-排序"><span class="nav-number">1.3.5.</span> <span class="nav-text">ORDER BY(排序)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#INSERT-INTO-插入记录"><span class="nav-number">1.3.6.</span> <span class="nav-text">INSERT INTO(插入记录)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UPDATE-更新记录"><span class="nav-number">1.3.7.</span> <span class="nav-text">UPDATE(更新记录)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DELETE-删除记录"><span class="nav-number">1.3.8.</span> <span class="nav-text">DELETE(删除记录)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LIMIT、TOP、ROWNUM-规定返回的记录数目"><span class="nav-number">1.3.9.</span> <span class="nav-text">LIMIT、TOP、ROWNUM(规定返回的记录数目)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LIKE-搜索指定模式"><span class="nav-number">1.3.10.</span> <span class="nav-text">LIKE(搜索指定模式)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RLIKE、REGEXP-正则匹配"><span class="nav-number">1.3.11.</span> <span class="nav-text">RLIKE、REGEXP(正则匹配)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IN操作符-枚举匹配"><span class="nav-number">1.3.12.</span> <span class="nav-text">IN操作符(枚举匹配)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BETWEEN操作符-选取区间值"><span class="nav-number">1.3.13.</span> <span class="nav-text">BETWEEN操作符(选取区间值)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#别名"><span class="nav-number">1.3.14.</span> <span class="nav-text">别名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JOIN-关联"><span class="nav-number">1.3.15.</span> <span class="nav-text">JOIN(关联)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UNION-合并多个结果集"><span class="nav-number">1.3.16.</span> <span class="nav-text">UNION(合并多个结果集)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SELECT-INTO、INSERT-INTO-…-SELECT-复制表"><span class="nav-number">1.3.17.</span> <span class="nav-text">SELECT INTO、INSERT INTO … SELECT(复制表)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CREATE-DATABASE-创建数据库"><span class="nav-number">1.3.18.</span> <span class="nav-text">CREATE DATABASE(创建数据库)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CREATE-TABLE-创建表"><span class="nav-number">1.3.19.</span> <span class="nav-text">CREATE TABLE(创建表)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#约束-规定数据的规则"><span class="nav-number">1.3.20.</span> <span class="nav-text">约束(规定数据的规则)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#INDEX-加快检索速度"><span class="nav-number">1.3.21.</span> <span class="nav-text">INDEX(加快检索速度)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DROP-常用于删除操作"><span class="nav-number">1.3.22.</span> <span class="nav-text">DROP(常用于删除操作)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ALTER-修改列"><span class="nav-number">1.3.23.</span> <span class="nav-text">ALTER(修改列)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AUTO-INCREMENT-自增"><span class="nav-number">1.3.24.</span> <span class="nav-text">AUTO INCREMENT (自增)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#视图-结果集的子集"><span class="nav-number">1.3.25.</span> <span class="nav-text">视图(结果集的子集)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL日期函数"><span class="nav-number">1.3.26.</span> <span class="nav-text">SQL日期函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NULL"><span class="nav-number">1.3.27.</span> <span class="nav-text">NULL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据类型"><span class="nav-number">1.3.28.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySql数据类型"><span class="nav-number">1.3.29.</span> <span class="nav-text">MySql数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL函数"><span class="nav-number">1.3.30.</span> <span class="nav-text">SQL函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GROUP-BY、HAVING-聚合、分组"><span class="nav-number">1.3.31.</span> <span class="nav-text">GROUP BY、HAVING(聚合、分组)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.4.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BryanAdamss</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

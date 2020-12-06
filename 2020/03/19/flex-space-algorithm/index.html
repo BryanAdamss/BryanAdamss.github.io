@@ -1,0 +1,1376 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="flex,布局," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/Avatar.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="flex-basis、flex-grow、flex-shrink flex-basis、flex-grow、flex-shrink这三个属性决定了flex item的展示尺寸 要想了解三者是如何决定flex item的尺寸前，先要了解一下max-content、min-content、正负向自由空间概念 注意以下的讨论都是在主轴为横轴基础上讨论的  min-content、max-content">
+<meta name="keywords" content="flex,布局">
+<meta property="og:type" content="article">
+<meta property="og:title" content="flex-space-algorithm">
+<meta property="og:url" content="http://yoursite.com/2020/03/19/flex-space-algorithm/index.html">
+<meta property="og:site_name" content="BryanAdamss的博客">
+<meta property="og:description" content="flex-basis、flex-grow、flex-shrink flex-basis、flex-grow、flex-shrink这三个属性决定了flex item的展示尺寸 要想了解三者是如何决定flex item的尺寸前，先要了解一下max-content、min-content、正负向自由空间概念 注意以下的讨论都是在主轴为横轴基础上讨论的  min-content、max-content">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/mix-max-content.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/positive-free-space.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/negative-free-space.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/flex-basis-content.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/example-1.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/example-2.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/example-3.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/example-4.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/example-5.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/space-1.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/space-2.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/space-3.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/box-sizing-1.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/box-sizing-2.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/grow-over-1.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/grow-over-2.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/grow-over-3.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/grow-less-1.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/grow-less-2.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/grow-less-3.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/average.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/shrink-over-1.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/shrink-over-2.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/shrink-over-3.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/shrink-less-1.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/shrink-less-2.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/shrink-less-3.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/sumary.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/apply.png">
+<meta property="og:updated_time" content="2020-10-04T07:14:09.524Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="flex-space-algorithm">
+<meta name="twitter:description" content="flex-basis、flex-grow、flex-shrink flex-basis、flex-grow、flex-shrink这三个属性决定了flex item的展示尺寸 要想了解三者是如何决定flex item的尺寸前，先要了解一下max-content、min-content、正负向自由空间概念 注意以下的讨论都是在主轴为横轴基础上讨论的  min-content、max-content">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/19/flex-space-algorithm/mix-max-content.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/19/flex-space-algorithm/"/>
+
+
+
+
+
+  <title> flex-space-algorithm | BryanAdamss的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BryanAdamss的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个伪前端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/19/flex-space-algorithm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BryanAdamss">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/Avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BryanAdamss的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                flex-space-algorithm
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-19T22:36:58+08:00">
+                2020-03-19 22:36:58
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FrontEnd/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="flex-basis、flex-grow、flex-shrink"><a href="#flex-basis、flex-grow、flex-shrink" class="headerlink" title="flex-basis、flex-grow、flex-shrink"></a>flex-basis、flex-grow、flex-shrink</h1><ul>
+<li><code>flex-basis、flex-grow、flex-shrink</code>这三个属性决定了<code>flex item</code>的展示尺寸</li>
+<li>要想了解三者是如何决定<code>flex item</code>的尺寸前，先要了解一下<code>max-content</code>、<code>min-content</code>、<code>正负向自由空间</code>概念</li>
+<li>注意以下的讨论都是在主轴为横轴基础上讨论的</li>
+</ul>
+<h2 id="min-content、max-content"><a href="#min-content、max-content" class="headerlink" title="min-content、max-content"></a>min-content、max-content</h2><ul>
+<li>这两个都是用来设置<code>width</code>的</li>
+<li>通过下面的例子，我们就知道他们是什么含义</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;UTF-8&quot; /&gt;</span><br><span class="line">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;</span><br><span class="line">    &lt;title&gt;Document&lt;/title&gt;</span><br><span class="line">    &lt;style&gt;</span><br><span class="line">      .wp &#123;</span><br><span class="line">        width: 400px;</span><br><span class="line">        border: 1px solid red;</span><br><span class="line">      &#125;</span><br><span class="line">      .box &#123;</span><br><span class="line">        border: 1px dotted blue;</span><br><span class="line">      &#125;</span><br><span class="line">      .box1 &#123;</span><br><span class="line">        width: min-content;</span><br><span class="line">      &#125;</span><br><span class="line">      .box2 &#123;</span><br><span class="line">        width: max-content;</span><br><span class="line">      &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;div class=&quot;wp&quot;&gt;</span><br><span class="line">      &lt;p class=&quot;box box1&quot;&gt;</span><br><span class="line">        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officia</span><br><span class="line">        voluptatibus quos nihil dolores</span><br><span class="line">      &lt;/p&gt;</span><br><span class="line">      &lt;p class=&quot;box box2&quot;&gt;</span><br><span class="line">        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officia</span><br><span class="line">        voluptatibus quos nihil dolores</span><br><span class="line">      &lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>mix-max-contet.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/mix-max-content.png" alt="mix-max-content.png"></li>
+</ul>
+</li>
+<li>可以看到<code>box1</code>的<code>width</code>设置了<code>min-content</code>后，它抓住了一切机会来换行，直到出现一个最大的无法换行的单词才停止，就如截图中的<code>voluptatibus</code>单词<ul>
+<li>也就是说<code>min-content</code>的宽度是由<code>最长不可换行单词</code>决定的</li>
+</ul>
+</li>
+<li>而设置了<code>max-contet</code>的<code>box2</code>却有截然相反的表现，它尽可能的不换行，就跟我们设置了<code>white-space:no-wrap;</code>的表现很类似，即使外层<code>.wp</code>设置了固定尺寸，它也会冲破限制，溢出了<ul>
+<li><code>max-content</code>确定的宽度是<code>内容正常展示时</code>的<code>最大宽度</code></li>
+</ul>
+</li>
+<li><code>min-content</code>、<code>max-content</code>在<code>flex</code>布局中有关键作用，下面会做讲解</li>
+</ul>
+<h2 id="正负向自由空间"><a href="#正负向自由空间" class="headerlink" title="正负向自由空间"></a>正负向自由空间</h2><h3 id="正向自由空间-positive-free-space"><a href="#正向自由空间-positive-free-space" class="headerlink" title="正向自由空间 positive free space"></a>正向自由空间 positive free space</h3><ul>
+<li>正向自由空间描述的是<code>flex</code>布局时，<code>flex container</code>剩余的空间</li>
+<li>positive-free-space.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/positive-free-space.png" alt="positive-free-space.png"></li>
+</ul>
+</li>
+<li>在<code>flex</code>布局中，当<code>flex container</code>宽为<code>500px</code>，内部有三个<code>100px</code>初始宽度的<code>flex item</code>，那么剩下的<code>200px</code>就是正向自由空间，这<code>200px</code>的宽度后续将交给<code>flex-grow</code>按照一定的策略来分配</li>
+</ul>
+<h3 id="负向自由空间-negative-free-space"><a href="#负向自由空间-negative-free-space" class="headerlink" title="负向自由空间 negative free space"></a>负向自由空间 negative free space</h3><ul>
+<li>负向自由空间其实是一个和正向类似的概念</li>
+<li>它描述的是<code>所有flex item宽度和超出flex container</code>的部分</li>
+<li>negative-free-space.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/negative-free-space.png" alt="negative-free-space.png"></li>
+</ul>
+</li>
+<li><code>flex container</code>仍然是<code>500px</code>，但三个<code>flex item</code>初始宽度变为<code>200px</code>了，他们宽度总和超出<code>flex container 100px</code>，这个<code>100px</code>就为负向自由空间，这<code>100px</code>的宽度后续将交给<code>flex-shrink</code>按照一定策略来缩减(消化)，让其三者宽度总和不超过<code>500px</code></li>
+</ul>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><ul>
+<li>正负向自由空间都是<code>flex-grow</code>、<code>flex-shrink</code>参与空间分配前的概念，当这两个属性参与空间分配后，其实这个空间就可以视为不存在了</li>
+</ul>
+<h2 id="flex-basis"><a href="#flex-basis" class="headerlink" title="flex-basis"></a>flex-basis</h2><ul>
+<li><code>flex-basis</code>是<code>flex</code>布局的基础</li>
+<li><code>flex-basis</code>决定了<code>flex item</code>在主轴上的<code>初始尺寸</code><ul>
+<li>初始尺寸用来计算正、负向空间</li>
+<li>正、负空间决定了<code>flex-grow</code>和<code>flex-shrink</code>哪个生效</li>
+</ul>
+</li>
+</ul>
+<h3 id="取值"><a href="#取值" class="headerlink" title="取值"></a>取值</h3><ul>
+<li><code>auto</code><ul>
+<li><strong>默认值</strong></li>
+<li>如果设置了<code>width</code>，则使用<code>width</code>值做为初始尺寸，否则使用<code>max-content(最大内容宽度)</code>做为初始尺寸</li>
+</ul>
+</li>
+<li><code>content</code><ul>
+<li>不管有没有设置<code>width</code>，都使用我的<code>max-content(最大内容宽度)</code>做为初始尺寸</li>
+<li>存在兼容问题</li>
+<li>flex-basis-content.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/flex-basis-content.png" alt="flex-basis-content.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>非0数值</code><ul>
+<li><code>10px</code></li>
+<li><code>10%</code></li>
+<li><code>10em</code></li>
+<li>将对应数值的计算值做初始尺寸</li>
+</ul>
+</li>
+<li><code>0</code><ul>
+<li>初始尺寸为 0，代表当前<code>flex item</code>不参与正、负空间计算</li>
+</ul>
+</li>
+</ul>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><ul>
+<li>由于<code>content</code>存在兼容问题，所以没举<code>content</code>的例子</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;UTF-8&quot; /&gt;</span><br><span class="line">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;</span><br><span class="line">    &lt;title&gt;Document&lt;/title&gt;</span><br><span class="line">    &lt;style&gt;</span><br><span class="line">      * &#123;</span><br><span class="line">        box-sizing: border-box;</span><br><span class="line">      &#125;</span><br><span class="line">      .wp &#123;</span><br><span class="line">        width: 400px;</span><br><span class="line">        border: 1px solid red;</span><br><span class="line">        display: flex;</span><br><span class="line">        flex-direction: row;</span><br><span class="line">      &#125;</span><br><span class="line">      .box &#123;</span><br><span class="line">        border: 1px dotted blue;</span><br><span class="line">        /* 为了保持一致，让flex item 尺寸不放大也不缩小，就用初始尺寸 */</span><br><span class="line">        flex-grow: 0;</span><br><span class="line">        flex-shrink: 0;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      .box+.box&#123;</span><br><span class="line">        margin-left:10px;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      .box:nth-child(1) &#123;</span><br><span class="line">        /* 未设置width，所以使用max-content */</span><br><span class="line">        flex-basis: auto;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      .box:nth-child(2) &#123;</span><br><span class="line">        /* auto，并width有值，则取width对应值 */</span><br><span class="line">        flex-basis: auto;</span><br><span class="line">        width: 40px;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      .box:nth-child(3) &#123;</span><br><span class="line">        /* 20px  */</span><br><span class="line">        flex-basis: 20px;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      .box:nth-child(4) &#123;</span><br><span class="line">        /* 30% */</span><br><span class="line">        flex-basis: 30%;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      .box:nth-child(5) &#123;</span><br><span class="line">        /* 0 */</span><br><span class="line">        /* 最后宽度为min-content */</span><br><span class="line">        flex-basis: 0;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;div class=&quot;wp&quot;&gt;</span><br><span class="line">      &lt;p class=&quot;box&quot;&gt;1 123&lt;/p&gt;</span><br><span class="line">      &lt;p class=&quot;box&quot;&gt;22&lt;/p&gt;</span><br><span class="line">      &lt;p class=&quot;box&quot;&gt;333 3&lt;/p&gt;</span><br><span class="line">      &lt;p class=&quot;box&quot;&gt;4444&lt;/p&gt;</span><br><span class="line">      &lt;p class=&quot;box&quot;&gt;55555 11&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第一个盒子<ul>
+<li>example-1.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/example-1.png" alt="example-1.png"></li>
+</ul>
+</li>
+<li><code>flex-basis</code>为<code>auto</code>，又没设置<code>width</code>,所以最终尺寸为<code>max-content</code></li>
+</ul>
+</li>
+<li>第二个盒子<ul>
+<li>example-2.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/example-2.png" alt="example-2.png"></li>
+</ul>
+</li>
+<li>设置<code>auto</code>又设置了<code>width</code>，所以取<code>width</code>宽度<code>40px</code><ul>
+<li>注意这里虽然<code>min-content</code>&gt;<code>width</code>，但是最终尺寸仍然是<code>width:40px</code>(导致产生溢出)</li>
+<li>所以当<code>flex-basis</code>指定<code>auto</code>同时又设置<code>width</code>时，最终尺寸将不受<code>min-content</code>影响</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>第三个盒子<ul>
+<li>example-3.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/example-3.png" alt="example-3.png"></li>
+</ul>
+</li>
+<li>虽然设置了<code>flex-basis:20px;</code>，但由于<code>min-content</code>为<code>30px</code>，所以最终的大小为<code>30px</code></li>
+</ul>
+</li>
+<li>第四个盒子<ul>
+<li>example-4.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/example-4.png" alt="example-4.png"></li>
+</ul>
+</li>
+<li><code>30%</code>为<code>120px</code>，而且<code>min-content</code>&lt;<code>120px</code>，所以最终尺寸为<code>120px</code></li>
+</ul>
+</li>
+<li>第五个盒子<ul>
+<li>example-5.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/example-5.png" alt="example-5.png"></li>
+</ul>
+</li>
+<li><code>flex-basis</code>为<code>0</code>，不参与空间计算，所以最终尺寸为<code>min-content</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="width、flex-basis、min-width、max-width-关系"><a href="#width、flex-basis、min-width、max-width-关系" class="headerlink" title="width、flex-basis、min-width、max-width 关系"></a>width、flex-basis、min-width、max-width 关系</h3><ul>
+<li>记住公式</li>
+<li>优先级<code>flex-basis</code>&gt;<code>width</code>&gt;<code>min|max-content</code><ul>
+<li>最终展示的大小会受<code>max|min-width</code>限制</li>
+<li>同时设置上述属性并且<code>flex-basis</code>不为<code>auto</code>时<ul>
+<li><code>flex-basis</code>会覆盖(忽略)<code>width</code>值进行布局，<code>flex-item</code>最终展现的尺寸会受<code>min|max-width</code>限制</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>具体可看下面例子</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;UTF-8&quot; /&gt;</span><br><span class="line">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;</span><br><span class="line">    &lt;title&gt;Document&lt;/title&gt;</span><br><span class="line">    &lt;style&gt;</span><br><span class="line">      * &#123;</span><br><span class="line">        box-sizing: border-box;</span><br><span class="line">      &#125;</span><br><span class="line">      .wp &#123;</span><br><span class="line">        border: 1px solid red;</span><br><span class="line">        display: flex;</span><br><span class="line">        flex-direction: row;</span><br><span class="line">      &#125;</span><br><span class="line">      .box &#123;</span><br><span class="line">        border: 1px dotted blue;</span><br><span class="line">        flex-grow: 0;</span><br><span class="line">        flex-shrink: 0;</span><br><span class="line">      &#125;</span><br><span class="line">      .box + .box &#123;</span><br><span class="line">        margin-left: 10px;</span><br><span class="line">      &#125;</span><br><span class="line">      .box:nth-child(1) &#123;</span><br><span class="line">        flex-basis: auto;</span><br><span class="line">        /* flex-basis为auto，所以取width为初始尺寸 */</span><br><span class="line">        width: 200px;</span><br><span class="line">        /* 最终展示受max-width限制 */</span><br><span class="line">        max-width: 100px;</span><br><span class="line">      &#125;</span><br><span class="line">      .box:nth-child(2) &#123;</span><br><span class="line">        flex-basis: 200px;</span><br><span class="line">        /* flex-basis非auto，所以width被忽略 */</span><br><span class="line">        width: 400px;</span><br><span class="line">      &#125;</span><br><span class="line">      .box:nth-child(3) &#123;</span><br><span class="line">        flex-basis: 200px;</span><br><span class="line">        /* flex-basis非auto，所以width被忽略 */</span><br><span class="line">        width: 400px;</span><br><span class="line">        /* 最终展示受max-width限制 */</span><br><span class="line">        max-width: 100px;</span><br><span class="line">      &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;div class=&quot;wp&quot;&gt;</span><br><span class="line">      &lt;p class=&quot;box&quot;&gt;1 123 zcjviodf ajdiof jaoisdf asdjifo&lt;/p&gt;</span><br><span class="line">      &lt;p class=&quot;box&quot;&gt;1 123 zcjviodf ajdiof jaoisdf asdjifo&lt;/p&gt;</span><br><span class="line">      &lt;p class=&quot;box&quot;&gt;1 123 zcjviodf ajdiof jaoisdf asdjifo&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第一个盒子<ul>
+<li>space-1.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/space-1.png" alt="space-1.png"></li>
+</ul>
+</li>
+<li><code>flex-basis</code>为<code>auto</code>，所以<code>width:200px</code>生效，但最终的展示大小受<code>max-width:100px</code>限制，所以最终<code>100px</code></li>
+</ul>
+</li>
+<li>第二个盒子<ul>
+<li>space-2.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/space-2.png" alt="space-2.png"></li>
+</ul>
+</li>
+<li><code>flex-basis</code>不为<code>auto</code>，所以<code>width</code>直接被忽略，所以最终尺寸为<code>flex-basis</code>指定的<code>200px</code></li>
+</ul>
+</li>
+<li>第三个盒子<ul>
+<li>space-3.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/space-3.png" alt="space-3.png"></li>
+</ul>
+</li>
+<li><code>flex-basis</code>不为<code>auto</code>，所以<code>width</code>被忽略，展示尺寸为<code>flex-basis</code>指定的<code>200px</code>，最终的尺寸受<code>max-width:100px</code>限制，所以最后为<code>100px</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="flex-basis-和-box-sizing"><a href="#flex-basis-和-box-sizing" class="headerlink" title="flex-basis 和 box-sizing"></a>flex-basis 和 box-sizing</h3><ul>
+<li>注意<code>flex-basis</code>会受<code>box-sizing</code>影响<ul>
+<li><code>flex-basis</code>指定的尺寸，其实是<code>box-sizing</code>设置的盒子尺寸</li>
+</ul>
+</li>
+<li>例子</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;UTF-8&quot; /&gt;</span><br><span class="line">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;</span><br><span class="line">    &lt;title&gt;Document&lt;/title&gt;</span><br><span class="line">    &lt;style&gt;</span><br><span class="line">      .wp &#123;</span><br><span class="line">        display: flex;</span><br><span class="line">      &#125;</span><br><span class="line">      .box &#123;</span><br><span class="line">        flex-basis: 100px;</span><br><span class="line">        border: 10px solid red;</span><br><span class="line">        padding: 20px;</span><br><span class="line">      &#125;</span><br><span class="line">      .box + .box &#123;</span><br><span class="line">        margin-left: 10px;</span><br><span class="line">      &#125;</span><br><span class="line">      .box:nth-child(1) &#123;</span><br><span class="line">        box-sizing: border-box;</span><br><span class="line">        /* flex-basis指定的是border-box的尺寸 */</span><br><span class="line">      &#125;</span><br><span class="line">      .box:nth-child(2) &#123;</span><br><span class="line">        /* flex-basis指定的是content-box的尺寸 */</span><br><span class="line">        box-sizing: content-box;</span><br><span class="line">      &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;div class=&quot;wp&quot;&gt;</span><br><span class="line">      &lt;div class=&quot;box&quot;&gt;1&lt;/div&gt;</span><br><span class="line">      &lt;div class=&quot;box&quot;&gt;2&lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>可以看到同样的<code>padding</code>、<code>border</code>最后得出的尺寸不一样</li>
+<li>第一个盒子<ul>
+<li><code>flex-basis</code>指定的是<code>border-box</code>的尺寸</li>
+<li>box-sizing-1.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/box-sizing-1.png" alt="box-sizing-1.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>第二个盒子<ul>
+<li><code>flex-basis</code>指定的是<code>content-box</code>的尺寸</li>
+<li>box-sizing-2.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/box-sizing-2.png" alt="box-sizing-2.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><ul>
+<li><code>flex-basis</code>决定了<code>flex-item</code>的初始尺寸</li>
+<li><code>flex-basis</code>设置的是<code>box-sizing</code>指定的盒子尺寸</li>
+<li>而初始尺寸又决定了正负向空间，进而影响<code>flex-grow</code>、<code>flex-shrink</code>的表现</li>
+<li>当<code>flex-basis</code>为<code>auto</code>时，取<code>width</code>值为初始尺寸</li>
+<li>否则用<code>flex-basis</code>指定的值做为初始尺寸</li>
+<li>最终展示的尺寸会受<code>min|max-width</code>限制</li>
+</ul>
+<h2 id="flex-grow"><a href="#flex-grow" class="headerlink" title="flex-grow"></a>flex-grow</h2><ul>
+<li>正向空间的分配<ul>
+<li>存在正向空间时，则需要将空间按策略分配给每个<code>flex-item</code></li>
+<li>也就是按照一个放大策略将剩余空间分配给每个<code>flex-item</code></li>
+<li>决定如何放大的关键属性就是<code>flex-grow</code></li>
+</ul>
+</li>
+<li>默认值为<code>0</code>，即不放大</li>
+</ul>
+<h3 id="放大算法"><a href="#放大算法" class="headerlink" title="放大算法"></a>放大算法</h3><ul>
+<li><code>flex-grow</code>只能取正值</li>
+<li>它代表的是一个拉伸(放大)因子<ul>
+<li>可以理解为一个比例(权重)，代表有多少正向空间的分配权利</li>
+</ul>
+</li>
+<li>算法公式<ul>
+<li><code>最终尺寸=初始尺寸 + 分配比例*正向空间大小</code></li>
+<li><code>分配比例</code> = <code>当前flex-item的拉伸因子</code>/<code>所有flex-item的拉伸因子之和</code><ul>
+<li>注意<ul>
+<li>所有<code>flex-item</code>的拉伸因子之和 <strong>最小值为 1</strong>，即<strong>如果拉伸因子之和小于 1，也会取 1 参与计算</strong></li>
+<li>这会导致出现正向空间没有被全部分配的场景，具体见第二个例子</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>比如正向空间为 <code>x</code>，三个元素的 <code>flex-grow</code> 分别为 <code>a，b，c</code>。设 <code>sum 为 a + b + c</code>。那么三个元素将得到的正向空间分别是  <code>x * a / sum</code>, <code>x * b / sum</code>, <code>x * c / sum</code>，最终尺寸为初始尺寸加上+获得的正向空间</li>
+</ul>
+</li>
+</ul>
+<h4 id="例子-1，拉伸因子之和-gt-1"><a href="#例子-1，拉伸因子之和-gt-1" class="headerlink" title="例子 1，拉伸因子之和&gt;=1"></a>例子 1，拉伸因子之和&gt;=1</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;UTF-8&quot; /&gt;</span><br><span class="line">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;</span><br><span class="line">    &lt;title&gt;Document&lt;/title&gt;</span><br><span class="line">    &lt;style&gt;</span><br><span class="line">      * &#123;</span><br><span class="line">        box-sizing: border-box;</span><br><span class="line">      &#125;</span><br><span class="line">      .c-Wp &#123;</span><br><span class="line">        width: 500px;</span><br><span class="line">        border: 1px solid red;</span><br><span class="line">        display: flex;</span><br><span class="line">      &#125;</span><br><span class="line">      .c-Box &#123;</span><br><span class="line">        outline: 1px dotted blue;</span><br><span class="line">        /* 不缩放 */</span><br><span class="line">        flex-shrink: 0;</span><br><span class="line">      &#125;</span><br><span class="line">      .c-Box:nth-child(1) &#123;</span><br><span class="line">        /* 正向空间我分配 1/6 */</span><br><span class="line">        flex-grow: 1;</span><br><span class="line">        flex-basis: 100px;</span><br><span class="line">      &#125;</span><br><span class="line">      .c-Box:nth-child(2) &#123;</span><br><span class="line">        /* 正向空间我分配 2/6 */</span><br><span class="line">        flex-grow: 2;</span><br><span class="line">        flex-basis: 150px;</span><br><span class="line">      &#125;</span><br><span class="line">      .c-Box:nth-child(3) &#123;</span><br><span class="line">        /* 正向空间我分配 3/6 */</span><br><span class="line">        flex-grow: 3;</span><br><span class="line">        flex-basis: 100px;</span><br><span class="line">      &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;div class=&quot;c-Wp&quot;&gt;</span><br><span class="line">      &lt;div class=&quot;c-Box&quot;&gt;one jiojio&lt;/div&gt;</span><br><span class="line">      &lt;div class=&quot;c-Box&quot;&gt;two jlkzjclkvz&lt;/div&gt;</span><br><span class="line">      &lt;div class=&quot;c-Box&quot;&gt;three cjioajdisof&lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>可以看到<code>flex container</code>尺寸为<code>500px</code></li>
+<li>三个<code>flex item</code>的初始尺寸分别为<code>100px</code>、<code>150px</code>、<code>100px</code>，所以剩余<code>500-350=150</code>的正向空间</li>
+<li>三个<code>flex item</code>分别设置了<code>1、2、3</code>的拉伸因子(权重)</li>
+<li>我们记<code>sum=1 + 2 + 3 = 6</code>为权重总和，所以每个<code>flex-item</code>的分配比例也就可以计算出来</li>
+<li>第一个盒子<ul>
+<li><code>1/sum</code>即<code>1/6</code>，即<code>150 * 1/6 = 25</code></li>
+<li>所以最终尺寸为<code>100(初始尺寸) + 25(正向空间)=125</code></li>
+<li>grow-over-1.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/grow-over-1.png" alt="grow-over-1.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>第二个盒子<ul>
+<li><code>2/sum</code>即<code>2/6</code>，即<code>150 * 1/6 = 50</code></li>
+<li>所以最终尺寸为<code>150(初始尺寸) + 50(正向空间)=200</code></li>
+<li>grow-over-2.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/grow-over-2.png" alt="grow-over-2.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>第一个盒子<ul>
+<li><code>3/sum</code>即<code>3/6</code>，即<code>150 * 1/6 = 75</code></li>
+<li>所以最终尺寸为<code>100(初始尺寸) + 75(正向空间)=175</code></li>
+<li>grow-over-3.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/grow-over-3.png" alt="grow-over-3.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="例子-2，拉伸因子之和-lt-1"><a href="#例子-2，拉伸因子之和-lt-1" class="headerlink" title="例子 2，拉伸因子之和&lt;1"></a>例子 2，拉伸因子之和&lt;1</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;UTF-8&quot; /&gt;</span><br><span class="line">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;</span><br><span class="line">    &lt;title&gt;Document&lt;/title&gt;</span><br><span class="line">    &lt;style&gt;</span><br><span class="line">      * &#123;</span><br><span class="line">        box-sizing: border-box;</span><br><span class="line">      &#125;</span><br><span class="line">      .c-Wp &#123;</span><br><span class="line">        width: 500px;</span><br><span class="line">        border: 1px solid red;</span><br><span class="line">        display: flex;</span><br><span class="line">      &#125;</span><br><span class="line">      .c-Box &#123;</span><br><span class="line">        outline: 1px dotted blue;</span><br><span class="line">        /* 不缩放 */</span><br><span class="line">        flex-shrink: 0;</span><br><span class="line">      &#125;</span><br><span class="line">      .c-Box:nth-child(1) &#123;</span><br><span class="line">        /* 正向空间我分配 0.1/1 */</span><br><span class="line">        flex-grow: 0.1;</span><br><span class="line">        flex-basis: 100px;</span><br><span class="line">      &#125;</span><br><span class="line">      .c-Box:nth-child(2) &#123;</span><br><span class="line">        /* 正向空间我分配 0.2/1 */</span><br><span class="line">        flex-grow: 0.2;</span><br><span class="line">        flex-basis: 150px;</span><br><span class="line">      &#125;</span><br><span class="line">      .c-Box:nth-child(3) &#123;</span><br><span class="line">        /* 正向空间我分配 0.3/1 */</span><br><span class="line">        flex-grow: 0.3;</span><br><span class="line">        flex-basis: 100px;</span><br><span class="line">      &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;div class=&quot;c-Wp&quot;&gt;</span><br><span class="line">      &lt;div class=&quot;c-Box&quot;&gt;one jiojio&lt;/div&gt;</span><br><span class="line">      &lt;div class=&quot;c-Box&quot;&gt;two jlkzjclkvz&lt;/div&gt;</span><br><span class="line">      &lt;div class=&quot;c-Box&quot;&gt;three cjioajdisof&lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>可以看到<code>sum= 0.1 + 0.2 + 0.3 = 0.6 &lt; 1</code>，所以最终取<code>1</code>参与计算</li>
+<li>第一个盒子<ul>
+<li>最终尺寸:<code>100(初始尺寸) +0.1/1 * 150 = 115</code></li>
+<li>grow-less-1.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/grow-less-1.png" alt="grow-less-1.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>第二个盒子<ul>
+<li>最终尺寸:<code>150(初始尺寸) +0.2/1 * 150 = 180</code></li>
+<li>grow-less-2.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/grow-less-2.png" alt="grow-less-2.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>第三个盒子<ul>
+<li>最终尺寸:<code>100(初始尺寸) +0.3/1 * 150 = 145</code></li>
+<li>grow-less-3.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/grow-less-3.png" alt="grow-less-3.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>可以看到最后还有<code>500 -115 - 180 - 145 = 60</code>的尺寸没有分配</li>
+</ul>
+<h4 id="等分布局"><a href="#等分布局" class="headerlink" title="等分布局"></a>等分布局</h4><ul>
+<li>如何实现自适应等分布局?<ul>
+<li>所有<code>flex item</code>的<code>flex-basis设置为0</code>和<code>flex-grow设置为相同值(总和&gt;1)</code>即可</li>
+</ul>
+</li>
+<li>原理<ul>
+<li><code>flex-basis:0</code>代表初始尺寸为 0，当所有<code>flex item</code>的初始尺寸都为 0，那计算出来的正向空间就为<code>flex container</code>的尺寸</li>
+<li><code>flex-grow</code>设置为相同值并且总和&gt;1，代表平均分配所有正向空间，由于初始尺寸为 0，所有<code>flex item</code>得到的正向空间又相同，所以就实现了等分布局</li>
+</ul>
+</li>
+<li>例子</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;UTF-8&quot; /&gt;</span><br><span class="line">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;</span><br><span class="line">    &lt;title&gt;Document&lt;/title&gt;</span><br><span class="line">    &lt;style&gt;</span><br><span class="line">      * &#123;</span><br><span class="line">        box-sizing: border-box;</span><br><span class="line">      &#125;</span><br><span class="line">      .c-Wp &#123;</span><br><span class="line">        width: 500px;</span><br><span class="line">        border: 1px solid red;</span><br><span class="line">        display: flex;</span><br><span class="line">      &#125;</span><br><span class="line">      .c-Box &#123;</span><br><span class="line">        outline: 1px dotted blue;</span><br><span class="line">        /* 不缩放 */</span><br><span class="line">        flex-shrink: 0;</span><br><span class="line"></span><br><span class="line">        flex-basis: 0;</span><br><span class="line">        flex-grow: 1;</span><br><span class="line">      &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;div class=&quot;c-Wp&quot;&gt;</span><br><span class="line">      &lt;div class=&quot;c-Box&quot;&gt;one jiojio&lt;/div&gt;</span><br><span class="line">      &lt;div class=&quot;c-Box&quot;&gt;two jlkzjclkvz&lt;/div&gt;</span><br><span class="line">      &lt;div class=&quot;c-Box&quot;&gt;three cjioajdisof&lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>average.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/average.png" alt="average.png"></li>
+</ul>
+</li>
+</ul>
+<h2 id="flex-shrink"><a href="#flex-shrink" class="headerlink" title="flex-shrink"></a>flex-shrink</h2><ul>
+<li>负向空间的分配<ul>
+<li>存在负向空间时，需要按照缩小算法收缩每个<code>flex-item</code></li>
+</ul>
+</li>
+<li>默认值为<code>0</code>，即不缩小</li>
+</ul>
+<h2 id="缩小算法"><a href="#缩小算法" class="headerlink" title="缩小算法"></a>缩小算法</h2><ul>
+<li>和放大算法不同，缩小算法在计算每个<code>flex item</code>的收缩大小时，不仅需要考虑收缩因子(<code>flex-shrink指定的值</code>)，还需要考虑<code>item的初始尺寸</code></li>
+<li>具体算法<ul>
+<li>总权重 TW = 每个(<code>item</code>的<code>flex-shrink</code> * <code>item</code>的初始尺寸)之和</li>
+<li>当前<code>item</code>需要缩小的尺寸= 负向空间 _ ((当前 item 的<code>flex-shrink</code> _ 初始尺寸) / 总权重 TW)</li>
+<li>最终尺寸 = 当前<code>item初始尺寸</code> + 需要缩小尺寸 (因为负向空间尺寸为负值，所以此处为加号)</li>
+</ul>
+</li>
+</ul>
+<h2 id="例子-1，缩小因子之和-gt-1"><a href="#例子-1，缩小因子之和-gt-1" class="headerlink" title="例子 1，缩小因子之和&gt;=1"></a>例子 1，缩小因子之和&gt;=1</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;UTF-8&quot; /&gt;</span><br><span class="line">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;</span><br><span class="line">    &lt;title&gt;Document&lt;/title&gt;</span><br><span class="line">    &lt;style&gt;</span><br><span class="line">      * &#123;</span><br><span class="line">        box-sizing: border-box;</span><br><span class="line">      &#125;</span><br><span class="line">      .c-Wp &#123;</span><br><span class="line">        width: 500px;</span><br><span class="line">        border: 1px solid red;</span><br><span class="line">        display: flex;</span><br><span class="line">      &#125;</span><br><span class="line">      .c-Box &#123;</span><br><span class="line">        outline: 1px dotted blue;</span><br><span class="line">        flex-grow: 0;</span><br><span class="line">      &#125;</span><br><span class="line">      .c-Box:nth-child(1) &#123;</span><br><span class="line">        flex-shrink: 1;</span><br><span class="line">        flex-basis: 150px;</span><br><span class="line">      &#125;</span><br><span class="line">      .c-Box:nth-child(2) &#123;</span><br><span class="line">        flex-shrink: 2;</span><br><span class="line">        flex-basis: 200px;</span><br><span class="line">      &#125;</span><br><span class="line">      .c-Box:nth-child(3) &#123;</span><br><span class="line">        flex-shrink: 3;</span><br><span class="line">        flex-basis: 300px;</span><br><span class="line">      &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;div class=&quot;c-Wp&quot;&gt;</span><br><span class="line">      &lt;div class=&quot;c-Box&quot;&gt;1&lt;/div&gt;</span><br><span class="line">      &lt;div class=&quot;c-Box&quot;&gt;2&lt;/div&gt;</span><br><span class="line">      &lt;div class=&quot;c-Box&quot;&gt;3&lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>负向空间 = <code>500 - 150 - 200 - 300 = -150</code></li>
+<li>计算总权重 TW = <code>1 * 150 + 2 * 200 + 3 * 300 = 1450</code></li>
+<li>第一个盒子<ul>
+<li>最终尺寸= <code>150 + (-150负向空间 * ((1*150) / 1450)) = 134.5</code></li>
+<li>shrink-over-1.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/shrink-over-1.png" alt="shrink-over-1.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>第二个盒子<ul>
+<li>最终尺寸= <code>200 + (-150负向空间 * ((2*200) / 1450)) = 158.6</code></li>
+<li>shrink-over-2.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/shrink-over-2.png" alt="shrink-over-2.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>第三个盒子<ul>
+<li>最终尺寸= <code>300 + (-150负向空间 * ((3*300) / 1450)) = 206.9</code></li>
+<li>shrink-over-3.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/shrink-over-3.png" alt="shrink-over-3.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="例子-2，缩小因子之和-lt-1"><a href="#例子-2，缩小因子之和-lt-1" class="headerlink" title="例子 2，缩小因子之和&lt;1"></a>例子 2，缩小因子之和&lt;1</h3><ul>
+<li>当缩放因子之和&lt;1 时，只有缩放因子之和* 负向空间的空间会参与收缩<ul>
+<li>例如 , 缩放因子分别为<code>0.1、0.2、0.3</code>，总和&lt;1，负向空间的尺寸为 150，那么只有 90 的空间会被缩小</li>
+</ul>
+</li>
+<li>例子(将例子 1 的缩放因子设置为缩小十倍)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;UTF-8&quot; /&gt;</span><br><span class="line">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;</span><br><span class="line">    &lt;title&gt;Document&lt;/title&gt;</span><br><span class="line">    &lt;style&gt;</span><br><span class="line">      * &#123;</span><br><span class="line">        box-sizing: border-box;</span><br><span class="line">      &#125;</span><br><span class="line">      .c-Wp &#123;</span><br><span class="line">        width: 500px;</span><br><span class="line">        border: 1px solid red;</span><br><span class="line">        display: flex;</span><br><span class="line">      &#125;</span><br><span class="line">      .c-Box &#123;</span><br><span class="line">        outline: 1px dotted blue;</span><br><span class="line">        flex-grow: 0;</span><br><span class="line">      &#125;</span><br><span class="line">      .c-Box:nth-child(1) &#123;</span><br><span class="line">        flex-shrink: 0.1;</span><br><span class="line">        flex-basis: 150px;</span><br><span class="line">      &#125;</span><br><span class="line">      .c-Box:nth-child(2) &#123;</span><br><span class="line">        flex-shrink: 0.2;</span><br><span class="line">        flex-basis: 200px;</span><br><span class="line">      &#125;</span><br><span class="line">      .c-Box:nth-child(3) &#123;</span><br><span class="line">        flex-shrink: 0.3;</span><br><span class="line">        flex-basis: 300px;</span><br><span class="line">      &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;div class=&quot;c-Wp&quot;&gt;</span><br><span class="line">      &lt;div class=&quot;c-Box&quot;&gt;1&lt;/div&gt;</span><br><span class="line">      &lt;div class=&quot;c-Box&quot;&gt;2&lt;/div&gt;</span><br><span class="line">      &lt;div class=&quot;c-Box&quot;&gt;3&lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>负向空间 = <code>500 - 150 - 200 - 300 = -150</code></li>
+<li>计算总权重 TW = <code>0.1* 150 + 0.2 * 200 + 0.3 * 300 = 145</code></li>
+<li>第一个盒子<ul>
+<li>最终尺寸= <code>150 + (-150负向空间 * (0.1 + 0.2 + 0.3) * ((0.1*150) / 145)) = 140.69</code></li>
+<li>shrink-less-1.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/shrink-less-1.png" alt="shrink-less-1.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>第二个盒子<ul>
+<li>最终尺寸= <code>200 + (-150负向空间 * (0.1 + 0.2 + 0.3) * ((0.2*200) / 145)) = 175.17</code></li>
+<li>shrink-less-2.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/shrink-less-2.png" alt="shrink-less-2.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>第三个盒子<ul>
+<li>最终尺寸= <code>300 + (-150负向空间 * (0.1 + 0.2 + 0.3) * ((0.3*300) / 145)) = 244.14</code></li>
+<li>shrink-less-3.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/shrink-less-3.png" alt="shrink-less-3.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>可以看到还有<code>60px</code>溢出了(没有被收缩)</li>
+</ul>
+<h3 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h3><ul>
+<li>放大和缩小的算法不太一样，缩小算法需要考虑初始尺寸</li>
+<li>总结公式如下</li>
+<li>sumary.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/sumary.png" alt="sumary.png"></li>
+</ul>
+</li>
+</ul>
+<h2 id="简写属性"><a href="#简写属性" class="headerlink" title="简写属性"></a>简写属性</h2><h3 id="flex"><a href="#flex" class="headerlink" title="flex"></a>flex</h3><ul>
+<li><code>flex</code>是上述三者的简写<ul>
+<li>其默认值为<code>flex: 0 1 auto;</code></li>
+<li>三个值依次代表<code>flex-grow</code>、<code>flex-shrink</code>、<code>flex-basis</code></li>
+<li>0 代表不放大</li>
+<li>1 代表不缩小</li>
+<li>auto 代表使用 width 值做为初始尺寸</li>
+</ul>
+</li>
+<li>由于默认值为<code>0 1 auto</code>，所以在某些特定场景，会出现问题，所以建议在任何场景都显示指明<code>flex</code>的三个属性值</li>
+</ul>
+<h3 id="常用缩写"><a href="#常用缩写" class="headerlink" title="常用缩写"></a>常用缩写</h3><ul>
+<li><code>flex:1</code><ul>
+<li>等同<code>flex: 1 1 0;</code></li>
+</ul>
+</li>
+<li><code>flex:0</code><ul>
+<li>等同<code>flex: 0 1 0;</code></li>
+</ul>
+</li>
+<li><code>flex:auto</code><ul>
+<li>等同<code>flex: 1 1 auto;</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="flex-应用"><a href="#flex-应用" class="headerlink" title="flex 应用"></a>flex 应用</h2><h3 id="移动端常见，头尾固定，中间局部滚动布局"><a href="#移动端常见，头尾固定，中间局部滚动布局" class="headerlink" title="移动端常见，头尾固定，中间局部滚动布局"></a>移动端常见，头尾固定，中间局部滚动布局</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;c-BaseLayoutVertical&quot;&gt;</span><br><span class="line">    &lt;div</span><br><span class="line">      v-if=&quot;this.$slots.header&quot;</span><br><span class="line">      class=&quot;c-BaseLayoutVertical-hd&quot;</span><br><span class="line">    &gt;</span><br><span class="line">      &lt;slot name=&quot;header&quot; /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div class=&quot;c-BaseLayoutVertical-bd&quot;&gt;</span><br><span class="line">      &lt;slot /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div</span><br><span class="line">      v-if=&quot;this.$slots.footer&quot;</span><br><span class="line">      class=&quot;c-BaseLayoutVertical-ft&quot;</span><br><span class="line">    &gt;</span><br><span class="line">      &lt;slot name=&quot;footer&quot; /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">/**</span><br><span class="line"> * * 常见垂直上中下三行布局</span><br><span class="line"> */</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &apos;BaseLayoutVertical&apos;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;style scoped&gt;</span><br><span class="line">/**</span><br><span class="line"> * ! c-BaseLayoutVertical节点的父节点需要有高度</span><br><span class="line"> */</span><br><span class="line">.c-BaseLayoutVertical &#123;</span><br><span class="line">  display: flex;</span><br><span class="line">  flex-direction: column;</span><br><span class="line">  height: 100%;</span><br><span class="line">&#125;</span><br><span class="line">.c-BaseLayoutVertical-hd &#123;</span><br><span class="line">  flex: 0 0 auto;</span><br><span class="line">&#125;</span><br><span class="line">.c-BaseLayoutVertical-bd &#123;</span><br><span class="line">  flex: 1 1 auto;</span><br><span class="line">  height: 100%;</span><br><span class="line">  overflow: auto;</span><br><span class="line">  -webkit-overflow-scrolling: touch;</span><br><span class="line">  /* 优化滚动性能 */</span><br><span class="line">  will-change: scroll-position;</span><br><span class="line">  position: relative;</span><br><span class="line">  z-index: 1;</span><br><span class="line">&#125;</span><br><span class="line">.c-BaseLayoutVertical-ft &#123;</span><br><span class="line">  flex: 0 0 auto;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>apply.png<ul>
+<li><img src="/2020/03/19/flex-space-algorithm/apply.png" alt="apply.png"></li>
+</ul>
+</li>
+<li>同理水平方向，我们也可以实现常见的<code>双飞翼、圣杯布局</code></li>
+<li>具体可参考下面连接<ul>
+<li><a href="https://github.com/BryanAdamss/vue-awesome-template/blob/master/src/views/LayoutTest/LayoutTest.vue" target="_blank" rel="noopener">https://github.com/BryanAdamss/vue-awesome-template/blob/master/src/views/LayoutTest/LayoutTest.vue</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h3 id="确定-flex-item-尺寸的步骤"><a href="#确定-flex-item-尺寸的步骤" class="headerlink" title="确定 flex item 尺寸的步骤"></a>确定 flex item 尺寸的步骤</h3><ul>
+<li>首先确定初始尺寸<ul>
+<li><code>flex-basis、width</code>决定<ul>
+<li><code>flex-basis为auto</code>时，取<code>width值</code>，若未显示指定<code>width</code>值，则取<code>max-content</code></li>
+<li>非<code>auto</code>时，直接取对应值的计算值为初始尺寸</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>确定空间类型<ul>
+<li>初始尺寸之和 &gt;<code>flex container</code>尺寸时存在负向空间<ul>
+<li>负向空间大小 = 初始尺寸之和 - <code>flex container</code>尺寸</li>
+</ul>
+</li>
+<li>初始尺寸之和 &lt; <code>flex container</code>尺寸时存在正向空间<ul>
+<li>正向空间大小 = <code>flex container</code>尺寸 - 初始尺寸之和</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>根据空间类型决定使用<code>flex-grow</code>、<code>flex-shrink</code>策略来分配空间，得到展示大小<ul>
+<li>正向空间直接按拉伸因子(<code>flex-grow申明的</code>)所占比例来分配</li>
+<li>负向空间收缩不光要考虑收缩因子，还需要考虑到初始尺寸</li>
+</ul>
+</li>
+<li>展示大小受<code>min|max-width|height</code>的限制</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/flex-basis" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/CSS/flex-basis</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Flexible_Box_Layout/Controlling_Ratios_of_Flex_Items_Along_the_Main_Ax" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Flexible_Box_Layout/Controlling_Ratios_of_Flex_Items_Along_the_Main_Ax</a></li>
+<li><a href="https://www.zhangxinxu.com/wordpress/2019/12/css-flex-basis/" target="_blank" rel="noopener">https://www.zhangxinxu.com/wordpress/2019/12/css-flex-basis/</a></li>
+<li><a href="https://www.zhangxinxu.com/wordpress/2019/12/css-flex-deep/" target="_blank" rel="noopener">https://www.zhangxinxu.com/wordpress/2019/12/css-flex-deep/</a></li>
+<li><a href="https://github.com/xieranmaya/blog/issues/9" target="_blank" rel="noopener">https://github.com/xieranmaya/blog/issues/9</a></li>
+<li><a href="https://www.cnblogs.com/yunqishequ/p/10006872.html" target="_blank" rel="noopener">https://www.cnblogs.com/yunqishequ/p/10006872.html</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/flex/" rel="tag"># flex</a>
+          
+            <a href="/tags/布局/" rel="tag"># 布局</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/07/stacking-context/" rel="next" title="stacking-context">
+                <i class="fa fa-chevron-left"></i> stacking-context
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/23/xss/" rel="prev" title="xss">
+                xss <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/Avatar.png"
+               alt="BryanAdamss" />
+          <p class="site-author-name" itemprop="name">BryanAdamss</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/BryanAdamss" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#flex-basis、flex-grow、flex-shrink"><span class="nav-number">1.</span> <span class="nav-text">flex-basis、flex-grow、flex-shrink</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#min-content、max-content"><span class="nav-number">1.1.</span> <span class="nav-text">min-content、max-content</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正负向自由空间"><span class="nav-number">1.2.</span> <span class="nav-text">正负向自由空间</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#正向自由空间-positive-free-space"><span class="nav-number">1.2.1.</span> <span class="nav-text">正向自由空间 positive free space</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#负向自由空间-negative-free-space"><span class="nav-number">1.2.2.</span> <span class="nav-text">负向自由空间 negative free space</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注意"><span class="nav-number">1.2.3.</span> <span class="nav-text">注意</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#flex-basis"><span class="nav-number">1.3.</span> <span class="nav-text">flex-basis</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#取值"><span class="nav-number">1.3.1.</span> <span class="nav-text">取值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例子"><span class="nav-number">1.3.2.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#width、flex-basis、min-width、max-width-关系"><span class="nav-number">1.3.3.</span> <span class="nav-text">width、flex-basis、min-width、max-width 关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flex-basis-和-box-sizing"><span class="nav-number">1.3.4.</span> <span class="nav-text">flex-basis 和 box-sizing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">1.3.5.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#flex-grow"><span class="nav-number">1.4.</span> <span class="nav-text">flex-grow</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#放大算法"><span class="nav-number">1.4.1.</span> <span class="nav-text">放大算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#例子-1，拉伸因子之和-gt-1"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">例子 1，拉伸因子之和&gt;=1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#例子-2，拉伸因子之和-lt-1"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">例子 2，拉伸因子之和&lt;1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#等分布局"><span class="nav-number">1.4.1.3.</span> <span class="nav-text">等分布局</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#flex-shrink"><span class="nav-number">1.5.</span> <span class="nav-text">flex-shrink</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缩小算法"><span class="nav-number">1.6.</span> <span class="nav-text">缩小算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#例子-1，缩小因子之和-gt-1"><span class="nav-number">1.7.</span> <span class="nav-text">例子 1，缩小因子之和&gt;=1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#例子-2，缩小因子之和-lt-1"><span class="nav-number">1.7.1.</span> <span class="nav-text">例子 2，缩小因子之和&lt;1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结-1"><span class="nav-number">1.7.2.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简写属性"><span class="nav-number">1.8.</span> <span class="nav-text">简写属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#flex"><span class="nav-number">1.8.1.</span> <span class="nav-text">flex</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用缩写"><span class="nav-number">1.8.2.</span> <span class="nav-text">常用缩写</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#flex-应用"><span class="nav-number">1.9.</span> <span class="nav-text">flex 应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#移动端常见，头尾固定，中间局部滚动布局"><span class="nav-number">1.9.1.</span> <span class="nav-text">移动端常见，头尾固定，中间局部滚动布局</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.10.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#确定-flex-item-尺寸的步骤"><span class="nav-number">1.10.1.</span> <span class="nav-text">确定 flex item 尺寸的步骤</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.11.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BryanAdamss</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

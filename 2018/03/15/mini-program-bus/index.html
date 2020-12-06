@@ -1,0 +1,940 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="小程序," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/Avatar.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="最近在做一个关于公交查询的小程序第一次接触小程序，有很多不熟悉的地方，特在此做个记录  微信小程序-公交查询笔记注册小程序 可以参照官网的教程https://mp.weixin.qq.com/debug/wxadoc/introduction/index.html?t=1521093163 需要注意的是注册邮箱必须是未注册过公众号、个人微信号的邮箱才行  目录结构  app.js用来注册app程">
+<meta name="keywords" content="小程序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mini-program-bus">
+<meta property="og:url" content="http://yoursite.com/2018/03/15/mini-program-bus/index.html">
+<meta property="og:site_name" content="BryanAdamss的博客">
+<meta property="og:description" content="最近在做一个关于公交查询的小程序第一次接触小程序，有很多不熟悉的地方，特在此做个记录  微信小程序-公交查询笔记注册小程序 可以参照官网的教程https://mp.weixin.qq.com/debug/wxadoc/introduction/index.html?t=1521093163 需要注意的是注册邮箱必须是未注册过公众号、个人微信号的邮箱才行  目录结构  app.js用来注册app程">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/03/15/mini-program-bus/catalog.png">
+<meta property="og:image" content="http://yoursite.com/2018/03/15/mini-program-bus/app_json.png">
+<meta property="og:updated_time" content="2018-03-15T07:31:01.976Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mini-program-bus">
+<meta name="twitter:description" content="最近在做一个关于公交查询的小程序第一次接触小程序，有很多不熟悉的地方，特在此做个记录  微信小程序-公交查询笔记注册小程序 可以参照官网的教程https://mp.weixin.qq.com/debug/wxadoc/introduction/index.html?t=1521093163 需要注意的是注册邮箱必须是未注册过公众号、个人微信号的邮箱才行  目录结构  app.js用来注册app程">
+<meta name="twitter:image" content="http://yoursite.com/2018/03/15/mini-program-bus/catalog.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/15/mini-program-bus/"/>
+
+
+
+
+
+  <title> mini-program-bus | BryanAdamss的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BryanAdamss的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个伪前端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/15/mini-program-bus/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BryanAdamss">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/Avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BryanAdamss的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                mini-program-bus
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-15T13:49:47+08:00">
+                2018-03-15 13:49:47
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FrontEnd/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>最近在做一个关于公交查询的小程序<br>第一次接触小程序，有很多不熟悉的地方，特在此做个记录</p>
+</blockquote>
+<h1 id="微信小程序-公交查询笔记"><a href="#微信小程序-公交查询笔记" class="headerlink" title="微信小程序-公交查询笔记"></a>微信小程序-公交查询笔记</h1><h2 id="注册小程序"><a href="#注册小程序" class="headerlink" title="注册小程序"></a>注册小程序</h2><ul>
+<li>可以参照官网的教程<a href="https://mp.weixin.qq.com/debug/wxadoc/introduction/index.html?t=1521093163" target="_blank" rel="noopener">https://mp.weixin.qq.com/debug/wxadoc/introduction/index.html?t=1521093163</a></li>
+<li>需要注意的是注册邮箱必须是未注册过公众号、个人微信号的邮箱才行</li>
+</ul>
+<h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><ul>
+<li><img src="/2018/03/15/mini-program-bus/catalog.png" alt=""></li>
+<li><code>app.js</code>用来注册app程序的，有对应的生命周期钩子，可以在其中做一些初始化工作，app会在整个程序运行的生命周期内可访问，所以一些简单的数据传递、共享，可以通过在app.js中挂载全局变量的形式完成。</li>
+<li><code>app.json</code>用来配置app程序<ul>
+<li><img src="/2018/03/15/mini-program-bus/app_json.png" alt=""></li>
+<li><code>pages</code>字段用来指定总共有哪些页面，最上面的是程序启动页；<ul>
+<li>微信开发工具保存时，会自动刷新并返回到启动页，所以在开发非启动页页面时，可以通过将非启动页调整到<code>pages</code>字段最上面，来提高开发效率。</li>
+</ul>
+</li>
+<li><code>window</code>主要用来配置app的一些样式(navigationBar样式)、全局功能(下拉刷新)</li>
+<li><code>networkTimeout</code>用来配置网络的超时时间</li>
+</ul>
+</li>
+<li><code>app.wxss</code>用来配置全局样式<ul>
+<li>可以在里面设计基础样式，如全局字体、背景色</li>
+<li><code>wxss</code>基本和<code>css</code>一样，css能用的，wxss基本都能用</li>
+</ul>
+</li>
+<li><code>project.config.json</code>项目配置</li>
+<li><code>pages</code>文件夹主要用来存放页面，页面相关资源全部保存在一个页面文件中，如图中的<code>index</code><ul>
+<li>每个页面文件夹(如<code>index</code>页面)中又包含页面对应的<code>js、json(非必须，若设置了会覆盖app.json)、wxml、wxss(会覆盖app.wxss)</code></li>
+</ul>
+</li>
+<li><code>utils</code>用来保存一些工具函数</li>
+</ul>
+<h2 id="API-Promisify"><a href="#API-Promisify" class="headerlink" title="API Promisify"></a>API Promisify</h2><ul>
+<li>小程序提供的接口，用的都是回调函数的形式，这在开发时不太友好。不过，小程序提供的api接口的回调名一致，而且支持原生的promise，可以用promise来定义一个Promisify函数来。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// promisify.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function">(<span class="params">api</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function">(<span class="params">options, ...params</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">      api(<span class="built_in">Object</span>.assign(&#123;&#125;, options, &#123; <span class="attr">success</span>: resolve, <span class="attr">fail</span>: reject &#125;), ...params);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="keyword">const</span> Promisify = <span class="built_in">require</span>(<span class="string">'../../utils/promise.js'</span>);</span><br><span class="line">    </span><br><span class="line"><span class="keyword">let</span> promisiedGetLocation = Promisify(wx.getLocation);</span><br><span class="line">promisiedGetLocation(&#123;</span><br><span class="line">  type: <span class="string">'gcj02'</span></span><br><span class="line">&#125;).then(<span class="function">(<span class="params">res</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(res);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="不同页面通信"><a href="#不同页面通信" class="headerlink" title="不同页面通信"></a>不同页面通信</h2><ul>
+<li>可以参考<a href="https://github.com/dannnney/weapp-event" target="_blank" rel="noopener">https://github.com/dannnney/weapp-event</a><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// event.js</span></span><br><span class="line"><span class="keyword">var</span> events = &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">on</span>(<span class="params">name, self, callback</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> tuple = [self, callback];</span><br><span class="line">  <span class="keyword">var</span> callbacks = events[name];</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(callbacks)) &#123;</span><br><span class="line">    callbacks.push(tuple);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    events[name] = [tuple];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">remove</span>(<span class="params">name, self</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> callbacks = events[name];</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(callbacks)) &#123;</span><br><span class="line">    events[name] = callbacks.filter(<span class="function">(<span class="params">tuple</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> tuple[<span class="number">0</span>] != self;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">emit</span>(<span class="params">name, data</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> callbacks = events[name];</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(callbacks)) &#123;</span><br><span class="line">    callbacks.map(<span class="function">(<span class="params">tuple</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">var</span> self = tuple[<span class="number">0</span>];</span><br><span class="line">      <span class="keyword">var</span> callback = tuple[<span class="number">1</span>];</span><br><span class="line">      callback.call(self, data);</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">exports.on = on;</span><br><span class="line">exports.remove = remove;</span><br><span class="line">exports.emit = emit;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="清除input内容"><a href="#清除input内容" class="headerlink" title="清除input内容"></a>清除input内容</h2><ul>
+<li>小程序没有提供一个简便的方法清除input的内容，百度了下可以用以下方法实现<ul>
+<li>将input的value属性绑定到一个变量上，单击时置空变量<ul>
+<li>场景:实现搜索建议，搜索框带有清除按钮</li>
+<li>将input的value绑定到变量a上，并监听input的oninput事件，将e.currentTarget.detail.value赋值给a,点击清除按钮时，置空a。<ul>
+<li>虽然完成了搜索建议和清除功能，但在手机上，快速删除时，光标会出现闪烁问题</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="坐标转换"><a href="#坐标转换" class="headerlink" title="坐标转换"></a>坐标转换</h2><ul>
+<li><code>wx.getLocation()</code>可以返回wgs84坐标和gcj02坐标<ul>
+<li>wgs84坐标为gps坐标；国内地图公司一般不使用<ul>
+<li>硬件设备、谷歌地球、chrome devTool中的Sensor</li>
+</ul>
+</li>
+<li>gcj02为在wgs84基础上加密的坐标，又称火星坐标系；国内大部分地图公司用的是gcj02<ul>
+<li>腾讯地图、高德地图国内、谷歌地图国内</li>
+</ul>
+</li>
+<li>bd09为百度地图使用的坐标系统，在gcj02的基础又加密了一层<ul>
+<li>百度地图<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Created by Wandergis on 2015/7/8.</span></span><br><span class="line"><span class="comment">// 提供了百度坐标（BD09）、国测局坐标（火星坐标，GCJ02）、和WGS84坐标系之间的转换</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//定义一些常量</span></span><br><span class="line"><span class="keyword">var</span> x_PI = <span class="number">3.14159265358979324</span> * <span class="number">3000.0</span> / <span class="number">180.0</span>;</span><br><span class="line"><span class="keyword">var</span> PI = <span class="number">3.1415926535897932384626</span>;</span><br><span class="line"><span class="keyword">var</span> a = <span class="number">6378245.0</span>;</span><br><span class="line"><span class="keyword">var</span> ee = <span class="number">0.00669342162296594323</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 百度坐标系 (BD-09) 与 火星坐标系 (GCJ-02)的转换</span></span><br><span class="line"><span class="comment">// 即 百度 转 谷歌、高德</span></span><br><span class="line"><span class="comment">// @param bd_lon</span></span><br><span class="line"><span class="comment">// @param bd_lat</span></span><br><span class="line"><span class="comment">// @returns &#123;*[]&#125;</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bd09togcj02</span>(<span class="params">bd_lon, bd_lat</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> x_pi = <span class="number">3.14159265358979324</span> * <span class="number">3000.0</span> / <span class="number">180.0</span>;</span><br><span class="line">  <span class="keyword">var</span> x = bd_lon - <span class="number">0.0065</span>;</span><br><span class="line">  <span class="keyword">var</span> y = bd_lat - <span class="number">0.006</span>;</span><br><span class="line">  <span class="keyword">var</span> z = <span class="built_in">Math</span>.sqrt(x * x + y * y) - <span class="number">0.00002</span> * <span class="built_in">Math</span>.sin(y * x_pi);</span><br><span class="line">  <span class="keyword">var</span> theta = <span class="built_in">Math</span>.atan2(y, x) - <span class="number">0.000003</span> * <span class="built_in">Math</span>.cos(x * x_pi);</span><br><span class="line">  <span class="keyword">var</span> gg_lng = z * <span class="built_in">Math</span>.cos(theta);</span><br><span class="line">  <span class="keyword">var</span> gg_lat = z * <span class="built_in">Math</span>.sin(theta);</span><br><span class="line">  <span class="keyword">return</span> [gg_lng, gg_lat]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 火星坐标系 (GCJ-02) 与百度坐标系 (BD-09) 的转换</span></span><br><span class="line"><span class="comment">// 即谷歌、高德 转 百度</span></span><br><span class="line"><span class="comment">// @param lng</span></span><br><span class="line"><span class="comment">// @param lat</span></span><br><span class="line"><span class="comment">// @returns &#123;*[]&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">gcj02tobd09</span>(<span class="params">lng, lat</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> z = <span class="built_in">Math</span>.sqrt(lng * lng + lat * lat) + <span class="number">0.00002</span> * <span class="built_in">Math</span>.sin(lat * x_PI);</span><br><span class="line">  <span class="keyword">var</span> theta = <span class="built_in">Math</span>.atan2(lat, lng) + <span class="number">0.000003</span> * <span class="built_in">Math</span>.cos(lng * x_PI);</span><br><span class="line">  <span class="keyword">var</span> bd_lng = z * <span class="built_in">Math</span>.cos(theta) + <span class="number">0.0065</span>;</span><br><span class="line">  <span class="keyword">var</span> bd_lat = z * <span class="built_in">Math</span>.sin(theta) + <span class="number">0.006</span>;</span><br><span class="line">  <span class="keyword">return</span> [bd_lng, bd_lat]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// WGS84转GCj02</span></span><br><span class="line"><span class="comment">// @param lng</span></span><br><span class="line"><span class="comment">// @param lat</span></span><br><span class="line"><span class="comment">// @returns &#123;*[]&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">wgs84togcj02</span>(<span class="params">lng, lat</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (out_of_china(lng, lat)) &#123;</span><br><span class="line">    <span class="keyword">return</span> [lng, lat]</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> dlat = transformlat(lng - <span class="number">105.0</span>, lat - <span class="number">35.0</span>);</span><br><span class="line">    <span class="keyword">var</span> dlng = transformlng(lng - <span class="number">105.0</span>, lat - <span class="number">35.0</span>);</span><br><span class="line">    <span class="keyword">var</span> radlat = lat / <span class="number">180.0</span> * PI;</span><br><span class="line">    <span class="keyword">var</span> magic = <span class="built_in">Math</span>.sin(radlat);</span><br><span class="line">    magic = <span class="number">1</span> - ee * magic * magic;</span><br><span class="line">    <span class="keyword">var</span> sqrtmagic = <span class="built_in">Math</span>.sqrt(magic);</span><br><span class="line">    dlat = (dlat * <span class="number">180.0</span>) / ((a * (<span class="number">1</span> - ee)) / (magic * sqrtmagic) * PI);</span><br><span class="line">    dlng = (dlng * <span class="number">180.0</span>) / (a / sqrtmagic * <span class="built_in">Math</span>.cos(radlat) * PI);</span><br><span class="line">    <span class="keyword">var</span> mglat = lat + dlat;</span><br><span class="line">    <span class="keyword">var</span> mglng = lng + dlng;</span><br><span class="line">    <span class="keyword">return</span> [mglng, mglat]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// GCJ02 转换为 WGS84</span></span><br><span class="line"><span class="comment">// @param lng</span></span><br><span class="line"><span class="comment">// @param lat</span></span><br><span class="line"><span class="comment">// @returns &#123;*[]&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">gcj02towgs84</span>(<span class="params">lng, lat</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (out_of_china(lng, lat)) &#123;</span><br><span class="line">    <span class="keyword">return</span> [lng, lat]</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> dlat = transformlat(lng - <span class="number">105.0</span>, lat - <span class="number">35.0</span>);</span><br><span class="line">    <span class="keyword">var</span> dlng = transformlng(lng - <span class="number">105.0</span>, lat - <span class="number">35.0</span>);</span><br><span class="line">    <span class="keyword">var</span> radlat = lat / <span class="number">180.0</span> * PI;</span><br><span class="line">    <span class="keyword">var</span> magic = <span class="built_in">Math</span>.sin(radlat);</span><br><span class="line">    magic = <span class="number">1</span> - ee * magic * magic;</span><br><span class="line">    <span class="keyword">var</span> sqrtmagic = <span class="built_in">Math</span>.sqrt(magic);</span><br><span class="line">    dlat = (dlat * <span class="number">180.0</span>) / ((a * (<span class="number">1</span> - ee)) / (magic * sqrtmagic) * PI);</span><br><span class="line">    dlng = (dlng * <span class="number">180.0</span>) / (a / sqrtmagic * <span class="built_in">Math</span>.cos(radlat) * PI);</span><br><span class="line">    mglat = lat + dlat;</span><br><span class="line">    mglng = lng + dlng;</span><br><span class="line">    <span class="keyword">return</span> [lng * <span class="number">2</span> - mglng, lat * <span class="number">2</span> - mglat]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">transformlat</span>(<span class="params">lng, lat</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> ret = <span class="number">-100.0</span> + <span class="number">2.0</span> * lng + <span class="number">3.0</span> * lat + <span class="number">0.2</span> * lat * lat + <span class="number">0.1</span> * lng * lat + <span class="number">0.2</span> * <span class="built_in">Math</span>.sqrt(<span class="built_in">Math</span>.abs(lng));</span><br><span class="line">  ret += (<span class="number">20.0</span> * <span class="built_in">Math</span>.sin(<span class="number">6.0</span> * lng * PI) + <span class="number">20.0</span> * <span class="built_in">Math</span>.sin(<span class="number">2.0</span> * lng * PI)) * <span class="number">2.0</span> / <span class="number">3.0</span>;</span><br><span class="line">  ret += (<span class="number">20.0</span> * <span class="built_in">Math</span>.sin(lat * PI) + <span class="number">40.0</span> * <span class="built_in">Math</span>.sin(lat / <span class="number">3.0</span> * PI)) * <span class="number">2.0</span> / <span class="number">3.0</span>;</span><br><span class="line">  ret += (<span class="number">160.0</span> * <span class="built_in">Math</span>.sin(lat / <span class="number">12.0</span> * PI) + <span class="number">320</span> * <span class="built_in">Math</span>.sin(lat * PI / <span class="number">30.0</span>)) * <span class="number">2.0</span> / <span class="number">3.0</span>;</span><br><span class="line">  <span class="keyword">return</span> ret</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">transformlng</span>(<span class="params">lng, lat</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> ret = <span class="number">300.0</span> + lng + <span class="number">2.0</span> * lat + <span class="number">0.1</span> * lng * lng + <span class="number">0.1</span> * lng * lat + <span class="number">0.1</span> * <span class="built_in">Math</span>.sqrt(<span class="built_in">Math</span>.abs(lng));</span><br><span class="line">  ret += (<span class="number">20.0</span> * <span class="built_in">Math</span>.sin(<span class="number">6.0</span> * lng * PI) + <span class="number">20.0</span> * <span class="built_in">Math</span>.sin(<span class="number">2.0</span> * lng * PI)) * <span class="number">2.0</span> / <span class="number">3.0</span>;</span><br><span class="line">  ret += (<span class="number">20.0</span> * <span class="built_in">Math</span>.sin(lng * PI) + <span class="number">40.0</span> * <span class="built_in">Math</span>.sin(lng / <span class="number">3.0</span> * PI)) * <span class="number">2.0</span> / <span class="number">3.0</span>;</span><br><span class="line">  ret += (<span class="number">150.0</span> * <span class="built_in">Math</span>.sin(lng / <span class="number">12.0</span> * PI) + <span class="number">300.0</span> * <span class="built_in">Math</span>.sin(lng / <span class="number">30.0</span> * PI)) * <span class="number">2.0</span> / <span class="number">3.0</span>;</span><br><span class="line">  <span class="keyword">return</span> ret</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 判断是否在国内，不在国内则不做偏移</span></span><br><span class="line"><span class="comment">// @param lng</span></span><br><span class="line"><span class="comment">// @param lat</span></span><br><span class="line"><span class="comment">// @returns &#123;boolean&#125;</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">out_of_china</span>(<span class="params">lng, lat</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (lng &lt; <span class="number">72.004</span> || lng &gt; <span class="number">137.8347</span>) || ((lat &lt; <span class="number">0.8293</span> || lat &gt; <span class="number">55.8271</span>) || <span class="literal">false</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports=&#123;</span><br><span class="line">  bd09togcj02: bd09togcj02,</span><br><span class="line">  gcj02tobd09: gcj02tobd09,</span><br><span class="line">  wgs84togcj02: wgs84togcj02,</span><br><span class="line">  gcj02towgs84: gcj02towgs84,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/小程序/" rel="tag"># 小程序</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/24/postman-guide/" rel="next" title="postman-guide">
+                <i class="fa fa-chevron-left"></i> postman-guide
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/25/design-pattern/" rel="prev" title="design-pattern">
+                design-pattern <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/Avatar.png"
+               alt="BryanAdamss" />
+          <p class="site-author-name" itemprop="name">BryanAdamss</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/BryanAdamss" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#微信小程序-公交查询笔记"><span class="nav-number">1.</span> <span class="nav-text">微信小程序-公交查询笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#注册小程序"><span class="nav-number">1.1.</span> <span class="nav-text">注册小程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目录结构"><span class="nav-number">1.2.</span> <span class="nav-text">目录结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API-Promisify"><span class="nav-number">1.3.</span> <span class="nav-text">API Promisify</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不同页面通信"><span class="nav-number">1.4.</span> <span class="nav-text">不同页面通信</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#清除input内容"><span class="nav-number">1.5.</span> <span class="nav-text">清除input内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#坐标转换"><span class="nav-number">1.6.</span> <span class="nav-text">坐标转换</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BryanAdamss</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

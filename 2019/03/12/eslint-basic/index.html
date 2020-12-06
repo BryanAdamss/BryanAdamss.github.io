@@ -1,0 +1,1075 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="eslint," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/Avatar.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="eslint 配置记录 最近项目中需要集成eslint，学习后特在此做个记录  介绍 官方介绍 ESLint 是一个开源的 JavaScript 代码检查工具，由 Nicholas C. Zakas 于2013年6月创建。代码检查是一种静态的分析，常用于寻找有问题的模式或者代码，并且不依赖于具体的编码风格。对大多数编程语言来说都会有代码检查，一般来说编译程序会内置检查工具。 总结 代码静态检查 提">
+<meta name="keywords" content="eslint">
+<meta property="og:type" content="article">
+<meta property="og:title" content="eslint-basic">
+<meta property="og:url" content="http://yoursite.com/2019/03/12/eslint-basic/index.html">
+<meta property="og:site_name" content="BryanAdamss的博客">
+<meta property="og:description" content="eslint 配置记录 最近项目中需要集成eslint，学习后特在此做个记录  介绍 官方介绍 ESLint 是一个开源的 JavaScript 代码检查工具，由 Nicholas C. Zakas 于2013年6月创建。代码检查是一种静态的分析，常用于寻找有问题的模式或者代码，并且不依赖于具体的编码风格。对大多数编程语言来说都会有代码检查，一般来说编译程序会内置检查工具。 总结 代码静态检查 提">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-14T16:39:00.382Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="eslint-basic">
+<meta name="twitter:description" content="eslint 配置记录 最近项目中需要集成eslint，学习后特在此做个记录  介绍 官方介绍 ESLint 是一个开源的 JavaScript 代码检查工具，由 Nicholas C. Zakas 于2013年6月创建。代码检查是一种静态的分析，常用于寻找有问题的模式或者代码，并且不依赖于具体的编码风格。对大多数编程语言来说都会有代码检查，一般来说编译程序会内置检查工具。 总结 代码静态检查 提">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/12/eslint-basic/"/>
+
+
+
+
+
+  <title> eslint-basic | BryanAdamss的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BryanAdamss的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个伪前端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/12/eslint-basic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BryanAdamss">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/Avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BryanAdamss的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                eslint-basic
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-12T18:54:53+08:00">
+                2019-03-12 18:54:53
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FrontEnd/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="eslint-配置记录"><a href="#eslint-配置记录" class="headerlink" title="eslint 配置记录"></a>eslint 配置记录</h1><blockquote>
+<p>最近项目中需要集成eslint，学习后特在此做个记录</p>
+</blockquote>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><ul>
+<li>官方介绍<ul>
+<li>ESLint 是一个开源的 JavaScript 代码检查工具，由 Nicholas C. Zakas 于2013年6月创建。代码检查是一种静态的分析，常用于寻找有问题的模式或者代码，并且不依赖于具体的编码风格。对大多数编程语言来说都会有代码检查，一般来说编译程序会内置检查工具。</li>
+<li>总结<ul>
+<li>代码静态检查<ul>
+<li>提前发现低级错误；如声明了变量却没有使用、使用了<code>==</code></li>
+</ul>
+</li>
+<li>代码风格检查（此能力较弱）<ul>
+<li>团带整体编码风格的检查；如单双引号、分号等的使用</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="安装及初始化"><a href="#安装及初始化" class="headerlink" title="安装及初始化"></a>安装及初始化</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm i -D eslint // 安装为开发依赖</span><br><span class="line"></span><br><span class="line">npx eslint --init // 会以交互形式生成eslint配置文件</span><br></pre></td></tr></table></figure>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="配置文件格式"><a href="#配置文件格式" class="headerlink" title="配置文件格式"></a>配置文件格式</h3><ul>
+<li>eslint的配置文件可以有多种格式<ul>
+<li><code>.eslintrc</code>(废弃)</li>
+<li><code>.eslintrc.js</code></li>
+<li><code>.eslintrc.json</code></li>
+<li><code>.eslintrc.yml</code></li>
+<li>还可以在<code>package.json</code>中声明配置</li>
+</ul>
+</li>
+<li>PS：经常能看到配置文件以<code>rc</code>结尾，其实这是约定俗成的配置文件的命名方法，是<code>run control运行控制</code>的意思</li>
+</ul>
+<h3 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h3><ul>
+<li>既然有这么文件格式，那同时出现时，肯定有个优先级</li>
+<li><code>.eslintrc.js &gt; .eslintrc.yaml &gt; .eslintrc.yml &gt; .eslintrc.json &gt; .eslintrc &gt; package.json</code><ul>
+<li><code>package.json</code>优先级最低，<code>.eslintrc..js</code>最高，所以可以直接使用<code>.eslintrc.js</code></li>
+</ul>
+</li>
+<li>eslint还支持在文件中通过注释的形式来声明配置选项，如<code>/*eslint-disable*/</code><ul>
+<li>这种方式的优先级要高于配置文件的形式</li>
+</ul>
+</li>
+</ul>
+<h2 id="配置-1"><a href="#配置-1" class="headerlink" title="配置"></a>配置</h2><h3 id="配置信息分类"><a href="#配置信息分类" class="headerlink" title="配置信息分类"></a>配置信息分类</h3><ul>
+<li>环境相关<ul>
+<li>需要lint的脚本运行环境，每种环境都有一组特定的预定义全局变量。；eslint在检查时，就不会将一些全局变量检测为为未定义而报错</li>
+</ul>
+</li>
+<li>全局变量<ul>
+<li>需要跳过eslint未定义检查的全局变量；如<code>jQuery、Zepto</code>这些未在环境中预置但又在脚本执行时访问的额外的全局变量</li>
+</ul>
+</li>
+<li>规则相关<ul>
+<li>配置启用哪些规则及错误级别</li>
+</ul>
+</li>
+</ul>
+<h3 id="规则错误级别"><a href="#规则错误级别" class="headerlink" title="规则错误级别"></a>规则错误级别</h3><table>
+<thead>
+<tr>
+<th>字符串表示</th>
+<th>数字表示</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“off”</td>
+<td>0</td>
+<td>关闭当前规则检查</td>
+</tr>
+<tr>
+<td>“warn”</td>
+<td>1</td>
+<td>启用当前规则检查，不符合当前规则，会报一个警告（不影响现有代码）</td>
+</tr>
+<tr>
+<td>“error”</td>
+<td>2</td>
+<td>启用当前规则检查，不符合当前规则，会报一个错误（中断后续流程）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="配置项说明"><a href="#配置项说明" class="headerlink" title="配置项说明"></a>配置项说明</h3><ul>
+<li><code>root</code><ul>
+<li>告知eslint在查找配置文件时，到此文件结束，不再往上级目录查找</li>
+</ul>
+</li>
+<li><code>parser</code><ul>
+<li>指定eslint解析器，默认为Espree；</li>
+<li>只有在使用了eslint无法解析的babel特性时，才需要替换为babel-eslint；babel-eslint会提供一份能被eslint正常解析的js文件，eslint基于此再做静态检查</li>
+<li>正常情况下，都会使用babel-eslint</li>
+</ul>
+</li>
+<li><p><code>parserOptions</code></p>
+<ul>
+<li>解析器选项<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">parserOptions: &#123;</span><br><span class="line">    ecmaVersion: <span class="number">6</span>, <span class="comment">// ES的版本，默认为5</span></span><br><span class="line">    sourceType: <span class="string">'module'</span>, <span class="comment">// 指定源码类型，script | module，默认为script。</span></span><br><span class="line">    ecmaFeatures: &#123;</span><br><span class="line">    <span class="comment">// 你想使用的额外的语言特性</span></span><br><span class="line">    experimentalObjectRestSpread: <span class="literal">true</span>, <span class="comment">// 启用扩展运算符</span></span><br><span class="line">    jsx: <span class="literal">true</span>, <span class="comment">// 启用jsx语法</span></span><br><span class="line">    globalReturn: <span class="literal">true</span>, <span class="comment">// 允许return在全局使用</span></span><br><span class="line">    impliedStrict: <span class="literal">true</span> <span class="comment">// 启用严格校验模式</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>env</code></p>
+<ul>
+<li>设置源码运行的环境，每种环境都有一组特定的预定义全局变量</li>
+<li>eslint在检查时，就不会将一些全局变量检测为为未定义而报错</li>
+<li>环境变量是非互斥的，可以添加多个</li>
+<li>具体可查询这里：<a href="https://cn.eslint.org/docs/user-guide/configuring#specifying-environments" target="_blank" rel="noopener">https://cn.eslint.org/docs/user-guide/configuring#specifying-environments</a></li>
+</ul>
+</li>
+<li><code>globals</code><ul>
+<li>额外使用的全局变量</li>
+</ul>
+</li>
+<li><code>extends</code><ul>
+<li>一个配置文件可以从基础配置中继承已启用的规则，extends字段就是用来配置继承的规则</li>
+<li>extends 属性值可以是：<ul>
+<li>在配置中指定的一个字符串</li>
+<li>字符串数组：<strong>每个配置继承它前面的配置，出现重复规则时，如extends:[1,2,3] 配置2会覆盖1，3会覆盖2，类似Object.assign</strong></li>
+</ul>
+</li>
+<li>eslint内置规则默认情况下都是禁用的<ul>
+<li>可以通过<code>eslint:recommended</code>或者<code>eslint:all</code>启用</li>
+</ul>
+</li>
+<li>还可使用第三方的规则，如eslint-config-standard、eslint-config-airbnb等等<ul>
+<li>在指定时，可忽略前面个的slint-config-</li>
+<li>如下面的standard，全名为eslint-config-standard</li>
+</ul>
+</li>
+<li>若使用插件中的规则<ul>
+<li>可使用 <code>plugin:插件name/规则名</code> 的格式来指定</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>rules</code><ul>
+<li>在extends基础上额外附加的规则，其优先级高于extends的规则，会覆盖他们</li>
+</ul>
+</li>
+<li><code>plugins</code><ul>
+<li>针对一些特殊情况，需要使用插件</li>
+<li>插件能赋予eslint一些其他能力也会包含一些规则</li>
+</ul>
+</li>
+<li><code>settings</code><ul>
+<li>指明需要在不同配置文件中共享的数据</li>
+</ul>
+</li>
+<li>示例<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    root: <span class="literal">true</span>, <span class="comment">// 告知eslint在查找配置文件时，到此文件结束，不再往上级目录查找</span></span><br><span class="line">    <span class="comment">// 指定eslint解析器，默认为Espree；</span></span><br><span class="line">    <span class="comment">// 只有在使用了eslint无法解析的babel特性时，才需要替换为babel-eslint；babel-eslint会提供一份能被eslint正常解析的js文件，eslint基于此再做静态检查</span></span><br><span class="line">    <span class="comment">// 正常情况下，会使用babel-eslint</span></span><br><span class="line">    parser: <span class="string">'babel-eslint'</span>,</span><br><span class="line">    <span class="comment">// 解析器选项</span></span><br><span class="line">    parserOptions: &#123;</span><br><span class="line">        ecmaVersion: <span class="number">6</span>, <span class="comment">// ES的版本，默认为5</span></span><br><span class="line">        sourceType: <span class="string">'module'</span>, <span class="comment">// 指定源码类型，script | module，默认为script。</span></span><br><span class="line">        ecmaFeatures: &#123;</span><br><span class="line">            <span class="comment">// 你想使用的额外的语言特性</span></span><br><span class="line">            experimentalObjectRestSpread: <span class="literal">true</span>, <span class="comment">// 启用扩展运算符</span></span><br><span class="line">            jsx: <span class="literal">true</span>, <span class="comment">// 启用jsx语法</span></span><br><span class="line">            globalReturn: <span class="literal">true</span>, <span class="comment">// 允许return在全局使用</span></span><br><span class="line">            impliedStrict: <span class="literal">true</span> <span class="comment">// 启用严格校验模式</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    env: &#123;</span><br><span class="line">        <span class="comment">// 设置源码运行的环境，每种环境都有一组特定的预定义全局变量；</span></span><br><span class="line">        <span class="comment">// eslint在检查时，就不会将一些全局变量检测为为未定义而报错</span></span><br><span class="line">        <span class="comment">// 环境变量是非互斥的，可以添加多个</span></span><br><span class="line">        <span class="comment">// 具体可查询这里：https://cn.eslint.org/docs/user-guide/configuring#specifying-environments</span></span><br><span class="line">        browser: <span class="literal">true</span>, <span class="comment">// 添加浏览器环境下的全局变量 如 window、document等</span></span><br><span class="line">        es6: <span class="literal">true</span> <span class="comment">// 添加es6的全局变量</span></span><br><span class="line">    &#125;,</span><br><span class="line">    globals: &#123;</span><br><span class="line">        <span class="comment">// 额外使用的全局变量</span></span><br><span class="line">        Zepto: <span class="literal">true</span> <span class="comment">// true代表不能重写此变量</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 一个配置文件可以从基础配置中继承已启用的规则，extends字段就是用来配置继承的规则</span></span><br><span class="line">    <span class="comment">// extends 属性值可以是：</span></span><br><span class="line">    <span class="comment">// 在配置中指定的一个字符串</span></span><br><span class="line">    <span class="comment">// 字符串数组：每个配置继承它前面的配置，出现重复规则时，如[1,2,3] 配置2会覆盖1，3会覆盖2，类似Object.assign</span></span><br><span class="line">    <span class="comment">// eslint内置规则默认情况下都是禁用的，可以通过`eslint:recommended`或者`eslint:all`启用</span></span><br><span class="line">    <span class="comment">// 还可使用第三方的规则，如eslint-config-standard、eslint-config-airbnb等等</span></span><br><span class="line">    <span class="comment">// 在指定时，可忽略前面个的slint-config-</span></span><br><span class="line">    <span class="comment">// 如下面的standard，全名为eslint-config-standard</span></span><br><span class="line">    <span class="comment">// 若使用插件中的规则</span></span><br><span class="line">    <span class="comment">// 可使用 plugin:插件name/规则名 的格式来指定</span></span><br><span class="line">    extends: [</span><br><span class="line">        <span class="string">'plugin:vue/recommended'</span>, <span class="comment">// 使用eslint-plugin-vue中的recommended规则</span></span><br><span class="line">        <span class="string">'standard'</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="comment">// 在extends基础上额外附加的规则，其优先级高于extends的规则，会覆盖他们</span></span><br><span class="line">    rules: &#123;</span><br><span class="line">        <span class="comment">// 关闭不允许同一个var声明多个变量</span></span><br><span class="line">        <span class="string">'one-var'</span>: <span class="string">'off'</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 针对一些特殊情况，需要使用插件</span></span><br><span class="line">    <span class="comment">// 插件能赋予eslint一些其他能力也会包含一些规则</span></span><br><span class="line">    plugins: [<span class="string">'vue'</span>],</span><br><span class="line">    <span class="comment">// 指明需要在不同配置文件中共享的数据</span></span><br><span class="line">    settings: &#123;</span><br><span class="line">        sharedData: <span class="string">'Hello'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="行内规则"><a href="#行内规则" class="headerlink" title="行内规则"></a>行内规则</h2><h3 id="常用行内规则"><a href="#常用行内规则" class="headerlink" title="常用行内规则"></a>常用行内规则</h3><ul>
+<li><p><code>eslint-disable</code></p>
+<ul>
+<li>当前文件下面所有代码禁用eslint检查</li>
+<li>在不希望使用eslint的文件顶部添加<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* eslint-disable */</span></span><br><span class="line"></span><br><span class="line">alert(<span class="string">'foo'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* eslint-enable */</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>eslint-disable-next-line</code></p>
+<ul>
+<li>下面一行代码，禁用eslint检查<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* eslint-disable-next-line */</span></span><br><span class="line">alert(<span class="string">'foo'</span>);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="忽略文件"><a href="#忽略文件" class="headerlink" title="忽略文件"></a>忽略文件</h2><h3 id="eslintignore"><a href="#eslintignore" class="headerlink" title=".eslintignore"></a>.eslintignore</h3><ul>
+<li>使用<code>.eslintignore</code>文件声明需要忽略的文件及目录<ul>
+<li><code>.eslintignore</code>中使用<code>glob</code>模式表明哪些路径应该忽略检测<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  .eslintignore</span></span><br><span class="line">**<span class="comment">/*.js</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="eslint-cli"><a href="#eslint-cli" class="headerlink" title="eslint-cli"></a>eslint-cli</h2><h3 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h3><ul>
+<li><p>生成配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eslint --init // 以交互形式生成.eslintrc文件</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修复错误</p>
+<ul>
+<li>绝大部分修复的是格式化的错误，如空白符、分号等<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eslint --fix file.js // 修复file.js中的格式化错误</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>指定额外的配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eslint -c myconfig.js file.js // 指定配置并lint当前目录下的file.js</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>指定环境变量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eslint --env browser,node file.js // 指定环境变量</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>指定扩展</p>
+<ul>
+<li><code>--ext</code> 只有在参数为目录时，才生效。如果你使用<code>glob 模式</code>或<code>文件名</code>，<code>--ext</code> 将被忽略<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eslint --ext .js,.vue src // lint src目录下后缀为js、vue的文件</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>缓存</p>
+<ul>
+<li>存储处理过的文件的信息以便只对有改变的文件进行操作</li>
+<li>缓存默认被存储在 <code>.eslintcache</code>中<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eslint <span class="string">"src/**/*.js"</span> --cache // 只对改变的文件进行lint</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>彩色输出</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eslint --color file.js</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
+<p><a href="https://juejin.im/post/5bab946cf265da0ae92a75ca" target="_blank" rel="noopener">https://juejin.im/post/5bab946cf265da0ae92a75ca</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/eslint/" rel="tag"># eslint</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/11/bem-suit/" rel="next" title="bem-suit">
+                <i class="fa fa-chevron-left"></i> bem-suit
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/17/npm-pre-post/" rel="prev" title="npm-pre-post">
+                npm-pre-post <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/Avatar.png"
+               alt="BryanAdamss" />
+          <p class="site-author-name" itemprop="name">BryanAdamss</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/BryanAdamss" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#eslint-配置记录"><span class="nav-number">1.</span> <span class="nav-text">eslint 配置记录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.2.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装及初始化"><span class="nav-number">1.2.1.</span> <span class="nav-text">安装及初始化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">1.3.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置文件格式"><span class="nav-number">1.3.1.</span> <span class="nav-text">配置文件格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优先级"><span class="nav-number">1.3.2.</span> <span class="nav-text">优先级</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置-1"><span class="nav-number">1.4.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置信息分类"><span class="nav-number">1.4.1.</span> <span class="nav-text">配置信息分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#规则错误级别"><span class="nav-number">1.4.2.</span> <span class="nav-text">规则错误级别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置项说明"><span class="nav-number">1.4.3.</span> <span class="nav-text">配置项说明</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#行内规则"><span class="nav-number">1.5.</span> <span class="nav-text">行内规则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常用行内规则"><span class="nav-number">1.5.1.</span> <span class="nav-text">常用行内规则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#忽略文件"><span class="nav-number">1.6.</span> <span class="nav-text">忽略文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#eslintignore"><span class="nav-number">1.6.1.</span> <span class="nav-text">.eslintignore</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#eslint-cli"><span class="nav-number">1.7.</span> <span class="nav-text">eslint-cli</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常用操作"><span class="nav-number">1.7.1.</span> <span class="nav-text">常用操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.8.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BryanAdamss</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

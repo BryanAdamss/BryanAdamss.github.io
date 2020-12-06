@@ -1,0 +1,964 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="webpack,工程化," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/Avatar.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="module、chunk、bundlemodule 对于webpack来说，所有的资源(.js、.css、.png)都是module .js文件webpack原生可以处理，其他类型文件，需要通过loader进行转换，然后交给webpack处理 webpack配置中，可以通过module字段，对不同module使用不同的rule处理1234567891011module: &amp;#123;rules:">
+<meta name="keywords" content="webpack,工程化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webpack-module-chunk-bundle">
+<meta property="og:url" content="http://yoursite.com/2020/03/05/webpack-module-chunk-bundle/index.html">
+<meta property="og:site_name" content="BryanAdamss的博客">
+<meta property="og:description" content="module、chunk、bundlemodule 对于webpack来说，所有的资源(.js、.css、.png)都是module .js文件webpack原生可以处理，其他类型文件，需要通过loader进行转换，然后交给webpack处理 webpack配置中，可以通过module字段，对不同module使用不同的rule处理1234567891011module: &amp;#123;rules:">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-03-05T03:58:48.541Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="webpack-module-chunk-bundle">
+<meta name="twitter:description" content="module、chunk、bundlemodule 对于webpack来说，所有的资源(.js、.css、.png)都是module .js文件webpack原生可以处理，其他类型文件，需要通过loader进行转换，然后交给webpack处理 webpack配置中，可以通过module字段，对不同module使用不同的rule处理1234567891011module: &amp;#123;rules:">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/05/webpack-module-chunk-bundle/"/>
+
+
+
+
+
+  <title> webpack-module-chunk-bundle | BryanAdamss的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BryanAdamss的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个伪前端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/05/webpack-module-chunk-bundle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BryanAdamss">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/Avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BryanAdamss的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                webpack-module-chunk-bundle
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-05T11:58:26+08:00">
+                2020-03-05 11:58:26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FrontEnd/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="module、chunk、bundle"><a href="#module、chunk、bundle" class="headerlink" title="module、chunk、bundle"></a>module、chunk、bundle</h1><h2 id="module"><a href="#module" class="headerlink" title="module"></a>module</h2><ul>
+<li>对于<code>webpack</code>来说，所有的资源(<code>.js</code>、<code>.css</code>、<code>.png</code>)都是module</li>
+<li><code>.js</code>文件<code>webpack</code>原生可以处理，其他类型文件，需要通过<code>loader</code>进行转换，然后交给<code>webpack</code>处理</li>
+<li><code>webpack</code>配置中，可以通过<code>module</code>字段，对不同<code>module</code>使用不同的<code>rule</code>处理<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">module: &#123;</span><br><span class="line">rules: [</span><br><span class="line">        &#123;</span><br><span class="line">            test: /\.css$/,</span><br><span class="line">            use: [</span><br><span class="line">                    &#123; loader: "style-loader" &#125;,</span><br><span class="line">                    &#123; loader: "css-loader" &#125; </span><br><span class="line">                ] </span><br><span class="line">        &#125;, ... </span><br><span class="line">    ] </span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="entry-point"><a href="#entry-point" class="headerlink" title="entry-point"></a>entry-point</h2><ul>
+<li>生成依赖图(<code>dependency graph</code>)的入口；</li>
+<li><code>webpack</code>只能以<code>.js</code>文件做为生成依赖图的入口；<code>parcel</code>能使用其他模块(<code>.html</code>)做为入口，生成依赖图</li>
+</ul>
+<h2 id="chunk"><a href="#chunk" class="headerlink" title="chunk"></a>chunk</h2><ul>
+<li>是<code>webpack内部处理时</code>的概念；</li>
+<li>一个<code>chunk</code>是对依赖图的部分(子图)进行封装的结果<code>Chunk the class is the encapsulation for parts of your dependency graph</code></li>
+<li>可以说一个<code>chunk</code>是一堆<code>module</code>的集合</li>
+<li>可以通过多个<code>entry-point</code>来生成一个<code>chunk</code></li>
+</ul>
+<h3 id="chunk分类"><a href="#chunk分类" class="headerlink" title="chunk分类"></a>chunk分类</h3><ul>
+<li><code>entry chunk</code><ul>
+<li>包含webpack <code>runtime code</code>并且是最先执行的chunk</li>
+</ul>
+</li>
+<li><code>initial chunk</code><ul>
+<li>包含<code>同步</code>加载进来的module且<code>不包含runtime code</code>的<code>chunk</code></li>
+<li>在<code>entry chunk</code>执行后再执行</li>
+</ul>
+</li>
+<li><code>normal chunk</code><ul>
+<li>使用<code>require.ensure</code>、<code>System.import</code>、<code>import()</code>异步加载进来的<code>module</code>，会被放到<code>normal chunk</code>中</li>
+<li>一般<code>normal chunk</code>(异步chunk)，会单独生成一个<code>bundle</code>，其名称一般通过<code>webpackChunkName魔法注释</code>和<code>output.chunkFilename</code>来指定<ul>
+<li>在<code>webpackChunkName魔法注释</code>中指定的<code>name</code>可以在<code>output.chunkFilename</code>中使用<code>[name]</code>取到</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="bundle"><a href="#bundle" class="headerlink" title="bundle"></a>bundle</h2><ul>
+<li>最终输出的<code>chunk</code>在用户端，被称之为<code>bundle</code>；</li>
+<li>正常情况下，可以将<code>chunk</code>和<code>bundle</code>当成一个概念，只不过是不同时间的同一个东西<ul>
+<li><code>chunk和bundle的区别</code>，可以理解为<code>chunk</code>是过程中的代码块(给<code>webpack</code>处理的)，<code>bundle</code>是结果的代码块(展现给用户的)</li>
+</ul>
+</li>
+<li>一般一个<code>chunk</code>对应一个<code>bundle</code>，只有在配置了<code>sourcemap</code>时，才会出现一个<code>chunk对应多个bundle</code>的情况；</li>
+</ul>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// other.js</span></span><br><span class="line"><span class="keyword">import</span>(<span class="comment">/*webpackChunkName: "lodash */</span> <span class="string">'lodash'</span>).then(<span class="function"><span class="params">_</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(_)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// webpack.config.js</span></span><br><span class="line">entry:&#123;</span><br><span class="line">    main:[<span class="string">'./src/main.js'</span>,<span class="string">'./src/test.js'</span>],</span><br><span class="line">    other:[<span class="string">'./src.other.js'</span>]</span><br><span class="line">&#125;,</span><br><span class="line">output:&#123;</span><br><span class="line">    path:path.resolve(__dirname,<span class="string">'./dist'</span>),</span><br><span class="line">    filename:<span class="string">"[name].bundle.js"</span>, <span class="comment">// 正常生成的bundle名称</span></span><br><span class="line">    chunkFileName:<span class="string">"[name].async.bundle.js"</span> <span class="comment">// normalChunk的名称，也即最终生成的异步bundle的名称</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>main.js</code>中引入了<code>gloabl.css</code>；</li>
+<li><p><code>other.js</code>中异步导入了<code>lodash</code>并使用了<code>webpackChunkName魔法注释</code></p>
+</li>
+<li><p><code>module</code></p>
+<ul>
+<li><code>main.js、test.js、other.js、global.css</code>都是module</li>
+</ul>
+</li>
+<li><code>entry-point</code><ul>
+<li><code>main.js、test.js、other.js</code></li>
+</ul>
+</li>
+<li><code>chunk</code><ul>
+<li><code>main</code></li>
+<li><code>other</code></li>
+</ul>
+</li>
+<li><p><code>bundle</code></p>
+<ul>
+<li><code>main.bundle.js</code></li>
+<li><code>other.bundle.js</code></li>
+<li><code>lodash.async.bundle.js</code></li>
+</ul>
+</li>
+<li><p><code>entry</code>的两个<code>key</code>指定了两个<code>chunk(bundle)</code>，名称分别为<code>mian</code>、<code>other</code>，最终会输出两个<code>bundle</code>；</p>
+</li>
+<li><code>main.js、test.js、other.js</code>都是<code>entry-point</code></li>
+<li>因为没有抽取<code>css</code>，所以没单独生成一个<code>css文件</code>，<code>global.css的内容</code>是<code>内联</code>在<code>main.bundle.js</code>中的</li>
+</ul>
+<h2 id="loader"><a href="#loader" class="headerlink" title="loader"></a>loader</h2><ul>
+<li><code>webpack loader</code> 是 <code>webpack</code> 为了处理各种类型文件的一个中间层，<code>webpack</code> 本质上就是一个 <code>node 模块</code>，它不能处理<code>js</code> 以外的文件，那么 <code>loader</code> 就帮助<code>webpack</code> 做了一层转换，将所有文件都转成字符串，你可以对字符串进行任意操作/修改，然后返回给 <code>webpack</code> 一个包含这个字符串的对象，让 <code>webpack</code> 进行后面的处理。如果把 <code>webpack</code> 当成一个垃圾工厂的话，那么 <code>loader</code> 就是这个工厂的垃圾分类</li>
+</ul>
+<h2 id="plugin"><a href="#plugin" class="headerlink" title="plugin"></a>plugin</h2><ul>
+<li>如果把 <code>webpack</code> 当成一个垃圾工厂，<code>loader</code> 就是垃圾分类，将所有垃圾整理好交给 <code>webpack</code>。<code>plugin</code> 就是如何去处理这些垃圾。</li>
+</ul>
+<h2 id="核心流程"><a href="#核心流程" class="headerlink" title="核心流程"></a>核心流程</h2><ul>
+<li><code>webpack</code> 启动后会从 <code>entry-point</code> 开始递归解析 <code>entry-point</code> 依赖的所有 <code>module</code>。</li>
+<li>每找到一个 <code>module</code>， 就会根据配置的 <code>loader</code> 去找出对应的转换规则，对 <code>module</code> 进行转换后，再解析出当前 <code>module 依赖的 module</code>。 </li>
+<li>这些模块会以 <code>entry</code>字段配置的<code>key(chunk name)为单位</code>进行<code>分组</code>，一个 <code>entry 和其所有依赖的 module</code> 被分到一个组也就是一个 <code>chunk</code>。</li>
+<li>最后 <code>webpack</code> 会把<code>所有 chunk</code> 转换成文件输出为<code>bundle</code>； </li>
+<li>在整个流程中 <code>webpack</code> 会在恰当的时机执行 <code>plugin</code> 里定义的逻辑，在<code>plugin</code>执行逻辑中，可能会再抽取其他<code>bundle</code>(例如从<code>js bundle</code>中再单独抽取出一个<code>css bundle</code>文件)，但这不属于<code>webpack</code>主逻辑，属于<code>plugin</code>附加的能力</li>
+<li>正常情况下，<code>webpack</code>是一个<code>js entry-point</code>对应一个<code>js chunk</code>对应生成一个<code>js bundle</code>(除非配置了<code>sourcemap</code>，会单独再生成一个<code>sourcemap bundle</code>)；</li>
+<li><code>plugin</code>属于增强<code>webpack</code>功能，<code>loader</code>给<code>webpack</code>提供<code>非js</code>文件的转换能力；</li>
+</ul>
+<h2 id="相关项目"><a href="#相关项目" class="headerlink" title="相关项目"></a>相关项目</h2><ul>
+<li><a href="https://github.com/BryanAdamss/webpack-chain-source" target="_blank" rel="noopener">webpack-chain源码分析</a></li>
+<li><a href="https://github.com/BryanAdamss/webpack4-template-use-webpack-chain" target="_blank" rel="noopener">使用webpack-chain编写webpack的实践</a></li>
+<li><a href="https://github.com/BryanAdamss/webpack-dive-into-demos" target="_blank" rel="noopener">《深入浅出Webpack》学习demos</a></li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://github.com/webpack/webpack.js.org/issues/970" target="_blank" rel="noopener">https://github.com/webpack/webpack.js.org/issues/970</a><br><a href="https://juejin.im/post/5cede821f265da1bbd4b5630" target="_blank" rel="noopener">https://juejin.im/post/5cede821f265da1bbd4b5630</a><br><a href="https://juejin.im/post/5d2b300de51d45775b419c76" target="_blank" rel="noopener">https://juejin.im/post/5d2b300de51d45775b419c76</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/webpack/" rel="tag"># webpack</a>
+          
+            <a href="/tags/工程化/" rel="tag"># 工程化</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/05/style-lint/" rel="next" title="style-lint">
+                <i class="fa fa-chevron-left"></i> style-lint
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/05/webpack-hash-chunkhash-contenthash/" rel="prev" title="webpack-hash-chunkhash-contenthash">
+                webpack-hash-chunkhash-contenthash <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/Avatar.png"
+               alt="BryanAdamss" />
+          <p class="site-author-name" itemprop="name">BryanAdamss</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/BryanAdamss" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#module、chunk、bundle"><span class="nav-number">1.</span> <span class="nav-text">module、chunk、bundle</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#module"><span class="nav-number">1.1.</span> <span class="nav-text">module</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#entry-point"><span class="nav-number">1.2.</span> <span class="nav-text">entry-point</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#chunk"><span class="nav-number">1.3.</span> <span class="nav-text">chunk</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#chunk分类"><span class="nav-number">1.3.1.</span> <span class="nav-text">chunk分类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bundle"><span class="nav-number">1.4.</span> <span class="nav-text">bundle</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#例子"><span class="nav-number">1.5.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#loader"><span class="nav-number">1.6.</span> <span class="nav-text">loader</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#plugin"><span class="nav-number">1.7.</span> <span class="nav-text">plugin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#核心流程"><span class="nav-number">1.8.</span> <span class="nav-text">核心流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关项目"><span class="nav-number">1.9.</span> <span class="nav-text">相关项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.10.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BryanAdamss</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

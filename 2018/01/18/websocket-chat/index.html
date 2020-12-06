@@ -1,0 +1,951 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="聊天室,websocket,nodejs,im," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/Avatar.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="最近在看web端即时通信方面东西，用nodejs结合websocket(socket.io)做了一个简单的web聊天室。特在此做个记录完整代码可以查看(https://github.com/BryanAdamss/SourceSave/tree/master/WebSocket/ws-socketiodemo)  使用NodeJs、Socket.io搭建一个web聊天室前置知识Web端实现即时通">
+<meta name="keywords" content="聊天室,websocket,nodejs,im">
+<meta property="og:type" content="article">
+<meta property="og:title" content="websocket_chat">
+<meta property="og:url" content="http://yoursite.com/2018/01/18/websocket-chat/index.html">
+<meta property="og:site_name" content="BryanAdamss的博客">
+<meta property="og:description" content="最近在看web端即时通信方面东西，用nodejs结合websocket(socket.io)做了一个简单的web聊天室。特在此做个记录完整代码可以查看(https://github.com/BryanAdamss/SourceSave/tree/master/WebSocket/ws-socketiodemo)  使用NodeJs、Socket.io搭建一个web聊天室前置知识Web端实现即时通">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-01-18T08:35:34.451Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="websocket_chat">
+<meta name="twitter:description" content="最近在看web端即时通信方面东西，用nodejs结合websocket(socket.io)做了一个简单的web聊天室。特在此做个记录完整代码可以查看(https://github.com/BryanAdamss/SourceSave/tree/master/WebSocket/ws-socketiodemo)  使用NodeJs、Socket.io搭建一个web聊天室前置知识Web端实现即时通">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/18/websocket-chat/"/>
+
+
+
+
+
+  <title> websocket_chat | BryanAdamss的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BryanAdamss的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个伪前端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/18/websocket-chat/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BryanAdamss">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/Avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BryanAdamss的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                websocket_chat
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-18T14:53:58+08:00">
+                2018-01-18 14:53:58
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FrontEnd/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>最近在看web端即时通信方面东西，用nodejs结合websocket(socket.io)做了一个简单的web聊天室。特在此做个记录<br>完整代码可以查看(<a href="https://github.com/BryanAdamss/SourceSave/tree/master/WebSocket/ws-socketiodemo" target="_blank" rel="noopener">https://github.com/BryanAdamss/SourceSave/tree/master/WebSocket/ws-socketiodemo</a>)</p>
+</blockquote>
+<h1 id="使用NodeJs、Socket-io搭建一个web聊天室"><a href="#使用NodeJs、Socket-io搭建一个web聊天室" class="headerlink" title="使用NodeJs、Socket.io搭建一个web聊天室"></a>使用NodeJs、Socket.io搭建一个web聊天室</h1><h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><p>Web端实现即时通信主要有四种方式：短轮询(polling)、comet、Websocket、SSE</p>
+<ul>
+<li>短轮询<ul>
+<li>前台设置个定时器不断发送请求去请求后台数据<ul>
+<li>缺点:会有大量无效请求、浪费服务器资源、有延迟</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Comet<ul>
+<li>其实是一种hack技术，主要是一种基于http长连接的”服务器推”的技术</li>
+<li>主要有两种实现方式<ul>
+<li>ajax长轮询(long-polling)<ul>
+<li>客户端发出ajax请求，服务端接收到请求后，会阻塞请求直到有数据或者超时才返回，客户端在在处理信息后再次发出请求，重新建立连接。<ul>
+<li>优点:相比短轮询减少了无效请求、实时性提高</li>
+<li>缺点:保持连接也会消耗服务器资源</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>基于iframe及htmlfile的流方式<ul>
+<li>iframe的src属性会保持对指定服务器的长连接请求，服务器端则可以不停地返回数据<ul>
+<li>缺点:ie、ff下会显示页面未加载完成</li>
+</ul>
+</li>
+<li>利用htmlfile的ActiveX解决了IE上的加载显示问题</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>WebSocket<ul>
+<li>Websocket是一个全新的、独立的协议，基于TCP协议，与http协议兼容。</li>
+<li>Websocket在建立连接之前有一个Handshake过程，在关闭连接前也有一个Handshake过程，建立连接之后，双方即可双向通信。<ul>
+<li>优点:全双工相互通信</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>SSE<ul>
+<li>Server-Sent Event 服务器推送事件，允许服务端向客户端推送新数据。</li>
+<li>传统情况下服务端可以通过flash(Flash XMLSocket)或者Java Applet 套接口来实现推送</li>
+<li>一般说websocket和sse都能做彼此能做的事情，不过sse更多的是专注服务端向客户端推，客户端想发送消息给服务端必须通过ajax来发送，而websocket连接上后，双方就可以直接通过websocket通信了。</li>
+</ul>
+</li>
+</ul>
+<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ul>
+<li>允许同名登录</li>
+<li>查看在线人数及列表</li>
+<li>区分自己发言和他人发言</li>
+<li>加入、退出聊天室有提示</li>
+<li>尽量兼容低版本浏览器</li>
+</ul>
+<h2 id="websocket-API"><a href="#websocket-API" class="headerlink" title="websocket API"></a>websocket API</h2><ul>
+<li>通过分析对比几种及时通信的实现方式，客户端选择使用websocket来实现较为简单。</li>
+<li>常用API，具体可参考(<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket)" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket)</a>;  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> socket=<span class="keyword">new</span> Socket(<span class="string">'http://xxxx.com:port'</span>);</span><br><span class="line"></span><br><span class="line">socket.onopen=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">// 连接上服务器时触发(此时表示客户端可以接受和发送数据)</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">socket.onerror=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">// 当错误发生时用于监听error事件的事件监听器。会接受一个名为“error”的event对象。</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">socket.onmessage=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">// 当有消息到达的时候该事件会触发</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">socket.close();<span class="comment">// 主动关闭连接</span></span><br><span class="line"></span><br><span class="line">socket.send();<span class="comment">// 发送信息给服务端，可接受DOMString data、ArrayBuffer data、Blob data</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><ul>
+<li>原生的websocket只能支持IE10+、移动端只能支持到安卓4.4，所以最后采用socket.io来实现。</li>
+<li>socket.io是运行在node环境上的，可以兼顾到前后台，它可以做到优雅降级，当不支持websocket的浏览器会自动使用轮询的方式来实现即时通信。具体可参考(<a href="https://socket.io/docs/)" target="_blank" rel="noopener">https://socket.io/docs/)</a>;</li>
+</ul>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><ul>
+<li>完整代码可以查看(<a href="https://github.com/BryanAdamss/SourceSave/tree/master/WebSocket/ws-socketiodemo" target="_blank" rel="noopener">https://github.com/BryanAdamss/SourceSave/tree/master/WebSocket/ws-socketiodemo</a>)</li>
+<li><p>服务端</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">var</span> app = express();</span><br><span class="line"><span class="keyword">var</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="keyword">var</span> server = <span class="built_in">require</span>(<span class="string">'http'</span>).createServer(app);</span><br><span class="line"><span class="keyword">var</span> io = <span class="built_in">require</span>(<span class="string">'socket.io'</span>)(server);</span><br><span class="line"><span class="keyword">var</span> port = process.env.PORT || <span class="number">3000</span>;</span><br><span class="line"></span><br><span class="line">server.listen(port, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'服务启动在:%d'</span>, port);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use(express.static(path.join(__dirname, <span class="string">'./public'</span>)));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> onlineUsers = &#123;&#125;; <span class="comment">//在线用户</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> onlineCount = <span class="number">0</span>; <span class="comment">//当前在线人数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 监听用户连接</span></span><br><span class="line">io.on(<span class="string">'connection'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">socket</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'有用户连接!'</span>);</span><br><span class="line">    <span class="comment">// 连接后监听相应事件</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 监听客户端的登录事件</span></span><br><span class="line">    socket.on(<span class="string">'login'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 保存连接的id，退出时会用到</span></span><br><span class="line">        socket.id = obj.userId;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 将新的连接加入到在线列表中</span></span><br><span class="line">        <span class="keyword">if</span> (!onlineUsers.hasOwnProperty(obj.userId)) &#123;</span><br><span class="line">            onlineUsers[obj.userId] = obj.userName;</span><br><span class="line">            onlineCount++;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 向所有客户端广播有新用户加入，并将新用户及最新的在线人数和在线列表传过去</span></span><br><span class="line">        io.emit(<span class="string">'newIn'</span>, &#123; <span class="attr">onlineUsers</span>: onlineUsers, <span class="attr">onlineCount</span>: onlineCount, <span class="attr">user</span>: obj &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">console</span>.log(obj.userName + <span class="string">'加入了聊天室'</span>);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 监听客户端的发送事件，将其广播给所有用户</span></span><br><span class="line">    socket.on(<span class="string">'message'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'%s说了:%s'</span>, obj.name, obj.message);</span><br><span class="line">        io.emit(<span class="string">'message'</span>, obj);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 监听客户端的离线事件</span></span><br><span class="line">    socket.on(<span class="string">'disconnect'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 在线列表中删除对应的连接</span></span><br><span class="line">        <span class="keyword">if</span> (onlineUsers.hasOwnProperty(socket.id)) &#123;</span><br><span class="line">            <span class="keyword">var</span> obj = &#123; <span class="attr">userId</span>: socket.id, <span class="attr">userName</span>: onlineUsers[socket.id] &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">delete</span> onlineUsers[socket.id];</span><br><span class="line"></span><br><span class="line">            onlineCount--;</span><br><span class="line">            <span class="comment">// 向所有客户端广播有用户退出    </span></span><br><span class="line">            io.emit(<span class="string">'logout'</span>, &#123; <span class="attr">onlineUsers</span>: onlineUsers, <span class="attr">onlineCount</span>: onlineCount, <span class="attr">user</span>: obj &#125;);</span><br><span class="line">            <span class="built_in">console</span>.log(obj.userName + <span class="string">'退出了聊天室'</span>);</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'现在聊天室里有:'</span>, onlineUsers);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>客户端</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">addEvent</span>(<span class="params">ele, type, handler</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (ele.addEventListener) &#123;</span><br><span class="line">            ele.addEventListener(type, handler, <span class="literal">false</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (ele.attachEvent) &#123;</span><br><span class="line">            ele.attachEvent(<span class="string">"on"</span> + type, handler);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            ele[<span class="string">"on"</span> + type] = handler;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">trim</span>(<span class="params">str</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!str.trim) &#123;</span><br><span class="line">            <span class="keyword">return</span> str.replace(<span class="regexp">/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g</span>, <span class="string">''</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> str.trim();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        main();</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> loginInput = <span class="built_in">document</span>.querySelector(<span class="string">'#js_loginInput'</span>),</span><br><span class="line">            loginBox = <span class="built_in">document</span>.querySelector(<span class="string">'#js_loginBox'</span>);</span><br><span class="line"></span><br><span class="line">        loginInput.focus(); <span class="comment">// 登录框默认聚焦</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> URL = <span class="string">'http://192.168.23.27:3000'</span>;</span><br><span class="line">        addEvent(loginInput, <span class="string">'keydown'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> e = e || <span class="built_in">window</span>.e;</span><br><span class="line">            <span class="keyword">if</span> (e.keyCode === <span class="number">13</span>) &#123;</span><br><span class="line">                <span class="keyword">var</span> val = trim(loginInput.value);</span><br><span class="line">                <span class="keyword">if</span> (val !== <span class="string">''</span>) &#123;</span><br><span class="line">                    <span class="comment">// 隐藏登录框</span></span><br><span class="line">                    loginInput.value = <span class="string">''</span>;</span><br><span class="line">                    loginBox.className = loginBox.className + <span class="string">' is-hide'</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 创建一个ws连接</span></span><br><span class="line">                    <span class="keyword">var</span> link = <span class="keyword">new</span> Link(URL, val);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Link</span>(<span class="params">url, name</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.url = url;</span><br><span class="line">        <span class="keyword">this</span>.userName = trim(name);</span><br><span class="line">        <span class="keyword">this</span>.init();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Link.prototype = &#123;</span><br><span class="line">        <span class="keyword">constructor</span>: Link,</span><br><span class="line">        init: function() &#123;</span><br><span class="line">            <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">this</span>.socket = io.connect(<span class="keyword">this</span>.url);</span><br><span class="line">            <span class="keyword">this</span>.userId = <span class="keyword">this</span>.genUid();</span><br><span class="line">            <span class="keyword">this</span>.submitInput = <span class="built_in">document</span>.querySelector(<span class="string">'#js_chatInput'</span>);</span><br><span class="line">            <span class="keyword">this</span>.list = <span class="built_in">document</span>.querySelector(<span class="string">'#js_chatList'</span>);</span><br><span class="line">            <span class="keyword">this</span>.hd = <span class="built_in">document</span>.querySelector(<span class="string">'#js_chatHd'</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">this</span>.submitInput.focus();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">this</span>.socket.emit(<span class="string">'login'</span>, &#123; <span class="attr">userName</span>: <span class="keyword">this</span>.userName, <span class="attr">userId</span>: <span class="keyword">this</span>.userId &#125;); <span class="comment">// 告诉服务端，当前客户端登录了</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">this</span>.socket.on(<span class="string">'newIn'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">o</span>) </span>&#123; <span class="comment">// 监听服务端派发的用户登录事件</span></span><br><span class="line">                <span class="keyword">var</span> li = self.makeTips(o.user.userName);</span><br><span class="line"></span><br><span class="line">                self.updateList(li);</span><br><span class="line">                self.updateOnline(o.onlineUsers, o.onlineCount);</span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line">            addEvent(<span class="keyword">this</span>.submitInput, <span class="string">'keydown'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">                <span class="keyword">var</span> e = e || <span class="built_in">window</span>.e;</span><br><span class="line">                <span class="keyword">var</span> text = trim(self.submitInput.value);</span><br><span class="line">                <span class="keyword">if</span> (e.keyCode === <span class="number">13</span>) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (text !== <span class="string">''</span>) &#123;</span><br><span class="line">                        self.submitInput.value = <span class="string">''</span>;</span><br><span class="line"></span><br><span class="line">                        self.socket.emit(<span class="string">'message'</span>, &#123; <span class="attr">message</span>: text, <span class="attr">name</span>: self.userName, <span class="attr">id</span>: self.userId &#125;); <span class="comment">// 告诉服务端，当前客户端发送了一个message</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">this</span>.socket.on(<span class="string">'message'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">o</span>) </span>&#123; <span class="comment">// 监听服务端派发的message事件</span></span><br><span class="line">                <span class="keyword">var</span> isMe = o.id === self.userId ? <span class="literal">true</span> : <span class="literal">false</span>; <span class="comment">// 判断消息是否是当前客户端发送的</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">var</span> li = self.makeMessage(o.name, o.message, isMe);</span><br><span class="line">                self.updateList(li);</span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">this</span>.socket.on(<span class="string">'logout'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">o</span>) </span>&#123; <span class="comment">// 监听服务端派发的logout事件</span></span><br><span class="line">                <span class="keyword">var</span> li = self.makeTips(o.user.userName, <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">                self.updateList(li);</span><br><span class="line">                self.updateOnline(o.onlineUsers, o.onlineCount);</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;,</span><br><span class="line">        genUid: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Date</span>().getTime() + <span class="string">""</span> + <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">899</span> + <span class="number">100</span>); <span class="comment">// 生成唯一id，用于后面的判断</span></span><br><span class="line">        &#125;,</span><br><span class="line">        makeTips: <span class="function"><span class="keyword">function</span>(<span class="params">name, logout</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">typeof</span> name === <span class="string">'undefined'</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> li = <span class="built_in">document</span>.createElement(<span class="string">'li'</span>);</span><br><span class="line">            li.className = <span class="string">'c-ChatList-item is-tips'</span>;</span><br><span class="line">            <span class="keyword">if</span> (logout) &#123;</span><br><span class="line">                li.innerHTML = <span class="string">'&lt;span class="c-ChatList-tip"&gt;'</span> + name + <span class="string">'退出了聊天室&lt;/span&gt;'</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                li.innerHTML = <span class="string">'&lt;span class="c-ChatList-tip"&gt;'</span> + name + <span class="string">'加入了聊天室&lt;/span&gt;'</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> li;</span><br><span class="line">        &#125;,</span><br><span class="line">        makeMessage: <span class="function"><span class="keyword">function</span>(<span class="params">name, text, me</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">typeof</span> name === <span class="string">'undefined'</span> || <span class="keyword">typeof</span> text === <span class="string">'undefined'</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> li = <span class="built_in">document</span>.createElement(<span class="string">'li'</span>);</span><br><span class="line">            <span class="keyword">if</span> (me) &#123;</span><br><span class="line">                li.className = <span class="string">'c-ChatList-item fadeInRight is-me'</span>;</span><br><span class="line">                li.innerHTML = <span class="string">'&lt;div class="c-ChatList-cont"&gt;&lt;div class="c-ChatList-text"&gt;'</span> + text + <span class="string">'&lt;/div&gt;&lt;div class="c-ChatList-name"&gt;'</span> + name + <span class="string">'&lt;/div&gt;&lt;/div&gt;'</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                li.className = <span class="string">'c-ChatList-item fadeInLeft'</span>;</span><br><span class="line">                li.innerHTML = <span class="string">'&lt;div class="c-ChatList-cont"&gt;&lt;div class="c-ChatList-name"&gt;'</span> + name + <span class="string">'&lt;/div&gt;&lt;div class="c-ChatList-text"&gt;'</span> + text + <span class="string">'&lt;/div&gt;&lt;/div&gt;'</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> li;</span><br><span class="line">        &#125;,</span><br><span class="line">        updateList: <span class="function"><span class="keyword">function</span>(<span class="params">li</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.list.appendChild(li);</span><br><span class="line"></span><br><span class="line">            li.scrollIntoView();</span><br><span class="line">        &#125;,</span><br><span class="line">        updateOnline: <span class="function"><span class="keyword">function</span>(<span class="params">users, count</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> html = <span class="string">'在线人数：'</span> + count + <span class="string">'人；在线列表：'</span>;</span><br><span class="line">            <span class="keyword">var</span> arr = [];</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> users) &#123;</span><br><span class="line">                <span class="keyword">if</span> (users.hasOwnProperty(key)) &#123;</span><br><span class="line">                    arr.push(users[key]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            html += arr.join(<span class="string">'、'</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">this</span>.hd.innerHTML = html;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h2><blockquote>
+<p><a href="http://www.52im.net/thread-336-1-1.html" target="_blank" rel="noopener">http://www.52im.net/thread-336-1-1.html</a><br><a href="https://segmentfault.com/a/1190000002496055" target="_blank" rel="noopener">https://segmentfault.com/a/1190000002496055</a><br><a href="https://socket.io" target="_blank" rel="noopener">https://socket.io</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/聊天室/" rel="tag"># 聊天室</a>
+          
+            <a href="/tags/websocket/" rel="tag"># websocket</a>
+          
+            <a href="/tags/nodejs/" rel="tag"># nodejs</a>
+          
+            <a href="/tags/im/" rel="tag"># im</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/02/webpack-multi-page/" rel="next" title="webpack-multi-page">
+                <i class="fa fa-chevron-left"></i> webpack-multi-page
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/30/vue-music-note/" rel="prev" title="vue-music-note">
+                vue-music-note <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/Avatar.png"
+               alt="BryanAdamss" />
+          <p class="site-author-name" itemprop="name">BryanAdamss</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/BryanAdamss" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用NodeJs、Socket-io搭建一个web聊天室"><span class="nav-number">1.</span> <span class="nav-text">使用NodeJs、Socket.io搭建一个web聊天室</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前置知识"><span class="nav-number">1.1.</span> <span class="nav-text">前置知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#需求"><span class="nav-number">1.2.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#websocket-API"><span class="nav-number">1.3.</span> <span class="nav-text">websocket API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">1.4.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码实现"><span class="nav-number">1.5.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关链接"><span class="nav-number">1.6.</span> <span class="nav-text">相关链接</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BryanAdamss</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

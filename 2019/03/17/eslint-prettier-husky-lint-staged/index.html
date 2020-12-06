@@ -1,0 +1,1174 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="eslint,prettier,husky,lint-staged," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/Avatar.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="ESLint + Prettier + Husky + lint-staged 打造代码检查工作流 记录搭建代码检查工作流的相关问题  基本介绍 ESLint 代码检查工具 特点 代码静态检查 提前发现低级语法错误   代码风格检查 检查代码风格     关于eslint的配置可以查阅我之前的文章，有详细解释   Prettier 代码格式化工具 特点 有一套自己的格式化规范 基本支持前端涉及的所">
+<meta name="keywords" content="eslint,prettier,husky,lint-staged">
+<meta property="og:type" content="article">
+<meta property="og:title" content="eslint-prettier-husky-lint-staged">
+<meta property="og:url" content="http://yoursite.com/2019/03/17/eslint-prettier-husky-lint-staged/index.html">
+<meta property="og:site_name" content="BryanAdamss的博客">
+<meta property="og:description" content="ESLint + Prettier + Husky + lint-staged 打造代码检查工作流 记录搭建代码检查工作流的相关问题  基本介绍 ESLint 代码检查工具 特点 代码静态检查 提前发现低级语法错误   代码风格检查 检查代码风格     关于eslint的配置可以查阅我之前的文章，有详细解释   Prettier 代码格式化工具 特点 有一套自己的格式化规范 基本支持前端涉及的所">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-16T16:48:40.333Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="eslint-prettier-husky-lint-staged">
+<meta name="twitter:description" content="ESLint + Prettier + Husky + lint-staged 打造代码检查工作流 记录搭建代码检查工作流的相关问题  基本介绍 ESLint 代码检查工具 特点 代码静态检查 提前发现低级语法错误   代码风格检查 检查代码风格     关于eslint的配置可以查阅我之前的文章，有详细解释   Prettier 代码格式化工具 特点 有一套自己的格式化规范 基本支持前端涉及的所">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/17/eslint-prettier-husky-lint-staged/"/>
+
+
+
+
+
+  <title> eslint-prettier-husky-lint-staged | BryanAdamss的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BryanAdamss的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个伪前端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/17/eslint-prettier-husky-lint-staged/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BryanAdamss">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/Avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BryanAdamss的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                eslint-prettier-husky-lint-staged
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-17T00:48:14+08:00">
+                2019-03-17 00:48:14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FrontEnd/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="ESLint-Prettier-Husky-lint-staged-打造代码检查工作流"><a href="#ESLint-Prettier-Husky-lint-staged-打造代码检查工作流" class="headerlink" title="ESLint + Prettier + Husky + lint-staged 打造代码检查工作流"></a>ESLint + Prettier + Husky + lint-staged 打造代码检查工作流</h1><blockquote>
+<p>记录搭建代码检查工作流的相关问题</p>
+</blockquote>
+<h2 id="基本介绍"><a href="#基本介绍" class="headerlink" title="基本介绍"></a>基本介绍</h2><ul>
+<li>ESLint<ul>
+<li>代码检查工具</li>
+<li>特点<ul>
+<li>代码静态检查<ul>
+<li>提前发现低级语法错误</li>
+</ul>
+</li>
+<li>代码风格检查<ul>
+<li>检查代码风格</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>关于<code>eslint</code>的配置可以查阅我之前的文章，有详细解释</li>
+</ul>
+</li>
+<li>Prettier<ul>
+<li>代码格式化工具</li>
+<li>特点<ul>
+<li>有一套自己的格式化规范</li>
+<li>基本支持前端涉及的所有语言<ul>
+<li><code>js、jsx、css、html、md等等</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>ESLint、Prettier 二者异同<ul>
+<li><code>eslint</code>还是侧重于代码静态检查、<code>prettier</code>侧重于代码格式化<ul>
+<li><code>eslint</code>使用<code>--fix</code>也可以根据特定代码风格进行一些格式化工作；</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Husky<ul>
+<li>在<code>git</code>中提供<code>precommit、prepush</code>钩子，可在其中执行一些脚本</li>
+</ul>
+</li>
+<li>lint-staged<ul>
+<li>可针对添加到<code>git 暂存区</code>中不同格式的文件，分别执行不同的脚本</li>
+</ul>
+</li>
+</ul>
+<h2 id="工具介绍"><a href="#工具介绍" class="headerlink" title="工具介绍"></a>工具介绍</h2><h3 id="ESLint-相关"><a href="#ESLint-相关" class="headerlink" title="ESLint 相关"></a>ESLint 相关</h3><ul>
+<li>通过<code>npm install eslint</code>安装的<ul>
+<li>可以用来执行<code>eslint 命令</code><ul>
+<li>如<code>eslint --fix</code>、<code>eslitn --ext .js,.vue src</code></li>
+</ul>
+</li>
+<li>通过<code>webpack</code>中的<code>eslint-loader</code>可以实现保存时自动修复</li>
+</ul>
+</li>
+<li><code>VSCode</code>中的扩展<code>ESLint</code><ul>
+<li>它会读取项目中的<code>eslint 配置文件</code>，然后启动一个<code>lint服务</code>，在<code>vscode</code>中智能提示不符合项目<code>eslint 配置</code>的代码</li>
+<li>通过配置<code>eslint.autoFixOnSave</code>，可以实现保存时，根据配置文件规则，自动修复一些代码问题（大部分都是一些代码风格相关的问题）</li>
+</ul>
+</li>
+<li><code>eslint-loader</code><ul>
+<li>在<code>webpack</code>中配合<code>eslint</code>使用的<code>loader</code><ul>
+<li>通过配置可实现在每次打包时，自动 lint；如用 vue-cli2.x 初始化的项目中下面代码</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">module:&#123;</span><br><span class="line">    rules:[</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">test</span>: /\.(js|vue)$/,</span><br><span class="line">            loader: <span class="string">'eslint-loader'</span>,</span><br><span class="line">            enforce: <span class="string">'pre'</span>, // 遇到js、vue文件时，会第一个调用此loader；</span><br><span class="line">            include: [resolve(<span class="string">'src'</span>), resolve(<span class="string">'test'</span>)],</span><br><span class="line">            options: &#123;</span><br><span class="line">            formatter: require(<span class="string">'eslint-friendly-formatter'</span>),</span><br><span class="line">            emitWarning: !config.dev.showEslintErrorsInOverlay</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>eslint-friendly-formatter</code><ul>
+<li>可以输出更友好的错误提示；如包含违反规则的文件地址和规则解释网址</li>
+</ul>
+</li>
+</ul>
+<h3 id="Prettier-相关"><a href="#Prettier-相关" class="headerlink" title="Prettier 相关"></a>Prettier 相关</h3><ul>
+<li>通过<code>npm install prettier</code>安装的<code>prettier cli</code><ul>
+<li>可以调用<code>prettier</code>的一些命令；如<code>prettier --wirte test.js</code>来实现<code>test.js</code>的格式化<ul>
+<li>更多命令可查看<code>https://prettier.io/docs/en/cli.html</code></li>
+</ul>
+</li>
+<li>会读取项目中的<code>.pretterrc</code>配置文件</li>
+</ul>
+</li>
+<li><code>VSCode</code>中的扩展<code>Prettier</code><ul>
+<li>本质是内部调用<code>pretter-cli</code></li>
+<li>此扩展内部内置了<code>prettier</code>格式化规则，不过只暴露了极少的配置选项。</li>
+<li>配置读取优先级<ul>
+<li>会优先读取<code>.prettierrc</code>文件</li>
+<li>不存在则读取<code>.editorconfig</code>文件</li>
+<li>其次读取插件自身配置选项</li>
+</ul>
+</li>
+<li>可以配合<code>ESLint、TSLint</code>使用<ul>
+<li>有<code>prettier.eslintIntegration</code>选项<ul>
+<li>设置为<code>true</code>后，内部会使用<code>eslint-prettier</code>替换<code>prettier-cli</code><ul>
+<li><code>eslint-pretter</code><ul>
+<li>会将格式化的代码传递给<code>eslint --fix</code></li>
+<li>Code ➡️ prettier ➡️ eslint –fix ➡️ Formatted Code</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="vetur"><a href="#vetur" class="headerlink" title="vetur"></a>vetur</h3><ul>
+<li><code>VSCode</code>中的<code>vue</code>扩展，开发<code>vue</code>必备<ul>
+<li>自带<code>lint</code>功能(需要配合<code>eslint</code>插件使用)</li>
+<li>自带<code>format</code>功能<ul>
+<li>内置<code>prettier</code><ul>
+<li>若本地安装了<code>prettier</code>，则会使用本地<code>prettier</code><ul>
+<li>内置<code>prettier</code>也会读取<code>.prettierrc</code>文件进行格式化工作</li>
+</ul>
+</li>
+<li>可以针对<code>.vue</code>文件中的不同部分设置不同的<code>formatter</code><ul>
+<li>可参考<a href="https://vuejs.github.io/vetur/formatting.html#settings" target="_blank" rel="noopener">https://vuejs.github.io/vetur/formatting.html#settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="ESLint-Prettier-相关"><a href="#ESLint-Prettier-相关" class="headerlink" title="ESLint+Prettier 相关"></a>ESLint+Prettier 相关</h3><ul>
+<li><code>eslint-config-prettier</code><ul>
+<li>关闭<code>eslint</code>中与<code>prettier</code>冲突的<code>rules</code></li>
+</ul>
+</li>
+<li><code>eslint-plugin-prettier</code><ul>
+<li>会对比格式化前后的代码，将不一致的地方标记为错误，在 eslint 中抛出</li>
+</ul>
+</li>
+</ul>
+<h3 id="VSCode-的设置"><a href="#VSCode-的设置" class="headerlink" title="VSCode 的设置"></a>VSCode 的设置</h3><ul>
+<li><code>editer.autoFormatOnSave</code><ul>
+<li>编辑器的自动格式化，会调用一个格式化器</li>
+<li>它是总开关，若为 false,所有格式化工具将不能在保存时自动格式化</li>
+</ul>
+</li>
+</ul>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>代码的检查和格式化工作，在项目内调用命令即可完成，无需依赖编辑器配置；</li>
+<li>针对使用<code>vue-cli</code>创建的项目<ul>
+<li>针对<code>js、vue</code>文件使用<code>vue-cli</code>官方推荐的的规则来检查（我们团队习惯使用<code>plugin:vue/recommended</code>）</li>
+<li>其它类型文件不需要<code>lint</code>，直接使用<code>prettier</code>来做格式化工作</li>
+</ul>
+</li>
+</ul>
+<h2 id="直接启用-vue-cli-内部集成的-eslint"><a href="#直接启用-vue-cli-内部集成的-eslint" class="headerlink" title="直接启用 vue-cli 内部集成的 eslint"></a>直接启用 vue-cli 内部集成的 eslint</h2><ul>
+<li><code>vue-cli</code>创建的项目内部已经集成了<code>eslint</code>，并配置好了相关配置；我们只需要安装相关依赖，并在配置中启用即可<ul>
+<li>开启后，在开发环境就可在<code>webpack</code>每次<code>bundle</code>时自动<code>lint</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// build/webpack.base.conf.js</span></span><br><span class="line"></span><br><span class="line"><span class="meta">'use strict'</span></span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>)</span><br><span class="line"><span class="keyword">const</span> utils = <span class="built_in">require</span>(<span class="string">'./utils'</span>)</span><br><span class="line"><span class="keyword">const</span> config = <span class="built_in">require</span>(<span class="string">'../config'</span>)</span><br><span class="line"><span class="keyword">const</span> vueLoaderConfig = <span class="built_in">require</span>(<span class="string">'./vue-loader.conf'</span>)</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">resolve</span>(<span class="params">dir</span>) </span>&#123;</span><br><span class="line"><span class="keyword">return</span> path.join(__dirname, <span class="string">'..'</span>, dir)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> createLintingRule = <span class="function"><span class="params">()</span> =&gt;</span> (&#123;</span><br><span class="line">    test: <span class="regexp">/\.(js|vue)$/</span>,</span><br><span class="line">    loader: <span class="string">'eslint-loader'</span>,</span><br><span class="line">    enforce: <span class="string">'pre'</span>,</span><br><span class="line">    include: [resolve(<span class="string">'src'</span>), resolve(<span class="string">'test'</span>)],</span><br><span class="line">    options: &#123;</span><br><span class="line">        formatter: <span class="built_in">require</span>(<span class="string">'eslint-friendly-formatter'</span>),</span><br><span class="line">        emitWarning: !config.dev.showEslintErrorsInOverlay</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment">// config/index.js</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    dev:&#123;</span><br><span class="line">        ...</span><br><span class="line">        useEslint:<span class="literal">true</span> <span class="comment">// 开启即可</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>优缺点<ul>
+<li>优点<ul>
+<li>这是最快捷、最快速的办法</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li><code>webpack</code>每次<code>bundle</code>时，都会进行全局<code>lint</code>，效率较低；<ul>
+<li>可以通过配置<code>cache</code>有所缓解</li>
+</ul>
+</li>
+<li><code>eslint</code>仅针对<code>.js、.vue</code>实现了检查和格式化，但其它文件如<code>.md</code>的格式化并未实现</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="ESLint-Prettier-配合使用"><a href="#ESLint-Prettier-配合使用" class="headerlink" title="ESLint + Prettier 配合使用"></a>ESLint + Prettier 配合使用</h2><h3 id="ESLint-Prettier-如何配合使用"><a href="#ESLint-Prettier-如何配合使用" class="headerlink" title="ESLint + Prettier 如何配合使用"></a>ESLint + Prettier 如何配合使用</h3><ul>
+<li>ESLint 侧重代码静态检查</li>
+<li>Prettier 侧重代码风格格式化</li>
+<li>何不将二者结合起来呢？</li>
+<li><code>Prettier</code>官方文档介绍了 3 种将<code>Prettier</code>结合<code>ESLint</code>使用的方法<ul>
+<li><a href="https://prettier.io/docs/en/eslint.html" target="_blank" rel="noopener">https://prettier.io/docs/en/eslint.html</a></li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>使用<code>eslint-plugin-prettier</code><ul>
+<li>会对比格式化前后的代码，将不一致的地方标记为错误，在 eslint 中抛出</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// .eslintrc</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"plugins"</span>: [<span class="string">"prettier"</span>],</span><br><span class="line">    <span class="string">"rules"</span>: &#123;</span><br><span class="line">        <span class="string">"prettier/prettier"</span>: <span class="string">"error"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>使用<code>eslint-config-prettier</code><ul>
+<li>关闭<code>eslint</code>中与<code>prettier</code>冲突的<code>rules</code></li>
+</ul>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// .eslintrc</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"extends"</span>: [<span class="string">"prettier"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>使用<code>&quot;plugin:prettier/recommended&quot;</code><ul>
+<li>结合了 1、2 方法；推荐使用</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// .eslintrc</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"extends"</span>: [<span class="string">"plugin:prettier/recommended"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>针对非<code>vue</code>项目，这么配置就可以在<code>eslint --fix</code>时使用<code>eslint</code>做代码检查，使用<code>prettier</code>做格式化了</li>
+<li>二者结合使用时，可能会遇到二者格式化相关规则冲突的问题，我们在<code>vue</code>项目中就遇到了一些问题</li>
+</ul>
+<h3 id="结合使用时遇到的问题"><a href="#结合使用时遇到的问题" class="headerlink" title="结合使用时遇到的问题"></a>结合使用时遇到的问题</h3><ul>
+<li>我们团队内部习惯使用<code>plugin:vue/recommended</code>和<code>standard</code>规则</li>
+<li>我们尝试将其同<code>Prettier</code>格式化相关规则结合一起</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"extends"</span>: [<span class="string">"plugin:vue/recommended"</span>,<span class="string">"plugin:prettier/recommended"</span>,<span class="string">"standard"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>我们发现保存自动格式化时<code>&quot;plugin:vue/recommended&quot;,&quot;plugin:prettier/recommended&quot;</code>这两个规则会产生很多冲突<ul>
+<li>例如，二者会因为传递给组件的<code>props</code>是否需要在同一行还是另起一行产生冲突。最后导致代码错误。<ul>
+<li>解决方法<ul>
+<li>关闭其中一种规则</li>
+<li>不使用<code>plugin:vue/recommended</code>，改用约束性较低的<code>plugin:vue/essential</code>规则</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>我们发现我们还是更倾向于<code>plugin:vue/recommended</code>中定义的规则，所以我们决定在<code>vue</code>文件中不使用<code>&quot;plugin:prettier/recommended&quot;</code>规则来做格式化；在其他文件中调用<code>prettier --write</code>来格式化</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"extends"</span>: [<span class="string">"plugin:vue/recommended"</span>,<span class="string">"standard"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>无论是直接启用<code>vue-cli</code>配置还是结合<code>prettier</code>使用，在我们项目中都有一些问题<ul>
+<li>前者可以在<code>bundle</code>时自动<code>lint</code>，但没有使用<code>prettier</code></li>
+<li>后者虽使用了<code>prettier</code>，却无法自动调用</li>
+</ul>
+</li>
+</ul>
+<h3 id="使用-husky-lint-staged-改进"><a href="#使用-husky-lint-staged-改进" class="headerlink" title="使用 husky+lint-staged 改进"></a>使用 husky+lint-staged 改进</h3><ul>
+<li>关闭<code>vue-cli</code>自带的<code>bundle</code>时<code>lint</code>的配置；在<code>git commit</code>之前自动做<code>lint检查</code>和<code>prettier格式化</code></li>
+<li><code>husky和lint-staged</code>的作用上面已经做过介绍，不做赘述，直接展示配置</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// package.json</span><br><span class="line"><span class="string">"husky"</span>: &#123;</span><br><span class="line">    <span class="string">"hooks"</span>: &#123;</span><br><span class="line">            <span class="string">"pre-commit"</span>: <span class="string">"lint-staged"</span></span><br><span class="line">     &#125;</span><br><span class="line">&#125;,</span><br><span class="line"><span class="string">"lint-staged"</span>: &#123;</span><br><span class="line">    <span class="string">"*.&#123;js,vue&#125;"</span>: [// 针对js、vue文件使用eslint --fix来做检查和格式化</span><br><span class="line">        <span class="string">"eslint --fix"</span>,</span><br><span class="line">        <span class="string">"git add"</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">"*.&#123;json,css,scss,less,sass,md,html,flow,ts,tsd&#125;"</span>: [ // 针对非js、vue文件使用pretter格式化</span><br><span class="line">        <span class="string">"prettier --write"</span>,</span><br><span class="line">        <span class="string">"git add"</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>这样基本实现了，团队内部提交的代码风格一致，完成了预定目标</li>
+<li>但我们团队内部使用的都是<code>vscode</code>，大家不想在提交代码时再做检查和格式化；希望能在开发、保存时就能发现错误、格式化</li>
+</ul>
+<h2 id="VSCode-中实现自动提示错误，保存时自动格式化"><a href="#VSCode-中实现自动提示错误，保存时自动格式化" class="headerlink" title="VSCode 中实现自动提示错误，保存时自动格式化"></a>VSCode 中实现自动提示错误，保存时自动格式化</h2><ul>
+<li>在上一步配置的基础上，再借助<code>VSCode的ESLint、Prettier、Vetur</code>扩展就可以完成此目标<ul>
+<li>三个扩展的作用可以看文章前面的介绍</li>
+</ul>
+</li>
+<li>我们希望针对<code>js、vue</code>文件，在保存时，自动发现低级错误并格式化；其它格式文件在保存时可以自动格式化</li>
+</ul>
+<ol>
+<li>首先安装<code>ESLint、Prettier、Vetur、Setting Sync</code>扩展</li>
+<li>配置<code>ESLint</code>扩展，开启保存时自动修复</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// settings.json</span></span><br><span class="line"><span class="comment">// * ------------------</span></span><br><span class="line"><span class="comment">// * eslint相关</span></span><br><span class="line"><span class="comment">// * ------------------</span></span><br><span class="line"><span class="string">"eslint.enable"</span>: <span class="literal">true</span>,</span><br><span class="line"><span class="string">"eslint.alwaysShowStatus"</span>: <span class="literal">true</span>, <span class="comment">// 始终展示eslint状态</span></span><br><span class="line"><span class="string">"eslint.validate"</span>: [</span><br><span class="line"><span class="string">"javascript"</span>,</span><br><span class="line"><span class="string">"javascriptreact"</span>,</span><br><span class="line">    &#123;</span><br><span class="line">    <span class="string">"language"</span>: <span class="string">"vue"</span>,</span><br><span class="line">    <span class="string">"autoFix"</span>: <span class="literal">true</span> <span class="comment">// 自动修复.vue文件的错误和完成格式化工作</span></span><br><span class="line">    &#125;</span><br><span class="line">],</span><br><span class="line"><span class="string">"eslint.autoFixOnSave"</span>: <span class="literal">true</span> <span class="comment">// 保存时自动修复</span></span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>开启<code>vscode</code>的保存时自动格式化选项</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// settings.json</span></span><br><span class="line"><span class="comment">// 保存时自动格式化。需要借助格式化器；</span></span><br><span class="line"><span class="comment">// 若此项为false，则所有格式化器（pretter插件）不能在保存时自动格式化；</span></span><br><span class="line"><span class="comment">// 通过npm包安装的格式化器如prettier、ESLint不受此项限制。</span></span><br><span class="line"><span class="string">"editor.formatOnSave"</span>: <span class="literal">true</span>,</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>在<code>vue</code>文件中禁用<code>pretter</code>扩展</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"prettier.disableLanguages"</span>: [<span class="string">"vue"</span>],</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>在<code>vue</code>文件中禁用<code>vetur</code>的格式化选项</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"vetur.format.defaultFormatter.html"</span>: <span class="string">"none"</span>,</span><br><span class="line"><span class="string">"vetur.format.defaultFormatter.js"</span>: <span class="string">"none"</span>,</span><br></pre></td></tr></table></figure>
+<ul>
+<li>完整<code>settings.json</code>配置如下</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="comment">// * ------------------</span></span><br><span class="line"><span class="comment">// * 格式化相关</span></span><br><span class="line"><span class="comment">// * 主要思路：</span></span><br><span class="line"><span class="comment">// * .js和.vue文件使用eslint+eslint-plugin-vue配合autoFix来做代码检查和格式化；</span></span><br><span class="line"><span class="comment">// * .vue文件中禁用prettier和vetur对template和script部分的格式化</span></span><br><span class="line"><span class="comment">// * 其他类型文件如.css、.sass、.md等都使用prettier插件来格式化</span></span><br><span class="line"><span class="comment">// * ------------------</span></span><br><span class="line"><span class="comment">// 保存时自动格式化。需要借助格式化器；</span></span><br><span class="line"><span class="comment">// 若此项为false，则所有格式化器（pretter插件）不能在保存时自动格式化；</span></span><br><span class="line"><span class="comment">// 通过npm包安装的格式化器如prettier、ESLint不受此项限制。</span></span><br><span class="line"><span class="string">"editor.formatOnSave"</span>: <span class="literal">true</span>,</span><br><span class="line"><span class="comment">// prettier插件配置</span></span><br><span class="line"><span class="comment">// 读取配置的优先级如下</span></span><br><span class="line"><span class="comment">// .prettierrc文件 &gt; .editorconfig &gt; prettier插件选项</span></span><br><span class="line"><span class="string">"prettier.tabWidth"</span>: <span class="number">2</span>,</span><br><span class="line"><span class="string">"prettier.singleQuote"</span>: <span class="literal">true</span>,</span><br><span class="line"><span class="string">"prettier.semi"</span>: <span class="literal">false</span>,</span><br><span class="line"><span class="comment">// 在vue中使用eslint+eslint-plugin-vue并配合autoFix来做格式化，所以在vue中禁用prettier插件</span></span><br><span class="line"><span class="string">"prettier.disableLanguages"</span>: [<span class="string">"vue"</span>],</span><br><span class="line"><span class="comment">// vetur配置</span></span><br><span class="line"><span class="comment">// vetur中自带prettier格式化器，其也会读取项目中的.prettierrc配置文件</span></span><br><span class="line"><span class="comment">// 在.vue文件中将其禁用，使用eslint+eslint-plugin-vue配合autoFix来格式化；仅使用vetur中的prettier来格式化vue文件中的css部分</span></span><br><span class="line"><span class="string">"vetur.format.defaultFormatter.html"</span>: <span class="string">"none"</span>,</span><br><span class="line"><span class="string">"vetur.format.defaultFormatter.js"</span>: <span class="string">"none"</span>,</span><br><span class="line"><span class="comment">// * ------------------</span></span><br><span class="line"><span class="comment">// * eslint相关</span></span><br><span class="line"><span class="comment">// * ------------------</span></span><br><span class="line"><span class="string">"eslint.enable"</span>: <span class="literal">true</span>,</span><br><span class="line"><span class="string">"eslint.alwaysShowStatus"</span>: <span class="literal">true</span>, <span class="comment">// 始终展示eslint状态</span></span><br><span class="line"><span class="string">"eslint.validate"</span>: [</span><br><span class="line"><span class="string">"javascript"</span>,</span><br><span class="line"><span class="string">"javascriptreact"</span>,</span><br><span class="line">&#123;</span><br><span class="line"><span class="string">"language"</span>: <span class="string">"vue"</span>,</span><br><span class="line"><span class="string">"autoFix"</span>: <span class="literal">true</span> <span class="comment">// 自动修复.vue文件的错误和完成格式化工作</span></span><br><span class="line">&#125;</span><br><span class="line">],</span><br><span class="line"><span class="string">"eslint.autoFixOnSave"</span>: <span class="literal">true</span> <span class="comment">// 保存时自动修复</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>问题<ul>
+<li>上述配置是建立在使用了<code>vue-cli</code>创建项目，并且项目中存在<code>eslint</code>的配置文件时，如果项目中没有<code>eslint</code>配置文件，那么<code>.vue</code>文件将无法格式化。<ul>
+<li>解决方法<ul>
+<li>注释掉在<code>.vue</code>文件禁用<code>prettier</code>相关设置</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// "prettier.disableLanguages": ["vue"],</span></span><br><span class="line"><span class="comment">// "vetur.format.defaultFormatter.html": "none",</span></span><br><span class="line"><span class="comment">// "vetur.format.defaultFormatter.js": "none",</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>PS: <code>VSCode</code>设置的共享，可以借助<code>Settings Sync</code>扩展来实现，具体方法可 google</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><blockquote>
+<p><a href="https://nice.lovejade.cn/zh/article/beautify-vue-by-eslint-and-prettier.html#pre-commit-hook-%E7%BA%A6%E6%9D%9F%E4%BB%A3%E7%A0%81%E6%8F%90%E4%BA%A4" target="_blank" rel="noopener">https://nice.lovejade.cn/zh/article/beautify-vue-by-eslint-and-prettier.html#pre-commit-hook-约束代码提交</a></p>
+</blockquote>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/eslint/" rel="tag"># eslint</a>
+          
+            <a href="/tags/prettier/" rel="tag"># prettier</a>
+          
+            <a href="/tags/husky/" rel="tag"># husky</a>
+          
+            <a href="/tags/lint-staged/" rel="tag"># lint-staged</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/17/npm-pre-post/" rel="next" title="npm-pre-post">
+                <i class="fa fa-chevron-left"></i> npm-pre-post
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/10/16/latex-clean-use-client/" rel="prev" title="latex-clean-use-client">
+                latex-clean-use-client <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/Avatar.png"
+               alt="BryanAdamss" />
+          <p class="site-author-name" itemprop="name">BryanAdamss</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/BryanAdamss" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ESLint-Prettier-Husky-lint-staged-打造代码检查工作流"><span class="nav-number">1.</span> <span class="nav-text">ESLint + Prettier + Husky + lint-staged 打造代码检查工作流</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本介绍"><span class="nav-number">1.1.</span> <span class="nav-text">基本介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工具介绍"><span class="nav-number">1.2.</span> <span class="nav-text">工具介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ESLint-相关"><span class="nav-number">1.2.1.</span> <span class="nav-text">ESLint 相关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Prettier-相关"><span class="nav-number">1.2.2.</span> <span class="nav-text">Prettier 相关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vetur"><span class="nav-number">1.2.3.</span> <span class="nav-text">vetur</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ESLint-Prettier-相关"><span class="nav-number">1.2.4.</span> <span class="nav-text">ESLint+Prettier 相关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VSCode-的设置"><span class="nav-number">1.2.5.</span> <span class="nav-text">VSCode 的设置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">1.3.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#直接启用-vue-cli-内部集成的-eslint"><span class="nav-number">1.4.</span> <span class="nav-text">直接启用 vue-cli 内部集成的 eslint</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESLint-Prettier-配合使用"><span class="nav-number">1.5.</span> <span class="nav-text">ESLint + Prettier 配合使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ESLint-Prettier-如何配合使用"><span class="nav-number">1.5.1.</span> <span class="nav-text">ESLint + Prettier 如何配合使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结合使用时遇到的问题"><span class="nav-number">1.5.2.</span> <span class="nav-text">结合使用时遇到的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-husky-lint-staged-改进"><span class="nav-number">1.5.3.</span> <span class="nav-text">使用 husky+lint-staged 改进</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VSCode-中实现自动提示错误，保存时自动格式化"><span class="nav-number">1.6.</span> <span class="nav-text">VSCode 中实现自动提示错误，保存时自动格式化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.7.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BryanAdamss</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

@@ -1,0 +1,990 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="调试,Chrome,DevTools," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/Avatar.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="记录 chrome 调试工具的一些常用技巧没有时间详细整理，想到什么记录什么  Chrome Devtools 常用技巧网络请求相关拷贝网络请求地址 选择NetWorkTab 右键一个网络请求 选择copy 选择copy link address即可拷贝某一请求实际地址  注意  如果直接双击一个网络请求会打开一个新标签页，然后会请求对应网络地址，如果有装JSONView可以直接查看对应结果">
+<meta name="keywords" content="调试,Chrome,DevTools">
+<meta property="og:type" content="article">
+<meta property="og:title" content="chrome-devtools">
+<meta property="og:url" content="http://yoursite.com/2018/09/14/chrome-devtools/index.html">
+<meta property="og:site_name" content="BryanAdamss的博客">
+<meta property="og:description" content="记录 chrome 调试工具的一些常用技巧没有时间详细整理，想到什么记录什么  Chrome Devtools 常用技巧网络请求相关拷贝网络请求地址 选择NetWorkTab 右键一个网络请求 选择copy 选择copy link address即可拷贝某一请求实际地址  注意  如果直接双击一个网络请求会打开一个新标签页，然后会请求对应网络地址，如果有装JSONView可以直接查看对应结果">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/09/14/chrome-devtools/gzip.png">
+<meta property="og:image" content="http://yoursite.com/2018/09/14/chrome-devtools/gzip2.png">
+<meta property="og:image" content="http://yoursite.com/2018/09/14/chrome-devtools/gzip3.png">
+<meta property="og:image" content="http://yoursite.com/2018/09/14/chrome-devtools/format.png">
+<meta property="og:image" content="http://yoursite.com/2018/09/14/chrome-devtools/format2.png">
+<meta property="og:image" content="http://yoursite.com/2018/09/14/chrome-devtools/console_dom.png">
+<meta property="og:image" content="http://yoursite.com/2018/09/14/chrome-devtools/console_color.png">
+<meta property="og:image" content="http://yoursite.com/2018/09/14/chrome-devtools/coverage.png">
+<meta property="og:image" content="http://yoursite.com/2018/09/14/chrome-devtools/coverage2.png">
+<meta property="og:updated_time" content="2018-09-18T14:45:21.785Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="chrome-devtools">
+<meta name="twitter:description" content="记录 chrome 调试工具的一些常用技巧没有时间详细整理，想到什么记录什么  Chrome Devtools 常用技巧网络请求相关拷贝网络请求地址 选择NetWorkTab 右键一个网络请求 选择copy 选择copy link address即可拷贝某一请求实际地址  注意  如果直接双击一个网络请求会打开一个新标签页，然后会请求对应网络地址，如果有装JSONView可以直接查看对应结果">
+<meta name="twitter:image" content="http://yoursite.com/2018/09/14/chrome-devtools/gzip.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/09/14/chrome-devtools/"/>
+
+
+
+
+
+  <title> chrome-devtools | BryanAdamss的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BryanAdamss的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个伪前端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/14/chrome-devtools/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BryanAdamss">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/Avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BryanAdamss的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                chrome-devtools
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-14T23:22:21+08:00">
+                2018-09-14 23:22:21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/other/" itemprop="url" rel="index">
+                    <span itemprop="name">其他</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>记录 chrome 调试工具的一些常用技巧<br>没有时间详细整理，想到什么记录什么</p>
+</blockquote>
+<h1 id="Chrome-Devtools-常用技巧"><a href="#Chrome-Devtools-常用技巧" class="headerlink" title="Chrome Devtools 常用技巧"></a>Chrome Devtools 常用技巧</h1><h2 id="网络请求相关"><a href="#网络请求相关" class="headerlink" title="网络请求相关"></a>网络请求相关</h2><h3 id="拷贝网络请求地址"><a href="#拷贝网络请求地址" class="headerlink" title="拷贝网络请求地址"></a>拷贝网络请求地址</h3><ul>
+<li>选择<code>NetWork</code>Tab</li>
+<li><code>右键</code>一个网络请求</li>
+<li>选择<code>copy</code></li>
+<li><p>选择<code>copy link address</code>即可拷贝某一请求实际地址</p>
+</li>
+<li><p>注意</p>
+<ul>
+<li>如果直接双击一个网络请求会打开一个新标签页，然后会请求对应网络地址，如果有装<code>JSONView</code>可以直接查看对应结果</li>
+</ul>
+</li>
+</ul>
+<h3 id="拷贝网络请求的-response"><a href="#拷贝网络请求的-response" class="headerlink" title="拷贝网络请求的 response"></a>拷贝网络请求的 response</h3><ul>
+<li>选择<code>NetWork</code>Tab</li>
+<li><code>右键</code>一个网络请求</li>
+<li>选择<code>copy</code></li>
+<li><p>选择<code>copy response</code>即可</p>
+</li>
+<li><p>注意</p>
+<ul>
+<li>选择<code>copy response</code>拷贝出的 response 是没有经过格式化的(没有缩进),可以通过类似<code>json.cn</code>等在线网站进行美化，或者使用<code>JSON.stringify(obj,null,4)</code>或者在<code>console</code>中使用<code>copy</code>方法进行美化，如下面例子</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">copy(&#123;<span class="string">"most_visited"</span>: [], <span class="string">"history_on"</span>: <span class="literal">false</span>, <span class="string">"recent"</span>: []&#125;)</span><br><span class="line"><span class="comment">// * 将得到下面美化后的结果</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"most_visited"</span>: [],</span><br><span class="line">  <span class="string">"history_on"</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="string">"recent"</span>: []</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="将网络请求转换为-fetch-形式"><a href="#将网络请求转换为-fetch-形式" class="headerlink" title="将网络请求转换为 fetch 形式"></a>将网络请求转换为 fetch 形式</h3><ul>
+<li>选择<code>NetWork</code>Tab</li>
+<li><code>右键</code>一个网络请求</li>
+<li>选择<code>copy</code></li>
+<li>选择<code>copy as fetch</code>即可，devtools 会将请求的相关参数都拼装好并放到一个 fetch 中，可以直接调用</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">fetch(<span class="string">'https://developers.google.com/profile/userhistory'</span>, &#123;</span><br><span class="line">  credentials: <span class="string">'include'</span>,</span><br><span class="line">  headers: &#123;&#125;,</span><br><span class="line">  referrer: <span class="string">'https://developers.google.com/web/tools/chrome-devtools/sources'</span>,</span><br><span class="line">  referrerPolicy: <span class="string">'no-referrer-when-downgrade'</span>,</span><br><span class="line">  body: <span class="literal">null</span>,</span><br><span class="line">  method: <span class="string">'GET'</span>,</span><br><span class="line">  mode: <span class="string">'cors'</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="如何判断网站是否开启-gzip"><a href="#如何判断网站是否开启-gzip" class="headerlink" title="如何判断网站是否开启 gzip"></a>如何判断网站是否开启 gzip</h3><ul>
+<li><p>比较资源大小</p>
+<ul>
+<li>在<code>NetWork</code> Tab 的左上角选择<code>Use large request rows</code><br><img src="/2018/09/14/chrome-devtools/gzip.png" alt=""></li>
+<li>选中后，重新加载页面<br><img src="/2018/09/14/chrome-devtools/gzip2.png" alt=""></li>
+<li>在<code>size</code>列会出现两个资源大小，上面是实际下载资源的大小，下面的是原始资源大小，如果二者大小几乎一致，则可以判定网站未开启<code>gzip</code></li>
+<li>下面为开启后的<br><img src="/2018/09/14/chrome-devtools/gzip3.png" alt=""></li>
+</ul>
+</li>
+<li><p>其它方法</p>
+<ul>
+<li>查看网络请求的<code>response header</code>的<code>Content-Encoding</code>是否为<code>gzip</code></li>
+</ul>
+</li>
+<li><p>注意</p>
+<ul>
+<li>在开启<code>gzip</code>时，需要忽略图片格式，因为针对图片开启 gzip 不但不会缩减大小，反倒会增大图片资源的传输大小，适得其反</li>
+</ul>
+</li>
+</ul>
+<h2 id="命令相关"><a href="#命令相关" class="headerlink" title="命令相关"></a>命令相关</h2><h3 id="CommandMenu"><a href="#CommandMenu" class="headerlink" title="CommandMenu"></a>CommandMenu</h3><ul>
+<li>和很多工具一样，<code>devtools</code> 也有命令菜单，可以通过<code>ctrl+shift+p</code>唤出</li>
+<li>可以通过输入命令的形式使用 <code>devtools</code> 或者打开特定菜单</li>
+<li>常用<code>command</code><ul>
+<li><code>ctrl+p</code>-&gt;直接输入，则查找文件</li>
+<li><code>ctrl+p</code>-&gt;输入<code>?</code>-&gt;查看帮助</li>
+<li><code>ctrl+p</code>-&gt;输入<code>:</code>-&gt;跳转特定行</li>
+<li><code>ctrl+p</code>-&gt;输入<code>@</code>-&gt;跳转到特定符号处(symbol)</li>
+<li><code>ctrl+p</code>-&gt;输入<code>!</code>-&gt;运行 snippet</li>
+<li><code>ctrl+p</code>-&gt;输入<code>&gt;</code>-&gt;命令菜单</li>
+</ul>
+</li>
+</ul>
+<h3 id="创建所有页面都能使用的-snippet-代码片段"><a href="#创建所有页面都能使用的-snippet-代码片段" class="headerlink" title="创建所有页面都能使用的 snippet(代码片段)"></a>创建所有页面都能使用的 snippet(代码片段)</h3><ul>
+<li>例如有些网站没有引入<code>jQuery</code>，此时可以创建一个在任何页面都能使用的插入<code>jQuery</code>的代码片段</li>
+<li>使用<code>ctrl+shift+p</code>打开 CommandMenu，输入<code>Create new snippet</code></li>
+<li>拷贝下面的代码，<code>ctrl+s</code>保存并<code>ctrl+enter</code>执行</li>
+<li>你会发现在页面的<code>head</code>标签下已经引入一个 jQuery 了</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> script = <span class="built_in">document</span>.createElement(<span class="string">'script'</span>)</span><br><span class="line">script.src = <span class="string">'https://code.jquery.com/jquery-3.2.1.min.js'</span></span><br><span class="line">script.crossOrigin = <span class="string">'anonymous'</span></span><br><span class="line">script.integrity = <span class="string">'sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4='</span></span><br><span class="line"><span class="built_in">document</span>.head.appendChild(script)</span><br></pre></td></tr></table></figure>
+<h3 id="快速执行一个已经创建的-snippet"><a href="#快速执行一个已经创建的-snippet" class="headerlink" title="快速执行一个已经创建的 snippet"></a>快速执行一个已经创建的 snippet</h3><ul>
+<li>使用<code>ctrl+p</code>，输入<code>!</code>，即会列出所有 snippet，选择一个执行即可</li>
+</ul>
+<h3 id="格式化源码"><a href="#格式化源码" class="headerlink" title="格式化源码"></a>格式化源码</h3><ul>
+<li>有时源码会进行压缩或者格式不对，需要对其进行格式化<ul>
+<li>在<code>source</code> Tab 下打开的<code>js、html、css</code>文件，在右下角会展示一个<code>Format</code>按钮(大概长这样<code>{}</code>)，点击即可格式化当前代码<br><img src="/2018/09/14/chrome-devtools/format.png" alt=""></li>
+<li>格式化后<br><img src="/2018/09/14/chrome-devtools/format2.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<h2 id="console-相关"><a href="#console-相关" class="headerlink" title="console 相关"></a>console 相关</h2><h3 id="将-DOM-元素格式化为-JavaScript-对象"><a href="#将-DOM-元素格式化为-JavaScript-对象" class="headerlink" title="将 DOM 元素格式化为 JavaScript 对象"></a>将 DOM 元素格式化为 JavaScript 对象</h3><ul>
+<li>使用<code>console.dir(dom元素)</code><br><img src="/2018/09/14/chrome-devtools/console_dom.png" alt=""></li>
+</ul>
+<h3 id="使用-0"><a href="#使用-0" class="headerlink" title="使用$0"></a>使用<code>$0</code></h3><ul>
+<li>在<code>Element</code>Tab 中选择一个元素，然后使用<code>$0</code>可以引用这个 DOM 元素</li>
+<li>例如下面打印出 DOM 元素</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// * 打印选中的DOM元素</span></span><br><span class="line"><span class="built_in">console</span>.log($<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// * 如果需要转成JS对象，可以使用dir</span></span><br><span class="line"><span class="built_in">console</span>.dir($<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在<code>vue-devtools</code>中有类似变量，可以使用<code>$vm0</code>引用选中组件</li>
+</ul>
+<h3 id="在-console-log-中使用-css-样式"><a href="#在-console-log-中使用-css-样式" class="headerlink" title="在 console.log 中使用 css 样式"></a>在 console.log 中使用 css 样式</h3><ul>
+<li>使用<code>%c</code></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// * 使用%c</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'%c我将是蓝色的%c我是绿色的'</span>, <span class="string">'color: blue; '</span>, <span class="string">'color:green;'</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/09/14/chrome-devtools/console_color.png" alt=""></p>
+<h3 id="快速清除-console-面板内容"><a href="#快速清除-console-面板内容" class="headerlink" title="快速清除 console 面板内容"></a>快速清除 console 面板内容</h3><ul>
+<li>使用<code>ctrl+l</code>或者<code>clear()</code></li>
+</ul>
+<h2 id="查看-js、css-中的无用代码"><a href="#查看-js、css-中的无用代码" class="headerlink" title="查看 js、css 中的无用代码"></a>查看 js、css 中的无用代码</h2><h3 id="使用-coverage"><a href="#使用-coverage" class="headerlink" title="使用 coverage"></a>使用 coverage</h3><ul>
+<li><code>ctrl+shift+p</code>输入<code>Show Coverage</code>并选择之</li>
+<li>会列出<code>css</code>、<code>js</code>中没有生效的占比<br><img src="/2018/09/14/chrome-devtools/coverage.png" alt=""></li>
+<li>点击其中一条，会打开对应文件，左侧红色代表未生效的代码行，绿色代表已经执行过的代码行<br><img src="/2018/09/14/chrome-devtools/coverage2.png" alt=""></li>
+</ul>
+<h3 id="未完待续"><a href="#未完待续" class="headerlink" title="未完待续"></a>未完待续</h3>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/调试/" rel="tag"># 调试</a>
+          
+            <a href="/tags/Chrome/" rel="tag"># Chrome</a>
+          
+            <a href="/tags/DevTools/" rel="tag"># DevTools</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/18/git/" rel="next" title="git">
+                <i class="fa fa-chevron-left"></i> git
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/07/name-style/" rel="prev" title="name-style">
+                name-style <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/Avatar.png"
+               alt="BryanAdamss" />
+          <p class="site-author-name" itemprop="name">BryanAdamss</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/BryanAdamss" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Chrome-Devtools-常用技巧"><span class="nav-number">1.</span> <span class="nav-text">Chrome Devtools 常用技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#网络请求相关"><span class="nav-number">1.1.</span> <span class="nav-text">网络请求相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#拷贝网络请求地址"><span class="nav-number">1.1.1.</span> <span class="nav-text">拷贝网络请求地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拷贝网络请求的-response"><span class="nav-number">1.1.2.</span> <span class="nav-text">拷贝网络请求的 response</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将网络请求转换为-fetch-形式"><span class="nav-number">1.1.3.</span> <span class="nav-text">将网络请求转换为 fetch 形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何判断网站是否开启-gzip"><span class="nav-number">1.1.4.</span> <span class="nav-text">如何判断网站是否开启 gzip</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令相关"><span class="nav-number">1.2.</span> <span class="nav-text">命令相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CommandMenu"><span class="nav-number">1.2.1.</span> <span class="nav-text">CommandMenu</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建所有页面都能使用的-snippet-代码片段"><span class="nav-number">1.2.2.</span> <span class="nav-text">创建所有页面都能使用的 snippet(代码片段)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#快速执行一个已经创建的-snippet"><span class="nav-number">1.2.3.</span> <span class="nav-text">快速执行一个已经创建的 snippet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#格式化源码"><span class="nav-number">1.2.4.</span> <span class="nav-text">格式化源码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#console-相关"><span class="nav-number">1.3.</span> <span class="nav-text">console 相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#将-DOM-元素格式化为-JavaScript-对象"><span class="nav-number">1.3.1.</span> <span class="nav-text">将 DOM 元素格式化为 JavaScript 对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-0"><span class="nav-number">1.3.2.</span> <span class="nav-text">使用$0</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在-console-log-中使用-css-样式"><span class="nav-number">1.3.3.</span> <span class="nav-text">在 console.log 中使用 css 样式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#快速清除-console-面板内容"><span class="nav-number">1.3.4.</span> <span class="nav-text">快速清除 console 面板内容</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看-js、css-中的无用代码"><span class="nav-number">1.4.</span> <span class="nav-text">查看 js、css 中的无用代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-coverage"><span class="nav-number">1.4.1.</span> <span class="nav-text">使用 coverage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#未完待续"><span class="nav-number">1.4.2.</span> <span class="nav-text">未完待续</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BryanAdamss</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

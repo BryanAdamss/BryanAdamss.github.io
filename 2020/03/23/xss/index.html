@@ -1,0 +1,1191 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="安全,xss," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/Avatar.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="XSS概念 XSS(Cross-site scripting)是一种跨站脚本攻击；它是一种注入攻击，攻击者可以利用漏洞在网站上注入恶意的客户端代码，进而获取用户的敏感信息(cookie、session tokens 等)； 维基定义  1XSS攻击通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序。这些恶意网页程序通常是JavaS">
+<meta name="keywords" content="安全,xss">
+<meta property="og:type" content="article">
+<meta property="og:title" content="xss">
+<meta property="og:url" content="http://yoursite.com/2020/03/23/xss/index.html">
+<meta property="og:site_name" content="BryanAdamss的博客">
+<meta property="og:description" content="XSS概念 XSS(Cross-site scripting)是一种跨站脚本攻击；它是一种注入攻击，攻击者可以利用漏洞在网站上注入恶意的客户端代码，进而获取用户的敏感信息(cookie、session tokens 等)； 维基定义  1XSS攻击通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序。这些恶意网页程序通常是JavaS">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2020/03/23/xss/persistent.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/23/xss/reflect.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/23/xss/dom.png">
+<meta property="og:updated_time" content="2020-10-04T07:22:55.484Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="xss">
+<meta name="twitter:description" content="XSS概念 XSS(Cross-site scripting)是一种跨站脚本攻击；它是一种注入攻击，攻击者可以利用漏洞在网站上注入恶意的客户端代码，进而获取用户的敏感信息(cookie、session tokens 等)； 维基定义  1XSS攻击通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序。这些恶意网页程序通常是JavaS">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/23/xss/persistent.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/23/xss/"/>
+
+
+
+
+
+  <title> xss | BryanAdamss的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BryanAdamss的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个伪前端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/23/xss/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BryanAdamss">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/Avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BryanAdamss的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                xss
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-23T15:18:49+08:00">
+                2020-03-23 15:18:49
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FrontEnd/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="XSS"><a href="#XSS" class="headerlink" title="XSS"></a>XSS</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><ul>
+<li><code>XSS(Cross-site scripting)</code>是一种跨站脚本攻击；它是一种注入攻击，攻击者可以利用漏洞在网站上注入恶意的客户端代码，进而获取用户的敏感信息(cookie、session tokens 等)；</li>
+<li>维基定义</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">XSS攻击通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序。这些恶意网页程序通常是JavaScript，但实际上也可以包括Java，VBScript，ActiveX，Flash或者甚至是普通的HTML。攻击成功后，攻击者可能得到更高的权限（如执行一些操作）、私密网页内容、会话和cookie等各种内容。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>白话解释<ul>
+<li>攻击者利用特殊方法将恶意代码注入客户端网站(浏览器)，受害者访问网站，进而执行了被注入的恶意代码，攻击者获取到受害者的信息</li>
+</ul>
+</li>
+<li>因为缩写<code>css</code>同层叠样式表名冲突，所以改为<code>xss</code></li>
+</ul>
+<h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><ul>
+<li>一般有三种<code>Persistent XSS(持久型/存储型)</code>、<code>Reflected XSS(反射型)</code>、<code>DOM-based XSS(基于DOM的XSS攻击)</code></li>
+<li>存储区：恶意代码存放的位置。</li>
+<li>插入点：由谁取得恶意代码，并插入到网页上。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>存储区</th>
+<th>插入点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>持久型</td>
+<td>后端数据库</td>
+<td>HTML</td>
+</tr>
+<tr>
+<td>反射型</td>
+<td>URL</td>
+<td>HTML</td>
+</tr>
+<tr>
+<td>DOM-based</td>
+<td>后端数据库/前端存储/URL</td>
+<td>前端 JavaScript</td>
+</tr>
+</tbody>
+</table>
+<h2 id="持久型"><a href="#持久型" class="headerlink" title="持久型"></a>持久型</h2><h3 id="常见攻击步骤"><a href="#常见攻击步骤" class="headerlink" title="常见攻击步骤"></a>常见攻击步骤</h3><ul>
+<li><strong>攻击者将恶意代码提交到目标网站的数据库中。</strong><ul>
+<li>恶意代码被存储在后台数据库中，这是持久型的特点</li>
+</ul>
+</li>
+<li>用户打开目标网站时，网站服务端将恶意代码从数据库取出，拼接在 HTML 中返回给浏览器。<ul>
+<li><strong>持久型常见于服务端渲染中，例如利用<code>jsp</code>技术拼接返回 html</strong></li>
+</ul>
+</li>
+<li>用户浏览器接收到响应后解析执行，混在其中的恶意代码也被执行。</li>
+<li>恶意代码窃取用户数据并发送到攻击者的网站，或者冒充用户的行为，调用目标网站接口执行攻击者指定的操作。</li>
+</ul>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><ul>
+<li>persistent.png<ul>
+<li><img src="/2020/03/23/xss/persistent.png" alt="persistent.png"></li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>攻击者利用提交网站表单将一段恶意文本插入网站的数据库中</li>
+<li>受害者向网站请求页面</li>
+<li>网站从数据库中取出恶意文本把它包含进返回给受害者的页面中</li>
+<li>受害者的浏览器执行返回页面中的恶意脚本，把自己的 cookie 发送给攻击者的服务器。</li>
+</ol>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>恶意代码被存储在后台数据库中<ul>
+<li>恶意代码通过与用户交互功能被存入数据库</li>
+</ul>
+</li>
+<li>后台通过拼接 html 的形式直接返回给浏览器渲染<ul>
+<li>未做过滤(转义)</li>
+</ul>
+</li>
+<li>导致所有访问页面的用户，都会执行恶意代码</li>
+</ul>
+<h3 id="常见场景"><a href="#常见场景" class="headerlink" title="常见场景"></a>常见场景</h3><ul>
+<li>常出现在能保存用户数据的功能上，例如评论、私信等</li>
+</ul>
+<h2 id="反射型"><a href="#反射型" class="headerlink" title="反射型"></a>反射型</h2><h3 id="常见攻击步骤-1"><a href="#常见攻击步骤-1" class="headerlink" title="常见攻击步骤"></a>常见攻击步骤</h3><ul>
+<li>攻击者构造出特殊的 URL，其中包含恶意代码。</li>
+<li>用户打开带有恶意代码的 URL 时，网站服务端将恶意代码从 URL 中取出，拼接在 HTML 中返回给浏览器。<ul>
+<li><strong>反射型跟持久型类似，也常见于服务端渲染中，例如利用<code>jsp</code>技术拼接返回 html</strong></li>
+</ul>
+</li>
+<li>用户浏览器接收到响应后解析执行，混在其中的恶意代码也被执行。</li>
+<li><p>恶意代码窃取用户数据并发送到攻击者的网站，或者冒充用户的行为，调用目标网站接口执行攻击者指定的操作</p>
+</li>
+<li><p>注意</p>
+<ul>
+<li>按正常步骤，受害者亲自提交恶意代码，然后窃取自己的用户信息，一般没人会这么干:)</li>
+<li>所以，攻击者一般会用特殊的方法诱导受害者点击某个链接</li>
+<li>如果攻击者的目标是一位具体的个人用户，攻击者可以把恶意链接发送给受害者（比如通过电子邮件或者短信），并且欺骗他去访问这个链接。</li>
+<li>如果攻击者的目标是一个群体，攻击者能够发布一条指向恶意 URL 的链接（比如在他的个人网站或者社交网络上），然后等待访问者去点击它。</li>
+</ul>
+</li>
+</ul>
+<h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><ul>
+<li>reflect.png<ul>
+<li><img src="/2020/03/23/xss/reflect.png" alt="reflect.png"></li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>攻击者构造了一个包含恶意文本的 URL 发送给受害者</li>
+<li>受害者被攻击者欺骗，通过访问这个 URL 向网站发出请求</li>
+<li>网站通过拼接 html 形式给受害者的返回中包含了来自 URL 的的恶意文本</li>
+<li>受害者的浏览器执行了来自返回中的恶意脚本，把受害者的 cookie 发送给攻击者的服务器</li>
+</ol>
+<h3 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>恶意代码存储在 URL 上，没有存储到数据库</li>
+<li>服务端没有对恶意代码做过滤，直接输出到页面上，导致恶意脚本被执行</li>
+<li>由于需要用户主动打开恶意的 URL 才能生效，攻击者往往会结合多种手段诱导用户点击</li>
+<li>同持久型区别<ul>
+<li>反射性 xss 恶意代码存储在 URL 中</li>
+<li>持久型 xss 恶意代码存储在后台数据库中</li>
+</ul>
+</li>
+</ul>
+<h3 id="常见场景-1"><a href="#常见场景-1" class="headerlink" title="常见场景"></a>常见场景</h3><ul>
+<li>一般常见于通过 URL 传递参数的功能，如网站搜索、跳转等</li>
+</ul>
+<h2 id="DOM-based-型-前端重点关注"><a href="#DOM-based-型-前端重点关注" class="headerlink" title="DOM-based 型(前端重点关注)"></a>DOM-based 型(前端重点关注)</h2><ul>
+<li>基于 DOM 的 XSS 是属于持久型和反射型 XSS 的变种。在基于 DOM 的 XSS 的攻击中，除非网站自身的合法脚本被执行，否则恶意文本不会被受害者的浏览器解析<ul>
+<li>恶意代码是在网站合法代码执行时触发</li>
+</ul>
+</li>
+<li>DOM-based 型，严格来说应该是前端的一个漏洞<ul>
+<li>因为取出和执行恶意代码由浏览器端完成，属于前端 JavaScript 自身的安全漏洞，而其他两种 XSS 都属于服务端的安全漏洞</li>
+<li>前端 JavaScript 代码本身不够严谨，把不可信的数据当作代码执行了。</li>
+</ul>
+</li>
+</ul>
+<h3 id="常见攻击步骤-2"><a href="#常见攻击步骤-2" class="headerlink" title="常见攻击步骤"></a>常见攻击步骤</h3><ul>
+<li>攻击者构造出特殊的 URL，其中包含恶意代码。</li>
+<li>用户打开带有恶意代码的 URL。</li>
+<li><strong>用户浏览器接收到响应后解析执行，前端 JavaScript 取出 URL 中的恶意代码并执行</strong>。<ul>
+<li>服务端没有返回恶意代码(拼接好的 html)</li>
+</ul>
+</li>
+<li>恶意代码窃取用户数据并发送到攻击者的网站，或者冒充用户的行为，调用目标网站接口执行攻击者指定的操作。</li>
+</ul>
+<h3 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h3><ul>
+<li>dom.png<ul>
+<li><img src="/2020/03/23/xss/dom.png" alt="dom.png"></li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>攻击者构造一个包含恶意文本的 URL 发送受害者</li>
+<li>受害者被攻击者欺骗，通过访问这个 URL 向网站发出请求</li>
+<li><strong>网站收到请求，但是恶意文本并没有包含在给受害者的返回页面中</strong></li>
+<li>受害者的浏览器执行来自网站返回页面里的合法脚本，导致恶意脚本被插入进页面中</li>
+<li>受害者的浏览器执行插入进页面的恶意脚本，把自己的 cookie 发送到攻击者的服务器</li>
+</ol>
+<h3 id="特点-2"><a href="#特点-2" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>持久型、反射型的变种，恶意代码可以存储在服务端数据库也可以存储在 URL 中</li>
+<li>触发时机是在网站合法代码执行时<ul>
+<li>在传统的 XSS 攻击中，恶意脚本作为服务器传回的一部分，在页面加载时就被执行</li>
+<li>在基于 DOM 的 XSS 攻击中，恶意脚本在页面加载之后的某个时间点才执行，是合法脚本以非安全的方式处理用户输入的结果</li>
+</ul>
+</li>
+</ul>
+<h2 id="防止"><a href="#防止" class="headerlink" title="防止"></a>防止</h2><ul>
+<li>输入侧<ul>
+<li>攻击者提交恶意代码。</li>
+</ul>
+</li>
+<li>输出侧<ul>
+<li>浏览器执行恶意代码。</li>
+</ul>
+</li>
+</ul>
+<h3 id="输入侧"><a href="#输入侧" class="headerlink" title="输入侧"></a>输入侧</h3><ul>
+<li>不要相信任何用户输入(用户能修改的任何数据)，做转义(编码)、过滤(校验)<ul>
+<li>来自用户的 UGC 信息<ul>
+<li>表单输入</li>
+</ul>
+</li>
+<li>URL</li>
+<li>客户端存储<ul>
+<li>localStorage</li>
+<li>sessionStorage</li>
+<li>indexDB</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>转义是指将用户输入转义的行为，以确保浏览器把输入当作数据而不是代码对待。在 web 开发中最知名的一类编码莫过于 HTML 转义，该方法将<code>&lt;</code>和<code>&gt;</code>分别转义为<code>&amp;lt;</code>和<code>&amp;gt;</code><ul>
+<li><strong>大部分情况下，只要用户的输入会被包含进页面，就应该执行转义</strong></li>
+<li>前端可以借助<code>xss</code>这个 npm 包来完成转义</li>
+</ul>
+</li>
+<li>过滤是指对用户输入的内容做过滤，可以建立白名单，只有白名单中的内容才允许输入<ul>
+<li>例如允许输入<code>&lt;em&gt;、&lt;strong&gt;</code>，不允许输入<code>&lt;script&gt;</code></li>
+</ul>
+</li>
+<li>转义、过滤需要同时在服务端、前端同时进行</li>
+</ul>
+<h3 id="输出侧"><a href="#输出侧" class="headerlink" title="输出侧"></a>输出侧</h3><ul>
+<li>防止 html 中出现注入(针对持久型、反射型)</li>
+<li>防止 JavaScript 执行时，执行恶意代码(针对 DOM-based 型)</li>
+</ul>
+<h4 id="防止-html-中出现注入"><a href="#防止-html-中出现注入" class="headerlink" title="防止 html 中出现注入"></a>防止 html 中出现注入</h4><ul>
+<li>针对持久型、反射型，这两种是由于服务端返回的 html 携带恶意代码导致恶意代码被执行<ul>
+<li>所以可以改为前端渲染，将代码和数据分离<ul>
+<li>前端通过 ajax 请求数据然后渲染</li>
+<li>纯前端渲染，还需要预防 DOM-based xss 攻击</li>
+</ul>
+</li>
+<li>或者服务端对返回的 HTML 做充分转义<ul>
+<li>需要针对不同的输入点位置做不同的转义</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- HTML 标签内文字内容 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;<span class="name">%=</span> <span class="attr">Encode.forHtml</span>(<span class="attr">UNTRUSTED</span>) %&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- HTML 标签属性值 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">value</span>=<span class="string">"&lt;%= Encode.forHtml(UNTRUSTED) %&gt;"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- CSS 属性值 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">"width:&lt;= Encode.forCssString(UNTRUSTED) %&gt;"</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- CSS URL --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">"background:&lt;= Encode.forCssUrl(UNTRUSTED) %&gt;"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- JavaScript 内联代码块 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript">      <span class="keyword">var</span> msg = <span class="string">"&lt;%= Encode.forJavaScript(UNTRUSTED) %&gt;"</span>;</span></span><br><span class="line"><span class="undefined">      alert(msg);</span></span><br><span class="line"><span class="undefined">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- JavaScript 内联代码块内嵌 JSON --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript">      <span class="keyword">var</span> __INITIAL_STATE__ = <span class="built_in">JSON</span>.parse(</span></span><br><span class="line"><span class="javascript">        <span class="string">"&lt;%= Encoder.forJavaScript(data.to_json) %&gt;"</span></span></span><br><span class="line"><span class="undefined">      );</span></span><br><span class="line"><span class="undefined">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- HTML 标签内联监听器 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">onclick</span>=<span class="string">"alert('&lt;%= Encode.forJavaScript(UNTRUSTED) %&gt;');"</span>&gt;</span></span><br><span class="line">      click me</span><br><span class="line">    <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- URL 参数 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span></span></span><br><span class="line"><span class="tag">      <span class="attr">href</span>=<span class="string">"/search?value=&lt;%= Encode.forUriComponent(UNTRUSTED) %&gt;&amp;order=1#top"</span></span></span><br><span class="line"><span class="tag">    &gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- URL 路径 --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/page/&lt;%= Encode.forUriComponent(UNTRUSTED) %&gt;"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">  URL.</span></span><br><span class="line"><span class="comment">  注意：要根据项目情况进行过滤，禁止掉 "javascript:" 链接、非法 scheme 等</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span></span></span><br><span class="line"><span class="tag">          <span class="attr">href</span>=<span class="string">'&lt;%=</span></span></span><br><span class="line"><span class="tag"><span class="string">  urlValidator.isValid(UNTRUSTED) ?</span></span></span><br><span class="line"><span class="tag"><span class="string">    Encode.forHtml(UNTRUSTED) :</span></span></span><br><span class="line"><span class="tag"><span class="string">    "/404"</span></span></span><br><span class="line"><span class="tag"><span class="string">%&gt;'</span></span></span><br><span class="line"><span class="tag">        &gt;</span></span><br><span class="line">          link</span><br><span class="line">        <span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span></span></span><br><span class="line"><span class="tag">      &gt;</span><span class="tag">&lt;/<span class="name">a</span></span></span><br><span class="line"><span class="tag">    &gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>针对不同的上下文进行转义是很复杂的，可以考虑谷歌的<a href="https://security.googleblog.com/2009/03/reducing-xss-by-way-of-automatic.html" target="_blank" rel="noopener">Automatic Context-Aware Escaping</a></li>
+</ul>
+<h4 id="防止-JavaScript-执行时，执行恶意代码-这其实主要是预防-DOM-based-xss-型攻击"><a href="#防止-JavaScript-执行时，执行恶意代码-这其实主要是预防-DOM-based-xss-型攻击" class="headerlink" title="防止 JavaScript 执行时，执行恶意代码(这其实主要是预防 DOM-based xss 型攻击)"></a>防止 JavaScript 执行时，执行恶意代码(这其实主要是预防 DOM-based xss 型攻击)</h4><ul>
+<li>原生 js<ul>
+<li>避免使用 .innerHTML、.outerHTML、document.write()  将不可信的数据做为 html 插到页面上，而应尽量使用  .textContent、.setAttribute()  等</li>
+<li>DOM 中的内联事件监听器，如 location、onclick、onerror、onload、onmouseover 等，<a> 标签的 href 属性，JavaScript 的 eval()、setTimeout()、setInterval() 等，都能把字符串作为代码运行。如果不可信的数据拼接到字符串中传递给这些 API，很容易产生安全隐患，请务必避免。</a></li>
+</ul>
+</li>
+<li>Vue/React<ul>
+<li>避免使用  v-html/dangerouslySetInnerHTML</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 内联事件监听器中包含恶意代码 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">onclick</span>=<span class="string">"UNTRUSTED"</span> <span class="attr">onerror</span>=<span class="string">"UNTRUSTED"</span> <span class="attr">src</span>=<span class="string">"data:image/png,"</span> /&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 链接内包含恶意代码 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"UNTRUSTED"</span>&gt;</span>1<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript">  <span class="comment">// setTimeout()/setInterval() 中调用恶意代码</span></span></span><br><span class="line"><span class="javascript">  setTimeout(<span class="string">"UNTRUSTED"</span>);</span></span><br><span class="line"><span class="javascript">  setInterval(<span class="string">"UNTRUSTED"</span>);</span></span><br><span class="line"><span class="javascript">  <span class="comment">// location 调用恶意代码</span></span></span><br><span class="line"><span class="javascript">  location.href = <span class="string">"UNTRUSTED"</span>;</span></span><br><span class="line"><span class="javascript">  <span class="comment">// eval() 中调用恶意代码</span></span></span><br><span class="line"><span class="javascript">  <span class="built_in">eval</span>(<span class="string">"UNTRUSTED"</span>);</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="其他方法"><a href="#其他方法" class="headerlink" title="其他方法"></a>其他方法</h3><ul>
+<li>攻击者最终目的是获取受害者的敏感信息<ul>
+<li>所以可对部分用户敏感信息做限制<ul>
+<li>例如针对 cookie，可以设置 http-only，防止客户端读取 cookie 进而传递给攻击者</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>当转义和过滤都不能起到很好的作用时，可以考虑配合使用<code>CSP(Content Security Policy)</code><ul>
+<li>简单的说:<code>CSP</code>是一组安全协议策略，你可以配置你的网络服务器返回  <code>Content-Security-Policy</code>  HTTP 头部来告诉浏览器开启某些安全策略，用于检测并削弱某些特定类型的攻击</li>
+<li>具体可参考<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CSP" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CSP</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>XSS 是一种利用用户输入的安全漏洞的代码注入攻击的行为</li>
+<li>主要有三种类型<ul>
+<li>持久型<ul>
+<li>恶意代码存储在服务端</li>
+</ul>
+</li>
+<li>反射型<ul>
+<li>恶意代码存储在 URL</li>
+<li>需要诱导用户点击</li>
+</ul>
+</li>
+<li>DOM-based<ul>
+<li>前端需要关注</li>
+<li>前端使用了危险的方法将不可信数据插入页面导致的</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>防止<ul>
+<li>输入侧<ul>
+<li>转义特殊字符<ul>
+<li>需根据不同上下文使用不同转义方法</li>
+<li>原则上，只要用户的输入会被包含进页面，就应该执行转义</li>
+</ul>
+</li>
+<li>过滤<ul>
+<li>建立白名单，过滤危险字符的输入</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>输出侧<ul>
+<li>针对持久、反射型<ul>
+<li>对服务端返回的 html 做充分转义</li>
+<li>用前端渲染<ul>
+<li>需要预防 DOM-based 型 xss 攻击</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>针对 DOM-based 型 xss 攻击<ul>
+<li>前端避免使用危险的方法将不相数据插入页面</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>其它<ul>
+<li>预防 xss，需要前后端协同配合</li>
+<li>针对窃取 cookie，可以设置 http-only</li>
+<li>必要时候可以开启 CSP 策略，增加一层安全防护</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="彩蛋"><a href="#彩蛋" class="headerlink" title="彩蛋"></a>彩蛋</h2><ul>
+<li>xss 小游戏</li>
+<li><a href="https://xss-game.appspot.com/" target="_blank" rel="noopener">https://xss-game.appspot.com/</a></li>
+<li>参考答案<ul>
+<li><a href="https://blog.csdn.net/abc_12366/article/details/82054946" target="_blank" rel="noopener">https://blog.csdn.net/abc_12366/article/details/82054946</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://blog.csdn.net/abc_12366/article/details/82054946" target="_blank" rel="noopener">https://blog.csdn.net/abc_12366/article/details/82054946</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/21308080" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/21308080</a></li>
+<li><a href="https://juejin.im/post/5bad9140e51d450e935c6d64#heading-29" target="_blank" rel="noopener">https://juejin.im/post/5bad9140e51d450e935c6d64#heading-29</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/安全/" rel="tag"># 安全</a>
+          
+            <a href="/tags/xss/" rel="tag"># xss</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/19/flex-space-algorithm/" rel="next" title="flex-space-algorithm">
+                <i class="fa fa-chevron-left"></i> flex-space-algorithm
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/26/vuepress/" rel="prev" title="vuepress">
+                vuepress <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/Avatar.png"
+               alt="BryanAdamss" />
+          <p class="site-author-name" itemprop="name">BryanAdamss</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/BryanAdamss" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS"><span class="nav-number">1.</span> <span class="nav-text">XSS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-number">1.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分类"><span class="nav-number">1.2.</span> <span class="nav-text">分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#持久型"><span class="nav-number">1.3.</span> <span class="nav-text">持久型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常见攻击步骤"><span class="nav-number">1.3.1.</span> <span class="nav-text">常见攻击步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例"><span class="nav-number">1.3.2.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特点"><span class="nav-number">1.3.3.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见场景"><span class="nav-number">1.3.4.</span> <span class="nav-text">常见场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反射型"><span class="nav-number">1.4.</span> <span class="nav-text">反射型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常见攻击步骤-1"><span class="nav-number">1.4.1.</span> <span class="nav-text">常见攻击步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例-1"><span class="nav-number">1.4.2.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特点-1"><span class="nav-number">1.4.3.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见场景-1"><span class="nav-number">1.4.4.</span> <span class="nav-text">常见场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DOM-based-型-前端重点关注"><span class="nav-number">1.5.</span> <span class="nav-text">DOM-based 型(前端重点关注)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常见攻击步骤-2"><span class="nav-number">1.5.1.</span> <span class="nav-text">常见攻击步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例-2"><span class="nav-number">1.5.2.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特点-2"><span class="nav-number">1.5.3.</span> <span class="nav-text">特点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#防止"><span class="nav-number">1.6.</span> <span class="nav-text">防止</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#输入侧"><span class="nav-number">1.6.1.</span> <span class="nav-text">输入侧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输出侧"><span class="nav-number">1.6.2.</span> <span class="nav-text">输出侧</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#防止-html-中出现注入"><span class="nav-number">1.6.2.1.</span> <span class="nav-text">防止 html 中出现注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#防止-JavaScript-执行时，执行恶意代码-这其实主要是预防-DOM-based-xss-型攻击"><span class="nav-number">1.6.2.2.</span> <span class="nav-text">防止 JavaScript 执行时，执行恶意代码(这其实主要是预防 DOM-based xss 型攻击)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他方法"><span class="nav-number">1.6.3.</span> <span class="nav-text">其他方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.7.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#彩蛋"><span class="nav-number">1.8.</span> <span class="nav-text">彩蛋</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.9.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BryanAdamss</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

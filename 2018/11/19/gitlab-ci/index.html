@@ -1,0 +1,1264 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="git,gitlab,gitlab-ci," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/Avatar.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="记录搭建 gitlab-ci 服务相关概念；配置太多，很多不是很理解，仅做个记录，方便后期查阅；  Gitlab-ci前置概念 持续集成（Continuous Integration） 持续集成强调开发人员提交了新代码之后，立刻进行构建、（单元）测试。根据测试结果，我们可以确定新代码和原有代码能否正确地集成在一起 个人开发代码-&amp;gt;构建、单元测试-&amp;gt;向原有代码上集成 主要用来发现个人开">
+<meta name="keywords" content="git,gitlab,gitlab-ci">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gitlab-ci">
+<meta property="og:url" content="http://yoursite.com/2018/11/19/gitlab-ci/index.html">
+<meta property="og:site_name" content="BryanAdamss的博客">
+<meta property="og:description" content="记录搭建 gitlab-ci 服务相关概念；配置太多，很多不是很理解，仅做个记录，方便后期查阅；  Gitlab-ci前置概念 持续集成（Continuous Integration） 持续集成强调开发人员提交了新代码之后，立刻进行构建、（单元）测试。根据测试结果，我们可以确定新代码和原有代码能否正确地集成在一起 个人开发代码-&amp;gt;构建、单元测试-&amp;gt;向原有代码上集成 主要用来发现个人开">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/11/19/gitlab-ci/ContinuousIntegration.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/11/19/gitlab-ci/ContinuousDelivery.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/11/19/gitlab-ci/ContinuousDeployment.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/11/19/gitlab-ci/DevOps.png">
+<meta property="og:updated_time" content="2018-11-25T12:02:28.606Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="gitlab-ci">
+<meta name="twitter:description" content="记录搭建 gitlab-ci 服务相关概念；配置太多，很多不是很理解，仅做个记录，方便后期查阅；  Gitlab-ci前置概念 持续集成（Continuous Integration） 持续集成强调开发人员提交了新代码之后，立刻进行构建、（单元）测试。根据测试结果，我们可以确定新代码和原有代码能否正确地集成在一起 个人开发代码-&amp;gt;构建、单元测试-&amp;gt;向原有代码上集成 主要用来发现个人开">
+<meta name="twitter:image" content="http://yoursite.com/2018/11/19/gitlab-ci/ContinuousIntegration.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/11/19/gitlab-ci/"/>
+
+
+
+
+
+  <title> gitlab-ci | BryanAdamss的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BryanAdamss的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个伪前端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/19/gitlab-ci/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BryanAdamss">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/Avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BryanAdamss的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                gitlab-ci
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-19T21:49:38+08:00">
+                2018-11-19 21:49:38
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/other/" itemprop="url" rel="index">
+                    <span itemprop="name">其他</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>记录搭建 gitlab-ci 服务相关概念；<br>配置太多，很多不是很理解，仅做个记录，方便后期查阅；</p>
+</blockquote>
+<h1 id="Gitlab-ci"><a href="#Gitlab-ci" class="headerlink" title="Gitlab-ci"></a>Gitlab-ci</h1><h2 id="前置概念"><a href="#前置概念" class="headerlink" title="前置概念"></a>前置概念</h2><ul>
+<li>持续集成（Continuous Integration）<ul>
+<li>持续集成强调开发人员提交了新代码之后，立刻进行构建、（单元）测试。根据测试结果，我们可以确定新代码和原有代码能否正确地集成在一起</li>
+<li>个人开发代码-&gt;构建、单元测试-&gt;向原有代码上集成</li>
+<li>主要用来发现个人开发代码是否能主体代码上集成</li>
+<li><img src="/2018/11/19/gitlab-ci/ContinuousIntegration.jpg" alt=""></li>
+</ul>
+</li>
+<li>持续交付（Continuous Delivery）<ul>
+<li>持续交付在持续集成的基础上，将集成后的代码部署到更贴近真实运行环境的「类生产环境」（production-like environments）中。比如，我们完成单元测试后，可以把代码部署到连接数据库的 Staging 环境中更多的测试。如果代码没有问题，可以继续手动部署到生产环境中。</li>
+<li>主要用来将持续集成后的成果进行更加拟真的测试</li>
+<li>持续集成成果-&gt;拟真环境测试-&gt;手动部署到生产环境</li>
+<li><img src="/2018/11/19/gitlab-ci/ContinuousDelivery.jpg" alt=""></li>
+</ul>
+</li>
+<li>持续部署（Continuous Deployment）<ul>
+<li>持续部署则是在持续交付的基础上，把部署到生产环境的过程自动化。</li>
+<li>将手动部署过程进行自动化</li>
+<li>手动部署到生产环境-&gt;自动部署到生产环境中</li>
+<li><img src="/2018/11/19/gitlab-ci/ContinuousDeployment.jpg" alt=""></li>
+</ul>
+</li>
+<li>DevOps<ul>
+<li>DevOps 是一个概念，是 Development 和 Operations 的组合</li>
+<li>突出重视软件开发人员和运维人员的沟通合作，通过自动化流程来使得软件构建、测试、发布更加快捷、频繁和可靠</li>
+<li>它是基于 CI/CD 的一个完整的软件开发自动化流程</li>
+<li><img src="/2018/11/19/gitlab-ci/DevOps.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<h2 id="起步"><a href="#起步" class="headerlink" title="起步"></a>起步</h2><ul>
+<li>基本步骤<ul>
+<li>仓库根目录添加<code>.gitlab-ci.yml</code>文件并配置相关参数<ul>
+<li>配置相关 job</li>
+<li>具体配置及相关概念参照下面</li>
+</ul>
+</li>
+<li>配置项目启用<code>Runner</code><ul>
+<li><code>Runner</code>负责相关 job 的执行</li>
+<li><code>GitLab</code> 和 <code>Runner</code> 之间通过 <code>API</code> 通信，所以 <code>Runner’s machine</code> 要能连接到 <code>Gitlab 服务</code></li>
+<li><code>Runner</code> 可分为为某一个项目服务的和为多个项目服务的，后者称为<code>Shared Runner</code></li>
+</ul>
+</li>
+<li>每次<code>push</code>将自动触发 CI 的工作流(<code>pipeline</code>)</li>
+</ul>
+</li>
+</ul>
+<h2 id="gitlab-ci-yml配置"><a href="#gitlab-ci-yml配置" class="headerlink" title=".gitlab-ci.yml配置"></a><code>.gitlab-ci.yml</code>配置</h2><ul>
+<li><code>.gitlab-ci.yml</code>是<code>.yml</code>格式文件，注意缩进，始终用空格代替 tab</li>
+<li><code>.gitlab-ci.yml</code>主要定义了一些在不同 stage(阶段) 需要执行的 jobs</li>
+<li>每个<code>.gitlab-ci.yml</code>文件可以定义无数个<code>job</code>，每个<code>job</code>都定义在<code>.yml</code>的顶层</li>
+<li>每个<code>job</code>至少一包含一个<code>script</code>字段</li>
+<li><strong>每个<code>job</code>的执行是相互独立、互不干扰的</strong></li>
+<li><code>job</code>不能重名，一些 gitlab 的关键字不能使用，如 <code>image、services、stages、types、before_script、after_script、variables、cache</code></li>
+</ul>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">job1:</span></span><br><span class="line"><span class="attr">  script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">'npm install'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">job2:</span></span><br><span class="line"><span class="attr">  script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">'npm run test'</span></span><br><span class="line"><span class="comment"># job1、job2之间无任何关联，二者在执行时是相互独立的</span></span><br><span class="line"><span class="attr">job3:</span></span><br><span class="line"></span><br><span class="line"><span class="attr">job4:</span><span class="string">...</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>每个<code>job</code>可以有一些参数来定义 job 的行为</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Keyword</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>script</td>
+<td>yes</td>
+<td>Defines a shell script which is executed by Runner(定义要执行的脚本)</td>
+</tr>
+<tr>
+<td>extends</td>
+<td>no</td>
+<td>Defines a configuration entry that this job is going to inherit from (定义此job将继承于哪个job)</td>
+</tr>
+<tr>
+<td>image</td>
+<td>no</td>
+<td>Use docker image, covered in Using Docker Images (docker镜像)</td>
+</tr>
+<tr>
+<td>services</td>
+<td>no</td>
+<td>Use docker services, covered in Using Docker Images (docker服务)</td>
+</tr>
+<tr>
+<td>stage</td>
+<td>no</td>
+<td>Defines a job stage (default: test)(定义job所属的pipeline阶段，默认是test阶段)</td>
+</tr>
+<tr>
+<td>type</td>
+<td>no</td>
+<td>Alias for stage (stage别名)</td>
+</tr>
+<tr>
+<td>variables</td>
+<td>no</td>
+<td>Define job variables on a job level(定义在当前job执行时生效的变量)</td>
+</tr>
+<tr>
+<td>only</td>
+<td>no</td>
+<td>Defines a list of git refs for which job is created(定义job执行范围及时机)</td>
+</tr>
+<tr>
+<td>except</td>
+<td>no</td>
+<td>Defines a list of git refs for which job is not created(定义job执行范围及时机)</td>
+</tr>
+<tr>
+<td>tags</td>
+<td>no</td>
+<td>Defines a list of tags which are used to select Runner(拥有制定Runner tag的runner才能执行此job)</td>
+</tr>
+<tr>
+<td>allow_failure</td>
+<td>no</td>
+<td>Allow job to fail. Failed job doesn’t contribute to commit status(此job是否允许失败)</td>
+</tr>
+<tr>
+<td>when</td>
+<td>no</td>
+<td>Define when to run job. Can be on_success, on_failure, always or manual (定义job什么时候能被执行，可以是on_success,on_failure,always或者manual)</td>
+</tr>
+<tr>
+<td>dependencies</td>
+<td>no</td>
+<td>Define other jobs that a job depends on so that you can pass artifacts between them(定义了该job依赖哪一个job，如果设置该项，你可以通过artifacts设置)</td>
+</tr>
+<tr>
+<td>artifacts</td>
+<td>no</td>
+<td>Define list of job artifacts(工件。。就是在依赖项之间传递的东西)</td>
+</tr>
+<tr>
+<td>cache</td>
+<td>no</td>
+<td>Define list of files that should be cached between subsequent runs(定义需要被缓存的文件、文件夹列表)</td>
+</tr>
+<tr>
+<td>before_script</td>
+<td>no</td>
+<td>Override a set of commands that are executed before job(在每个job执行前将执行的script)</td>
+</tr>
+<tr>
+<td>after_script</td>
+<td>no</td>
+<td>Override a set of commands that are executed after job(在每个job执行后执行的script)</td>
+</tr>
+<tr>
+<td>environment</td>
+<td>no</td>
+<td>Defines a name of environment to which deployment is done by this job(定义让job完成部署的环境名称)</td>
+</tr>
+<tr>
+<td>coverage</td>
+<td>no</td>
+<td>Define code coverage settings for a given job(允许你设置代码覆盖率输出，其值从job的输出获取)</td>
+</tr>
+<tr>
+<td>retry</td>
+<td>no</td>
+<td>Define when and how many times a job can be auto-retried in case of a failure(定义job失败后的自动重试次数)</td>
+</tr>
+<tr>
+<td>parallel</td>
+<td>no</td>
+<td>Defines how many instances of a job should be run in parallel(最大可并行执行的job实例数)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p><code>extends</code></p>
+<ul>
+<li>定义job继承行为</li>
+<li>使用<code>include</code>能够实现跨配置文件的job继承<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用yml的隐藏key来创建隐藏job，通过添加点号来实现。隐藏job将不会被执行，但可以被继承</span></span><br><span class="line"><span class="string">.tests:</span></span><br><span class="line"><span class="attr">  script:</span> <span class="string">rake</span> <span class="string">test</span></span><br><span class="line"><span class="attr">  stage:</span> <span class="string">test</span></span><br><span class="line"><span class="attr">  only:</span></span><br><span class="line"><span class="attr">    refs:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">branches</span></span><br><span class="line"></span><br><span class="line"><span class="attr">rspec:</span></span><br><span class="line"><span class="attr">  extends:</span> <span class="string">.tests</span> </span><br><span class="line"><span class="attr">  script:</span> <span class="string">rake</span> <span class="string">rspec</span></span><br><span class="line"><span class="attr">  only:</span></span><br><span class="line"><span class="attr">    variables:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">$RSPEC</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 继承结果，后定义的将覆盖先定义的</span></span><br><span class="line"><span class="attr">rspec:</span></span><br><span class="line"><span class="attr">  script:</span> <span class="string">rake</span> <span class="string">rspec</span></span><br><span class="line"><span class="attr">  stage:</span> <span class="string">test</span></span><br><span class="line"><span class="attr">  only:</span></span><br><span class="line"><span class="attr">    refs:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">branches</span></span><br><span class="line"><span class="attr">    variables:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">$RSPEC</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>before_script</code>、<code>after_script</code></p>
+<ul>
+<li><code>before_script</code>每个job执行前必须执行的script<ul>
+<li><code>before_script</code>和job的<code>script</code>享有同一执行环境(可访问到job中的变量)</li>
+</ul>
+</li>
+<li><code>after_script</code>每个job执行后必须执行的script<ul>
+<li><code>after_script</code>无法访问到job中的变量<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 全局</span></span><br><span class="line"><span class="attr">before_script:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">global</span> <span class="string">before</span> <span class="string">script</span></span><br><span class="line"></span><br><span class="line"><span class="attr">job:</span></span><br><span class="line">  <span class="comment"># 局部，将覆盖全局</span></span><br><span class="line"><span class="attr">  before_script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">execute</span> <span class="string">this</span> <span class="string">instead</span> <span class="string">of</span> <span class="string">global</span> <span class="string">before</span> <span class="string">script</span></span><br><span class="line"><span class="attr">  script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">my</span> <span class="string">command</span></span><br><span class="line"><span class="attr">  after_script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">execute</span> <span class="string">this</span> <span class="string">after</span> <span class="string">my</span> <span class="string">script</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>stages</code></p>
+<ul>
+<li>定义job所属阶段</li>
+<li>可在全局中先定义所有阶段(stage)<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">stages:</span></span><br><span class="line">  <span class="comment"># 预定义需要按顺序执行的阶段</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">build</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">test</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">deploy</span></span><br><span class="line"></span><br><span class="line"><span class="string">job</span> <span class="number">1</span><span class="string">:</span></span><br><span class="line">  <span class="comment"># job1属于build阶段</span></span><br><span class="line"><span class="attr">  stage:</span> <span class="string">build</span></span><br><span class="line"><span class="attr">  script:</span> <span class="string">make</span> <span class="string">build</span> <span class="string">dependencies</span></span><br><span class="line"></span><br><span class="line"><span class="string">job</span> <span class="number">2</span><span class="string">:</span></span><br><span class="line">  <span class="comment"># job2也属于build阶段</span></span><br><span class="line"><span class="attr">  stage:</span> <span class="string">build</span></span><br><span class="line"><span class="attr">  script:</span> <span class="string">make</span> <span class="string">build</span> <span class="string">artifacts</span></span><br><span class="line"></span><br><span class="line"><span class="string">job</span> <span class="number">3</span><span class="string">:</span></span><br><span class="line">  <span class="comment"># job3属于test阶段</span></span><br><span class="line"><span class="attr">  stage:</span> <span class="string">test</span></span><br><span class="line"><span class="attr">  script:</span> <span class="string">make</span> <span class="string">test</span></span><br><span class="line"></span><br><span class="line"><span class="string">job</span> <span class="number">4</span><span class="string">:</span></span><br><span class="line">  <span class="comment"># job4属于deploy阶段</span></span><br><span class="line"><span class="attr">  stage:</span> <span class="string">deploy</span></span><br><span class="line"><span class="attr">  script:</span> <span class="string">make</span> <span class="string">deploy</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>script</code></p>
+<ul>
+<li>job唯一必填字段</li>
+<li>指定此job需要执行的脚本，可是一个也可是多个<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">job1:</span></span><br><span class="line">  <span class="comment"># 指定一个脚本</span></span><br><span class="line"><span class="attr">  script:</span> <span class="string">"bundle exec rspec"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">job2:</span></span><br><span class="line">  <span class="comment"># 指定顺序执行的两个脚本</span></span><br><span class="line"><span class="attr">  script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">uname</span> <span class="bullet">-a</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">bundle</span> <span class="string">exec</span> <span class="string">rspec</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>only</code>、<code>expect</code></p>
+<ul>
+<li>指定此job的执行范围或时机，在哪个branch或者tag上执行，在何时触发<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">job:</span></span><br><span class="line">  <span class="comment"># use regexp</span></span><br><span class="line"><span class="attr">  only:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">/^issue-.*$/</span></span><br><span class="line">  <span class="comment"># use special keyword</span></span><br><span class="line"><span class="attr">  except:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">branches</span></span><br><span class="line"><span class="comment"># 只会在issue-的ref上触发此任务，并派出了所有branche</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>tags</code></p>
+<ul>
+<li>用来指定可以运行此job的<code>Runner</code>，每个<code>Runner</code>在创建时可以指定一个<code>Runner&#39;s tag</code><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">job:</span></span><br><span class="line">  <span class="comment"># 拥有ruby、postgres标签的runner才能执行此job</span></span><br><span class="line"><span class="attr">  tags:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">ruby</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">postgres</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>allow_failure</code></p>
+<ul>
+<li>是否允许此job执行失败<ul>
+<li>正常情况，如果job执行失败，会中断后续stage的job执行</li>
+<li>若为true，将不中断后续stage的job执行</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>when</code></p>
+<ul>
+<li>标识当前job，在stage中某一job执行失败或所有job执行成功时才执行</li>
+<li><p>关键字</p>
+<ul>
+<li><code>on_success</code><ul>
+<li>在前一stage中所有job都执行成功后再执行</li>
+</ul>
+</li>
+<li><code>on_failure</code><ul>
+<li>在前一stage中有一个job执行失败时，就立即执行</li>
+</ul>
+</li>
+<li><code>always</code><ul>
+<li>无论前一stage成功或失败都将执行此job</li>
+</ul>
+</li>
+<li><code>manual</code><ul>
+<li>手动执行<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">stages:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">build</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">cleanup_build</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">test</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">deploy</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">cleanup</span></span><br><span class="line"></span><br><span class="line"><span class="attr">build_job:</span></span><br><span class="line"><span class="attr">  stage:</span> <span class="string">build</span></span><br><span class="line"><span class="attr">  script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">make</span> <span class="string">build</span></span><br><span class="line"></span><br><span class="line"><span class="attr">cleanup_build_job:</span></span><br><span class="line"><span class="attr">  stage:</span> <span class="string">cleanup_build</span></span><br><span class="line"><span class="attr">  script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">cleanup</span> <span class="string">build</span> <span class="string">when</span> <span class="string">failed</span></span><br><span class="line"><span class="attr">  when:</span> <span class="string">on_failure</span></span><br><span class="line"></span><br><span class="line"><span class="attr">test_job:</span></span><br><span class="line"><span class="attr">  stage:</span> <span class="string">test</span></span><br><span class="line"><span class="attr">  script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">make</span> <span class="string">test</span></span><br><span class="line"></span><br><span class="line"><span class="attr">deploy_job:</span></span><br><span class="line"><span class="attr">  stage:</span> <span class="string">deploy</span></span><br><span class="line"><span class="attr">  script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">make</span> <span class="string">deploy</span></span><br><span class="line"><span class="attr">  when:</span> <span class="string">manual</span></span><br><span class="line"></span><br><span class="line"><span class="attr">cleanup_job:</span></span><br><span class="line"><span class="attr">  stage:</span> <span class="string">cleanup</span></span><br><span class="line"><span class="attr">  script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">cleanup</span> <span class="string">after</span> <span class="string">jobs</span></span><br><span class="line"><span class="attr">  when:</span> <span class="string">always</span></span><br><span class="line"><span class="comment"># cleanup_build_job将只在build阶段失败时执行</span></span><br><span class="line"><span class="comment"># cleanup_job无论前面阶段是否执行成功都将执行</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>environment</code></p>
+<ul>
+<li>是用于定义一个job部署到某个具名的环境</li>
+<li><code>environment:on_stop</code>、<code>environment:action</code><ul>
+<li>on_stop指定在环境关闭时执行某个job</li>
+<li>action关键字和on_stop关键字相关，定义在job的environment中，用于响应关闭环境的操作<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">review_app:</span></span><br><span class="line"><span class="attr">  stage:</span> <span class="string">deploy</span></span><br><span class="line"><span class="attr">  script:</span> <span class="string">make</span> <span class="string">deploy-app</span></span><br><span class="line"><span class="attr">  environment:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">review</span></span><br><span class="line"><span class="attr">    on_stop:</span> <span class="string">stop_review_app</span></span><br><span class="line"></span><br><span class="line"><span class="attr">stop_review_app:</span></span><br><span class="line"><span class="attr">  stage:</span> <span class="string">deploy</span></span><br><span class="line"><span class="attr">  script:</span> <span class="string">make</span> <span class="string">delete-app</span></span><br><span class="line"><span class="attr">  when:</span> <span class="string">manual</span></span><br><span class="line"><span class="attr">  environment:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">review</span></span><br><span class="line"><span class="attr">    action:</span> <span class="string">stop</span></span><br><span class="line"><span class="comment"># 我们建立了一个review_app并部署到review环境，并且我们在on_stop下同样定义了一个新的job名为stop_review_app。一旦review_app作业成功完成，ci将可以在手动操作的时候触发stop_review_app的任务，在这个例子中，我们使用when来达到手动触发停止review app的功能</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>artifacts</code></p>
+<ul>
+<li><code>artifacts</code> 被用于在job作业成功后将制定列表里的文件或文件夹附加到job上，传递给下一个job，如果要在两个job之间传递artifacts，你必须设置dependencies,</li>
+<li><p>传递文件/文件夹</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">artifacts:</span></span><br><span class="line"><span class="attr">  paths:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">binaries/</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">.config</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>传递git没有追踪的文件</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">artifacts:</span></span><br><span class="line"><span class="attr">  untracked:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>只为打tags的行为创建artifacts</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">default-job:</span></span><br><span class="line"><span class="attr">  script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">mvn</span> <span class="string">test</span> <span class="bullet">-U</span></span><br><span class="line"><span class="attr">  except:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">tags</span></span><br><span class="line"></span><br><span class="line"><span class="attr">release-job:</span></span><br><span class="line"><span class="attr">  script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">mvn</span> <span class="string">package</span> <span class="bullet">-U</span></span><br><span class="line"><span class="attr">  artifacts:</span></span><br><span class="line"><span class="attr">    paths:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">target/*.war</span></span><br><span class="line"><span class="attr">  only:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">tags</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创创建一个压缩包，命名为“job名_分支名”并包含为被git跟踪的文件</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">job:</span></span><br><span class="line"><span class="attr">  artifacts:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">"$&#123;CI_JOB_NAME&#125;_$&#123;CI_COMMIT_REF_NAME&#125;"</span></span><br><span class="line"><span class="attr">    untracked:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当失败时上传artifacts</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">job:</span></span><br><span class="line"><span class="attr">  artifacts:</span></span><br><span class="line"><span class="attr">    when:</span> <span class="string">on_failure</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>-设置artifacts一星期过期，默认artifacts会永远保存在gitlab中</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">job:</span></span><br><span class="line"><span class="attr">  artifacts:</span></span><br><span class="line"><span class="attr">    expire_in:</span> <span class="number">1</span> <span class="string">week</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>cache</code></p>
+<ul>
+<li>定义在不同job间需要缓存的文件、文件夹(并不明白他和artifacts的区别)</li>
+</ul>
+</li>
+<li><code>dependencies</code><ul>
+<li><code>dependencies</code>需要结合<code>artifacts</code>使用，只有定义了依赖关系的job才可以传递<code>artifacts</code>(怀疑中?)</li>
+</ul>
+</li>
+<li><p><code>coverage</code></p>
+<ul>
+<li>coverage 允许你设置代码覆盖率输出，其值从job的输出获取<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">job1:</span></span><br><span class="line"><span class="attr">  script:</span> <span class="string">rspec</span></span><br><span class="line"><span class="attr">  coverage:</span> <span class="string">'/Code coverage: \d+\.\d+/'</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>parallel</code></p>
+<ul>
+<li>最大可并行执行的job实例数<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">test:</span></span><br><span class="line"><span class="attr">  script:</span> <span class="string">rspec</span></span><br><span class="line"><span class="attr">  parallel:</span> <span class="number">5</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>include</code></p>
+<ul>
+<li>导入其他配置文件<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">include:</span> <span class="string">'https://gitlab.com/awesome-project/raw/master/.before-script-template.yml'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">rspec:</span></span><br><span class="line"><span class="attr">  script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">bundle</span> <span class="string">exec</span> <span class="string">rspec</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>variables</code></p>
+<ul>
+<li>定义变量<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 全局变量</span></span><br><span class="line"><span class="attr">variables:</span></span><br><span class="line"><span class="attr">  DATABASE_URL:</span> <span class="string">"postgres://postgres@postgres/my_database"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">job_name:</span></span><br><span class="line">  <span class="comment"># 局部变量</span></span><br><span class="line"><span class="attr">  variables:</span> <span class="string">&#123;&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Git Strategy</p>
+<ul>
+<li>你可以通过在全局变量设置位置或者job局部变量设置位置来设置GIT_STRATEGY用以获取应用最近更新的代码。<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># clone是最慢的选项，如果设置该值，每个job将会都克隆一遍仓库，确保项目工作空间总是原始的正确的。</span></span><br><span class="line"><span class="attr">variables:</span></span><br><span class="line"><span class="attr">  GIT_STRATEGY:</span> <span class="string">clone</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># fetch是更快的操作选项，因为他重用了项目的工作空间（如果没有的话，会去clone）, git clean用于撤销上一个job的任何操作，git fetch是用来重新获取上一个job运行到当前job产生的commit</span></span><br><span class="line"><span class="attr">variables:</span></span><br><span class="line"><span class="attr">  GIT_STRATEGY:</span> <span class="string">fetch</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># none也同样重用了项目空间（但是他会跳过所有git操作，包括如果存在的gitlab runner的预克隆脚本）。其主要用于只是为了操作artifacts的job上（例如depoly部署行为）。此时Git仓库的数据可能是存在的，但它一定不是最新的。所以在设置了none的job里你应该依赖从cache或者artifacts来的数据，而不是仓库数据。</span></span><br><span class="line"><span class="attr">variables:</span></span><br><span class="line"><span class="attr">  GIT_STRATEGY:</span> <span class="string">none</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>Git checkout</p>
+<ul>
+<li>用来指定job执行时是否需要执行git checkout命令<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">variables:</span></span><br><span class="line"><span class="attr">  GIT_STRATEGY:</span> <span class="string">clone</span></span><br><span class="line">  <span class="comment"># 全局定义，执行job时无需checkout</span></span><br><span class="line"><span class="attr">  GIT_CHECKOUT:</span> <span class="string">"false"</span></span><br><span class="line"><span class="attr">script:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">git</span> <span class="string">checkout</span> <span class="string">master</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">git</span> <span class="string">merge</span> <span class="string">$CI_BUILD_REF_NAME</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>Shallow cloning</p>
+<ul>
+<li>你可以通过GIT_DEPTH来设置抓取或者克隆深度。这将使得仓库进行浅克隆， 如果你的仓库有特别大量的commits或者仓库好久没更新了，该设置将显著的提高克隆速度。该参数会发送给git fetch和git clone操作(其实就相当于git fetch –depth=xxx, git clone –depth=xxx。但是由于git fetch和git clone是runner在执行job时帮你做的，所以需要此配置。)<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 抓取或者克隆最新三条commits:</span></span><br><span class="line"></span><br><span class="line"><span class="attr">variables:</span></span><br><span class="line"><span class="attr">  GIT_DEPTH:</span> <span class="string">"3"</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>隐藏job</p>
+<ul>
+<li>job名前添加点号即可，此job不被执行，但可以被继承<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">.hidden_job:</span></span><br><span class="line"><span class="attr">  script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">run</span> <span class="string">test</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>Anchors</p>
+<ul>
+<li><p>类似混入概念</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">.job_template:</span> <span class="meta">&amp;job_definition</span>  <span class="comment"># Hidden key that defines an anchor named 'job_definition'</span></span><br><span class="line"><span class="attr">  image:</span> <span class="attr">ruby:2.1</span></span><br><span class="line"><span class="attr">  services:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">postgres</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">redis</span></span><br><span class="line"></span><br><span class="line"><span class="attr">test1:</span></span><br><span class="line">  <span class="string">&lt;&lt;:</span> <span class="meta">*job_definition</span>           <span class="comment"># Merge the contents of the 'job_definition' alias</span></span><br><span class="line"><span class="attr">  script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">test1</span> <span class="string">project</span></span><br><span class="line"></span><br><span class="line"><span class="attr">test2:</span></span><br><span class="line">  <span class="string">&lt;&lt;:</span> <span class="meta">*job_definition</span>           <span class="comment"># Merge the contents of the 'job_definition' alias</span></span><br><span class="line"><span class="attr">  script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">test2</span> <span class="string">project</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 结果</span></span><br><span class="line"><span class="string">.job_template:</span></span><br><span class="line"><span class="attr">  image:</span> <span class="attr">ruby:2.1</span></span><br><span class="line"><span class="attr">  services:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">postgres</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">redis</span></span><br><span class="line"></span><br><span class="line"><span class="attr">test1:</span></span><br><span class="line"><span class="attr">  image:</span> <span class="attr">ruby:2.1</span></span><br><span class="line"><span class="attr">  services:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">postgres</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">redis</span></span><br><span class="line"><span class="attr">  script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">test1</span> <span class="string">project</span></span><br><span class="line"></span><br><span class="line"><span class="attr">test2:</span></span><br><span class="line"><span class="attr">  image:</span> <span class="attr">ruby:2.1</span></span><br><span class="line"><span class="attr">  services:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">postgres</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">redis</span></span><br><span class="line"><span class="attr">  script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">test2</span> <span class="string">project</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>跳过job</p>
+<ul>
+<li>如果你的commit信息包涵[ci skip]或者[skip ci]，此次提交将不被job执行</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>script<ul>
+<li>定义具体脚本</li>
+</ul>
+</li>
+<li>job<ul>
+<li>每个job可以执行一个或多个script</li>
+<li>多个script按定义时顺序先后执行</li>
+</ul>
+</li>
+<li>stage<ul>
+<li>每个阶段由不同job组成</li>
+<li>每个job并行执行互不干扰</li>
+<li>只有当前stage所有job都执行成功，才能进入下一阶段。一个job执行失败，标识此阶段fail</li>
+</ul>
+</li>
+<li>pipeline<ul>
+<li>由多个阶段组成(build-&gt;test-&gt;deploy)</li>
+</ul>
+</li>
+<li>Runner负责管理调配执行上述过程</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
+<p><a href="https://segmentfault.com/a/1190000011881435" target="_blank" rel="noopener">https://segmentfault.com/a/1190000011881435</a><br><a href="https://segmentfault.com/a/1190000011890710#articleHeader31" target="_blank" rel="noopener">https://segmentfault.com/a/1190000011890710#articleHeader31</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/git/" rel="tag"># git</a>
+          
+            <a href="/tags/gitlab/" rel="tag"># gitlab</a>
+          
+            <a href="/tags/gitlab-ci/" rel="tag"># gitlab-ci</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/07/vuex-guide/" rel="next" title="vuex-guide">
+                <i class="fa fa-chevron-left"></i> vuex-guide
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/20/vue-analysis-note/" rel="prev" title="vue-analysis-note">
+                vue-analysis-note <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/Avatar.png"
+               alt="BryanAdamss" />
+          <p class="site-author-name" itemprop="name">BryanAdamss</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/BryanAdamss" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Gitlab-ci"><span class="nav-number">1.</span> <span class="nav-text">Gitlab-ci</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前置概念"><span class="nav-number">1.1.</span> <span class="nav-text">前置概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#起步"><span class="nav-number">1.2.</span> <span class="nav-text">起步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gitlab-ci-yml配置"><span class="nav-number">1.3.</span> <span class="nav-text">.gitlab-ci.yml配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.5.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BryanAdamss</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

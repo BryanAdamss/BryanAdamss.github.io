@@ -1,0 +1,1326 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="vuepress," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/Avatar.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="vuepress介绍 VuePress是一个静态网站生成器 由VuePress生成的静态网站是一个由Vue、vue-router、webpack驱动的SPA单页应用 构建时，会采用预渲染的机制，生成所有静态页面，所以有非常好的加载性能和SEO 本文大部分内容摘抄自vuepress官网，加了一些自己的理解，明确了一些语义 一来加深印象 二来方便自己查阅    安装 确保node &amp;gt;=8 本地安">
+<meta name="keywords" content="vuepress">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vuepress">
+<meta property="og:url" content="http://yoursite.com/2020/03/26/vuepress/index.html">
+<meta property="og:site_name" content="BryanAdamss的博客">
+<meta property="og:description" content="vuepress介绍 VuePress是一个静态网站生成器 由VuePress生成的静态网站是一个由Vue、vue-router、webpack驱动的SPA单页应用 构建时，会采用预渲染的机制，生成所有静态页面，所以有非常好的加载性能和SEO 本文大部分内容摘抄自vuepress官网，加了一些自己的理解，明确了一些语义 一来加深印象 二来方便自己查阅    安装 确保node &amp;gt;=8 本地安">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/vuepress/outside.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/vuepress/toc.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/vuepress/emoji.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/vuepress/tips.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/vuepress/markdown-vue.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/vuepress/badge.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/vuepress/front-matter.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/vuepress/meta.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/vuepress/link.png">
+<meta property="og:updated_time" content="2020-10-04T07:53:35.059Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vuepress">
+<meta name="twitter:description" content="vuepress介绍 VuePress是一个静态网站生成器 由VuePress生成的静态网站是一个由Vue、vue-router、webpack驱动的SPA单页应用 构建时，会采用预渲染的机制，生成所有静态页面，所以有非常好的加载性能和SEO 本文大部分内容摘抄自vuepress官网，加了一些自己的理解，明确了一些语义 一来加深印象 二来方便自己查阅    安装 确保node &amp;gt;=8 本地安">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/26/vuepress/outside.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/26/vuepress/"/>
+
+
+
+
+
+  <title> vuepress | BryanAdamss的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BryanAdamss的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个伪前端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/26/vuepress/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BryanAdamss">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/Avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BryanAdamss的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                vuepress
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-26T15:33:12+08:00">
+                2020-03-26 15:33:12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FrontEnd/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="vuepress"><a href="#vuepress" class="headerlink" title="vuepress"></a>vuepress</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><ul>
+<li><code>VuePress</code>是一个静态网站生成器</li>
+<li>由<code>VuePress</code>生成的静态网站是一个由<code>Vue</code>、<code>vue-router</code>、<code>webpack</code>驱动的<code>SPA单页应用</code></li>
+<li>构建时，会采用预渲染的机制，生成所有静态页面，所以有非常好的加载性能和<code>SEO</code></li>
+<li>本文大部分内容摘抄自<code>vuepress</code>官网，加了一些自己的理解，明确了一些语义<ul>
+<li>一来加深印象</li>
+<li>二来方便自己查阅</li>
+</ul>
+</li>
+</ul>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ul>
+<li>确保<code>node &gt;=8</code></li>
+<li>本地安装即可</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn add -D vuepress <span class="comment"># 或者：npm install -D vuepress</span></span><br></pre></td></tr></table></figure>
+<h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── docs // 目标目录targetDir，vuepress基于此目录工作</span><br><span class="line">│   ├── .vuepress (可选的) // vuepress配置目录</span><br><span class="line">│   │   ├── components (可选的) // 内部的vue组件会自动被注册为全局的异步组件</span><br><span class="line">│   │   ├── theme (可选的) // 配置的自定义主题</span><br><span class="line">│   │   │   └── Layout.vue // 自定义主题必须要的布局组件</span><br><span class="line">│   │   ├── public (可选的) // 公用资源</span><br><span class="line">│   │   ├── styles (可选的) // 自定义样式</span><br><span class="line">│   │   │   ├── index.styl // 全局样式文件</span><br><span class="line">│   │   │   └── palette.styl // stylus 颜色常量</span><br><span class="line">│   │   ├── templates (可选的, 谨慎配置)</span><br><span class="line">│   │   │   ├── dev.html // 开发环境的 HTML 模板文件</span><br><span class="line">│   │   │   └── ssr.html // vue ssr 的模板文件</span><br><span class="line">│   │   ├── config.js (可选的) // 配置文件</span><br><span class="line">│   │   └── enhanceApp.js (可选的) // 用来增强客户端实例用，可在此文件中使用三方UI库（如element-ui）</span><br><span class="line">│   │</span><br><span class="line">│   ├── README.md</span><br><span class="line">│   ├── guide</span><br><span class="line">│   │   └── README.md</span><br><span class="line">│   └── config.md</span><br><span class="line">│</span><br><span class="line">└── package.json</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>docs</code>是<code>vuepress</code>约定的目标目录(工作目录)<code>targetDir</code><ul>
+<li>路由的生成是相对于<code>targetDir</code></li>
+</ul>
+</li>
+<li><code>.vuepress</code>目录是<code>vuepress</code>的配置目录</li>
+<li><code>docs</code>目录下除了<code>.vuepress</code>文件夹以外的所有<code>.md</code>都将被编译为一个页面<ul>
+<li>所有<code>README.md</code>、<code>index.md</code>都会被编译为<code>index.html</code></li>
+<li>上述目录对应的默认路由为</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>文件的相对路径</th>
+<th>页面路由地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/README.md</code></td>
+<td><code>/</code></td>
+</tr>
+<tr>
+<td><code>/guide/README.md</code></td>
+<td><code>/guide/</code></td>
+</tr>
+<tr>
+<td><code>/config.md</code></td>
+<td><code>/config.html</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>vuepress</code>遵循约定大于配置原则，并且本身自带一套默认主题<a href="https://github.com/vuepressjs/vuepress-theme-blog" target="_blank" rel="noopener">@vuepress/theme-blog</a>(主要用来书写文档)，所以上述的目录基本都是可选的；</li>
+</ul>
+<h2 id="scripts"><a href="#scripts" class="headerlink" title="scripts"></a>scripts</h2><ul>
+<li>主要提供了</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"scripts"</span>: &#123;</span><br><span class="line">    "dev": "vuepress dev docs", // 开发，docs为targetDir</span><br><span class="line">    "build": "vuepress build docs" // 编译，docs为targetDir</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a>基本配置</h3><ul>
+<li><code>targetDir/.vuepress/config.js</code>是<code>vuepress网站</code>必须有的一个配置文件</li>
+</ul>
+<h3 id="主题配置"><a href="#主题配置" class="headerlink" title="主题配置"></a>主题配置</h3><ul>
+<li><code>vuepress</code>内置一个默认主题<code>@vuepress/plugin-blog</code>，就是<code>vue</code>官网使用的主题<ul>
+<li>它适合用来书写技术文档</li>
+</ul>
+</li>
+</ul>
+<h4 id="配置主题"><a href="#配置主题" class="headerlink" title="配置主题"></a>配置主题</h4><ul>
+<li>配置默认主题<code>@vuepress/plugin-blog</code></li>
+<li><code>targetDir/.vuepress/config.js</code>中不要指定<code>theme</code>字段(让其使用默认的主题)，直接配置<code>themeConfig</code>字段即可</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// .vuepress/config.js</span></span><br><span class="line">&#123;</span><br><span class="line">    themeConfig:&#123;</span><br><span class="line">        logo: <span class="string">'/assets/img/logo.png'</span>,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>默认主题的配置项可以查看<ul>
+<li><a href="https://vuepress.vuejs.org/zh/theme/default-theme-config.html#%E9%A6%96%E9%A1%B5" target="_blank" rel="noopener">https://vuepress.vuejs.org/zh/theme/default-theme-config.html#%E9%A6%96%E9%A1%B5</a></li>
+</ul>
+</li>
+<li>配置自定义主题<ul>
+<li>首先安装自定义主题</li>
+<li>然后用<code>theme</code>字段指定需要的<code>theme</code>主题</li>
+<li>配置<code>themeConfig</code>字段来控制自定义主题样式</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// .vuepress/config.js</span></span><br><span class="line">&#123;</span><br><span class="line">  theme: <span class="string">'modern-blog'</span>,</span><br><span class="line">  themeConfig: &#123;</span><br><span class="line">    <span class="comment">// vuepress-theme-modern-blog主题的配置</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="应用级配置"><a href="#应用级配置" class="headerlink" title="应用级配置"></a>应用级配置</h3><ul>
+<li><code>vuepress</code>生成的网站其实就一个<code>vue</code>应用，所以可以对<code>vue</code>实例做一些增强<ul>
+<li>例如使用 UI 框架</li>
+</ul>
+</li>
+<li>创建一个<code>.vuepress/enhanceApp.js</code>并导出一个函数，<code>vuepress</code>会读取此文件</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// .vurepress/enhanceApp.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> ElementUI <span class="keyword">from</span> <span class="string">"element-ui"</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">"element-ui/lib/theme-chalk/index.css"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用异步函数也是可以的</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> (&#123;</span><br><span class="line">  Vue, <span class="comment">// VuePress 正在使用的 Vue 构造函数</span></span><br><span class="line">  options, <span class="comment">// 附加到根实例的一些选项</span></span><br><span class="line">  router, <span class="comment">// 当前应用的路由实例</span></span><br><span class="line">  siteData, <span class="comment">// 站点元数据</span></span><br><span class="line">  isServer, <span class="comment">// 当前应用配置是处于 服务端渲染 或 客户端</span></span><br><span class="line">&#125;) =&gt; &#123;</span><br><span class="line">  <span class="comment">// ...做一些其他的应用级别的优化</span></span><br><span class="line">  Vue.use(ElementUI);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="静态资源"><a href="#静态资源" class="headerlink" title="静态资源"></a>静态资源</h2><ul>
+<li>每个<code>.md</code>文件都会被编译成一个<code>vue组件</code>，里面引用到的资源会被<code>webpack的loader</code>处理<ul>
+<li>例如图片资源，会被  <code>url-loader</code>  和  <code>file-loader</code>  处理</li>
+</ul>
+</li>
+</ul>
+<h3 id="相对路径"><a href="#相对路径" class="headerlink" title="相对路径"></a>相对路径</h3><ul>
+<li>所以可以通过相对路径的形式来引用资源</li>
+<li>例如如下目录，可以在<code>a.md</code>中引用<code>assets</code>中的图片</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── docs <span class="comment">// 目标目录targetDir，vuepress基于此目录工作</span></span><br><span class="line">│   │</span><br><span class="line">│    ├──  .vuepress/</span><br><span class="line">│   ├── README.md</span><br><span class="line">│   ├── guide</span><br><span class="line">│   │   ├── test.jpg</span><br><span class="line">│   │   └── README.md</span><br><span class="line">│   └── config.md</span><br><span class="line">│</span><br><span class="line">└── package.json</span><br><span class="line"></span><br><span class="line"><span class="comment">// docs/guide/README.md</span></span><br><span class="line"><span class="comment">// 引用test.jpg</span></span><br><span class="line">![test.jpg](./test.jpg)</span><br></pre></td></tr></table></figure>
+<h3 id="路径别名"><a href="#路径别名" class="headerlink" title="路径别名"></a>路径别名</h3><ul>
+<li>可以通过配置<code>webpack alias别名</code>，然后使用<code>~别名</code>来告诉<code>webpack</code>加载某个资源</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// .vuepress/config.js</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  <span class="comment">// 配置别名</span></span><br><span class="line">  configureWebpack: &#123;</span><br><span class="line">    resolve: &#123;</span><br><span class="line">      alias: &#123;</span><br><span class="line">        <span class="string">'@alias'</span>: <span class="string">'path/to/some/dir'</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在.md中通过别名引用资源</span></span><br><span class="line">![test.png](~@alias/test.png)</span><br></pre></td></tr></table></figure>
+<h3 id="加载依赖包中资源"><a href="#加载依赖包中资源" class="headerlink" title="加载依赖包中资源"></a>加载依赖包中资源</h3><ul>
+<li>引用资源时，可以通过<code>~</code>前缀来明确地指出这是一个 <code>webpack</code> 的模块请求，这将允许你通过 <code>webpack</code>来引用<code>npm</code>包中的资源</li>
+</ul>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![<span class="string">Image from dependency</span>](<span class="link">~some-dependency/image.png</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="公共资源"><a href="#公共资源" class="headerlink" title="公共资源"></a>公共资源</h3><ul>
+<li>项目级的公共资源，例如<code>favicon.ico</code>，可以直接放在<code>.vuepress/public</code>文件夹中，它们最终会被复制到生成的静态文件夹中<ul>
+<li>可以通过项目根路径来引用</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![<span class="string">favicon</span>](<span class="link">/favicon.ico</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果网站没有部署到<code>根路径</code>上，则需要设置<code>.vurepress/config.js</code>中的<code>base</code>基础路径，这个时候引用项目根路径的公共资源，就需要填写完整路径<ul>
+<li>例如</li>
+<li>项目部署到网站的<code>/blog目录(非根路径)下</code></li>
+<li>所以<code>favicon.ico</code>的引用路径需要调整成<code>/blog/favicon.ico</code></li>
+</ul>
+</li>
+<li><code>vuepress</code>提供了一个快捷方法来引用部署基础路径；使用<code>$withBase</code>来引用，<code>vurepss</code>会保证<code>$withBase</code>返回正确的路径</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img :src=<span class="string">"$withBase('/foo.png')"</span> alt=<span class="string">"foo"</span>&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="markdown-常规能力"><a href="#markdown-常规能力" class="headerlink" title="markdown 常规能力"></a>markdown 常规能力</h2><h3 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h3><ul>
+<li><code>vuepress</code>中每篇文章都会生成一个链接，在<code>md</code>内部可以使用常规<code>md</code>链接跳转形式来访问</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">// 有下面的目录</span><br><span class="line">. ├─ README.md</span><br><span class="line">  ├─ foo</span><br><span class="line">  │ ├─ README.md</span><br><span class="line">  │ ├─ one.md</span><br><span class="line">  │ └─ two.md</span><br><span class="line">  └─bar</span><br><span class="line">  ├─ README.md</span><br><span class="line">  ├─ three.md</span><br><span class="line">  └─ four.md</span><br><span class="line"></span><br><span class="line">// 可以使用下面的方式跳转</span><br><span class="line">[Home](/)</span><br><span class="line">&lt;!-- 跳转到根部的 README.md --&gt;</span><br><span class="line"></span><br><span class="line">[foo](/foo/)</span><br><span class="line">&lt;!-- 跳转到 foo 文件夹的 index.html --&gt;</span><br><span class="line"></span><br><span class="line">[foo heading](./#heading)</span><br><span class="line">&lt;!-- 跳转到 foo/index.html 的特定标题位置 --&gt;</span><br><span class="line"></span><br><span class="line">[bar - three](../bar/three.md)</span><br><span class="line">&lt;!-- 具体文件可以使用 .md 结尾（推荐） --&gt;</span><br><span class="line"></span><br><span class="line">[bar - four](../bar/four.html)</span><br><span class="line">&lt;!-- 也可以用 .html --&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>外部链接<ul>
+<li>所有外部链接(<code>http/https</code>开头)，<code>vuepress</code>会自动为通过<code>OutboundLink</code>组件添加上<code>外部链接</code>标识</li>
+<li>outside.png<ul>
+<li><img src="/2020/03/26/vuepress/outside.png" alt="outside.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="toc、Emoji、自定义容器"><a href="#toc、Emoji、自定义容器" class="headerlink" title="toc、Emoji、自定义容器"></a>toc、Emoji、自定义容器</h3><ul>
+<li>可以生成目录(<code>toc</code>)，使用<code>emoji表情</code>、自定义容器</li>
+<li><code>toc</code></li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// xxx.md // 目录 [[toc]] // emoji :tada: :100: // 自定义容器 ::: tip</span><br><span class="line">这是一个提示 ::: ::: warning 这是一个警告 ::: ::: danger 这是一个危险警告 :::</span><br><span class="line">::: details 这是一个详情块，在 IE / Edge 中不生效 :::</span><br></pre></td></tr></table></figure>
+<ul>
+<li>toc.png<ul>
+<li><img src="/2020/03/26/vuepress/toc.png" alt="toc.png"></li>
+</ul>
+</li>
+<li><code>emoji</code></li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// xxx.md // emoji :tada: :100:</span><br></pre></td></tr></table></figure>
+<ul>
+<li>emoji.png<ul>
+<li><img src="/2020/03/26/vuepress/emoji.png" alt="emoji.png"></li>
+</ul>
+</li>
+<li>自定义容器<ul>
+<li><code>vuepress</code>使用<code>vuepress-plugin-container</code>插件实现自定义容器</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// xxx.md // 自定义容器 ::: tip 这是一个提示 ::: ::: warning 这是一个警告 :::</span><br><span class="line">::: danger 这是一个危险警告 ::: ::: details 这是一个详情块，在 IE / Edge</span><br><span class="line">中不生效 :::</span><br></pre></td></tr></table></figure>
+<ul>
+<li>tips.png<ul>
+<li><img src="/2020/03/26/vuepress/tips.png" alt="tips.png"></li>
+</ul>
+</li>
+<li>其他常规功能可以参考<a href="https://vuepress.vuejs.org/zh/guide/markdown.html" target="_blank" rel="noopener">https://vuepress.vuejs.org/zh/guide/markdown.html</a></li>
+</ul>
+<h2 id="markdown-增强"><a href="#markdown-增强" class="headerlink" title="markdown 增强"></a>markdown 增强</h2><ul>
+<li><code>vuepress</code>驱动的网站，<code>md</code>文件除了可以用常规的<code>md</code>语法和特性，还能使用一些<code>vue</code>赋予的能力</li>
+</ul>
+<h3 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h3><ul>
+<li><code>vuepress</code>使用<code>markdown-it</code>来渲染<code>markdown</code>，将其编译成<code>html</code>,然后通过<code>vue-loader</code>，接着做为一个<code>Vue组件</code>传给<code>vue-loader</code></li>
+<li>例子<ul>
+<li><code>test.md</code>通过<code>markdown-it</code>编译成 html 字符串</li>
+<li><code>vuepress</code>将其组装成一个<code>vue</code>组件</li>
+<li>组装好的<code>vue组件</code>传递给<code>vue-loader</code>、结合<code>SSR</code>生成最终的<code>test.html</code></li>
+</ul>
+</li>
+<li>所以在<code>vuepress</code>驱动的网站中，可以<code>md</code>文件中使用<code>vue</code>的一些特性，例如</li>
+</ul>
+<h3 id="插值表达式"><a href="#插值表达式" class="headerlink" title="插值表达式"></a>插值表达式</h3><ul>
+<li>可以在<code>md</code>中使用<code>vue的插值表达式</code></li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// xxx.md 表达式的值为&#123;&#123; 1 + 1 &#125;&#125; // 输出 表达式的值为2</span><br></pre></td></tr></table></figure>
+<h3 id="转义"><a href="#转义" class="headerlink" title="转义"></a>转义</h3><ul>
+<li>由于<code>md</code>中可以使用<code>vue</code>的插值表达式，所以在特定情况下，如果需要展示<code>左右大括号{ }</code>，则需要使用转义</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">::: v-pre `&#123;&#123; This will be displayed as-is &#125;&#125;` :::</span><br></pre></td></tr></table></figure>
+<h3 id="内置指令"><a href="#内置指令" class="headerlink" title="内置指令"></a>内置指令</h3><ul>
+<li>可以在<code>md</code>中使用<code>vue的内置指令</code></li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// xxx.md</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">v-for</span>=<span class="string">"i in 3"</span>&gt;</span>&#123;&#123; i &#125;&#125; <span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"></span><br><span class="line">// 输出 1 2 3</span><br></pre></td></tr></table></figure>
+<h3 id="访问网站的元数据"><a href="#访问网站的元数据" class="headerlink" title="访问网站的元数据"></a>访问网站的元数据</h3><ul>
+<li>可以在<code>md</code>中访问网站的元数据</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// xxx.md</span></span><br><span class="line">&#123;&#123; $page &#125;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"path"</span>: <span class="string">"/using-vue.html"</span>,</span><br><span class="line">  <span class="string">"title"</span>: <span class="string">"Using Vue in Markdown"</span>,</span><br><span class="line">  <span class="string">"frontmatter"</span>: &#123;&#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="使用组件"><a href="#使用组件" class="headerlink" title="使用组件"></a>使用组件</h3><ul>
+<li><code>.vuepress/components</code>下的组件会被注册为全局的异步组件，可以在<code>md</code>文件中使用</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">└─ .vuepress</span><br><span class="line">   └─ components</span><br><span class="line">      ├─ demo<span class="number">-1.</span>vue</span><br><span class="line">      ├─ OtherComponent.vue</span><br><span class="line">      └─ Foo</span><br><span class="line">         └─ Bar.vue</span><br><span class="line"></span><br><span class="line"><span class="comment">// xxx.md</span></span><br><span class="line">&lt;demo<span class="number">-1</span>/&gt;</span><br><span class="line">&lt;OtherComponent/&gt;</span><br><span class="line">&lt;Foo-Bar/&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用组件时，始终保持<code>PascalCase</code>命名风格</li>
+</ul>
+<h3 id="在标题中使用-vue-组件"><a href="#在标题中使用-vue-组件" class="headerlink" title="在标题中使用 vue 组件"></a>在标题中使用 vue 组件</h3><ul>
+<li>可以在<code>md</code>的标题中使用<code>vue组件</code></li>
+<li>markdown-vue.png<ul>
+<li><img src="/2020/03/26/vuepress/markdown-vue.png" alt="markdown-vue.png"></li>
+</ul>
+</li>
+<li>输出的 HTML 由  <code>markdown-it</code>  完成。而解析后的标题由 <code>VuePress</code> 完成，用于侧边栏以及文档的标题。</li>
+</ul>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><ul>
+<li>由于<code>vuepress</code>会使用<code>SSR</code>生成静态页面</li>
+<li>所以<code>Vue</code> 相关代码，需要确保只在  <code>beforeMount</code>  或者  <code>mounted</code>  访问浏览器 / <code>DOM</code> 的 <code>API</code>。<ul>
+<li>参考<a href="https://ssr.vuejs.org/zh/guide/universal.html" target="_blank" rel="noopener">https://ssr.vuejs.org/zh/guide/universal.html</a></li>
+</ul>
+</li>
+<li>必要时，可以使用<code>ClientOnly</code>内置组件，包裹对<code>SSR</code>不友好的组件，或者<strong>在合适的生命周期钩子中动态载入相关组件，保证他们能访问到 DOM API</strong></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">// 使用ClientOnly组件</span><br><span class="line">&lt;ClientOnly&gt;</span><br><span class="line">  &lt;NonSSRFriendlyComponent /&gt;</span><br><span class="line">&lt;/ClientOnly&gt;</span><br><span class="line"></span><br><span class="line">// 或者在能访问到DOM API的钩子中导入组件，保证他们能访问到DOM API</span><br><span class="line">&lt;script&gt;</span><br><span class="line">  export default &#123;</span><br><span class="line">    mounted() &#123;</span><br><span class="line">      import(&quot;./lib-that-access-window-on-import&quot;).then((module) =&gt; &#123;</span><br><span class="line">        // use code</span><br><span class="line">        document.querySelector(&quot;.test&quot;).className = &quot;hello&quot;;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="markdown-插槽"><a href="#markdown-插槽" class="headerlink" title="markdown 插槽"></a>markdown 插槽</h3><ul>
+<li><code>&lt;Content/&gt;</code>组件会保存<code>md</code>文件中的普通内容</li>
+<li><code>markdown</code>插槽可以分发<code>md</code>内容，方便灵活布局</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">// .vuepress/theme/Layout.vue</span><br><span class="line"></span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;container&quot;&gt;</span><br><span class="line">    &lt;header&gt;</span><br><span class="line">      &lt;content slot-key=&quot;header&quot; /&gt;</span><br><span class="line">    &lt;/header&gt;</span><br><span class="line">    &lt;main&gt;</span><br><span class="line">      &lt;content /&gt;</span><br><span class="line">    &lt;/main&gt;</span><br><span class="line">    &lt;footer&gt;</span><br><span class="line">      &lt;content slot-key=&quot;footer&quot; /&gt;</span><br><span class="line">    &lt;/footer&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">// xxx.md</span><br><span class="line">// 内容会被分发到&lt;content slot-key=&quot;header&quot; /&gt;</span><br><span class="line">::: slot header</span><br><span class="line"># Here might be a page title</span><br><span class="line">:::</span><br><span class="line"></span><br><span class="line">- A Paragraph</span><br><span class="line">- Another Paragraph</span><br><span class="line"></span><br><span class="line">// 内容会被分发到&lt;content slot-key=&quot;footer&quot; /&gt;</span><br><span class="line">::: slot footer</span><br><span class="line"> Here&apos;s some contact info</span><br><span class="line">:::</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// xxx.html</span><br><span class="line">&lt;div class=&quot;container&quot;&gt;</span><br><span class="line">  &lt;header&gt;</span><br><span class="line">    &lt;div class=&quot;content header&quot;&gt;</span><br><span class="line">      &lt;h1&gt;Here might be a page title&lt;/h1&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/header&gt;</span><br><span class="line">  &lt;main&gt;</span><br><span class="line">    &lt;div class=&quot;content default&quot;&gt;</span><br><span class="line">      &lt;ul&gt;</span><br><span class="line">        &lt;li&gt;A Paragraph&lt;/li&gt;</span><br><span class="line">        &lt;li&gt;Another Paragraph&lt;/li&gt;</span><br><span class="line">      &lt;/ul&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/main&gt;</span><br><span class="line">  &lt;footer&gt;</span><br><span class="line">    &lt;div class=&quot;content footer&quot;&gt;</span><br><span class="line">      &lt;p&gt;Here&apos;s some contact info&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/footer&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>注意<ul>
+<li>每个被分发的内容都会被包裹在<code>div</code>中，并且<code>div</code>的<code>class</code>为<code>content</code>和<code>slot</code>的名字</li>
+</ul>
+</li>
+</ul>
+<h2 id="样式"><a href="#样式" class="headerlink" title="样式"></a>样式</h2><h3 id="预处理器"><a href="#预处理器" class="headerlink" title="预处理器"></a>预处理器</h3><ul>
+<li><code>vuepress</code>项目默认采用<code>stylus</code>处理样式，所以内置了<code>stylus</code>及<code>stylus-loader</code></li>
+<li>如果需要使用其它预处理器(<code>sass、scss、less、pug</code>)，可直接安装相关依赖包，<code>vuepress</code>已经包含相关配置，开箱即用</li>
+<li><code>yarn add -D sass-loader node-sass</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;style lang=&quot;sass&quot;&gt;</span><br><span class="line">  .title</span><br><span class="line">    font-size: 20px</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="在页面使用页面级样式及脚本"><a href="#在页面使用页面级样式及脚本" class="headerlink" title="在页面使用页面级样式及脚本"></a>在页面使用页面级样式及脚本</h3><ul>
+<li>可以直接在<code>md</code>文件中添加<code>&lt;script&gt;</code>、<code>&lt;style&gt;</code>标签，这两个标签会被<code>vuepress</code>提取出来并当成<code>vue</code>单文件组件中的<code>&lt;style&gt;</code>、<code>&lt;script&gt;</code>使用，所以可能利用这个特性定义页面级样式及逻辑</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// xxx.md</span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">lang</span>=<span class="string">"scss"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="css">  <span class="selector-class">.test</span> &#123;</span></span><br><span class="line"><span class="undefined">    color: red;</span></span><br><span class="line"><span class="undefined">  &#125;</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="内置组件"><a href="#内置组件" class="headerlink" title="内置组件"></a>内置组件</h2><ul>
+<li>内置组件可以直接在<code>md</code>文件中使用</li>
+<li><code>OutboundLink</code><ul>
+<li>标识外部链接用，<code>vuepress</code>会自动在外部链接后面生成这个标识</li>
+</ul>
+</li>
+<li><code>ClientOnly</code><ul>
+<li>标识内部组件需要访问 DOM API，不需要在服务端进行渲染</li>
+</ul>
+</li>
+<li><code>Content</code><ul>
+<li>包含页面 md 的所有渲染内容</li>
+<li>自定义布局(主题)时，很有用</li>
+<li>具体可参考<a href="https://vuepress.vuejs.org/zh/guide/using-vue.html#content" target="_blank" rel="noopener">https://vuepress.vuejs.org/zh/guide/using-vue.html#content</a></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"c-Container"</span>&gt;</span></span><br><span class="line">        </span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"c-Container-hd"</span>&gt;</span>自定义头部<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        </span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"c-Container-bd"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">content</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">          </span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">             </span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"c-Container-ft"</span>&gt;</span>自定义页脚<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      </span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>Badge</code><ul>
+<li>徽章，主要用来给标题添加一些标识</li>
+<li>用法可见<a href="https://vuepress.vuejs.org/zh/guide/using-vue.html#%E5%9C%A8%E6%A0%87%E9%A2%98%E4%B8%AD%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6" target="_blank" rel="noopener">https://vuepress.vuejs.org/zh/guide/using-vue.html#%E5%9C%A8%E6%A0%87%E9%A2%98%E4%B8%AD%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6</a></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">### Badge <span class="tag">&lt;<span class="name">Badge</span> <span class="attr">text</span>=<span class="string">"beta"</span> <span class="attr">type</span>=<span class="string">"warning"</span> /&gt;</span> <span class="tag">&lt;<span class="name">Badge</span> <span class="attr">text</span>=<span class="string">"默认主题"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>badge.png<ul>
+<li><img src="/2020/03/26/vuepress/badge.png" alt="badge.png"></li>
+</ul>
+</li>
+</ul>
+<h2 id="多语言"><a href="#多语言" class="headerlink" title="多语言"></a>多语言</h2><ul>
+<li>要支持多语言，首先要有翻译好的其他语言版本<code>md</code>文件</li>
+<li>不同语言的<code>md</code>文件目录、文件名要保持完全一致</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">docs</span><br><span class="line">├─ README.md</span><br><span class="line">├─ foo.md</span><br><span class="line">├─ nested</span><br><span class="line">│  └─ README.md</span><br><span class="line">└─ zh</span><br><span class="line">   ├─ README.md</span><br><span class="line">   ├─ foo.md</span><br><span class="line">   └─ nested</span><br><span class="line">      └─ README.md</span><br><span class="line"></span><br><span class="line">// 外层为原版md目录，zh目录下为中文版本，二者目录结构、文件名完全一致</span><br></pre></td></tr></table></figure>
+<ul>
+<li>其次，需要配置<code>vuepress</code>的<code>locales</code>字段，来告诉不同语言环境，使用哪个目录下的<code>md</code>文件</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// .vuepress/config.js</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  locales: &#123;</span><br><span class="line">    <span class="comment">// 键名是该语言所属的子路径</span></span><br><span class="line">    <span class="comment">// 作为特例，默认语言可以使用 '/' 作为其路径。</span></span><br><span class="line">    <span class="string">"/"</span>: &#123;</span><br><span class="line">      lang: <span class="string">"en-US"</span>, <span class="comment">// 将会被设置为 &lt;html&gt; 的 lang 属性</span></span><br><span class="line">      title: <span class="string">"VuePress"</span>,</span><br><span class="line">      description: <span class="string">"Vue-powered Static Site Generator"</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">"/zh/"</span>: &#123;</span><br><span class="line">      lang: <span class="string">"zh-CN"</span>,</span><br><span class="line">      title: <span class="string">"VuePress"</span>,</span><br><span class="line">      description: <span class="string">"Vue 驱动的静态网站生成器"</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>还可以为不同的语言版本使用不同的配置(需要看主题是否提供了此能力)；默认主题支持对不同语言使用不同配置</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// .vuepress/config.js</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  locales: &#123;</span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">  &#125;,</span><br><span class="line">  themeConfig: &#123;</span><br><span class="line">    locales: &#123;</span><br><span class="line">      <span class="string">"/"</span>: &#123;</span><br><span class="line">        selectText: <span class="string">"Languages"</span>,</span><br><span class="line">        label: <span class="string">"English"</span>,</span><br><span class="line">        ariaLabel: <span class="string">"Languages"</span>,</span><br><span class="line">        editLinkText: <span class="string">"Edit this page on GitHub"</span>,</span><br><span class="line">        serviceWorker: &#123;</span><br><span class="line">          updatePopup: &#123;</span><br><span class="line">            message: <span class="string">"New content is available."</span>,</span><br><span class="line">            buttonText: <span class="string">"Refresh"</span>,</span><br><span class="line">          &#125;,</span><br><span class="line">        &#125;,</span><br><span class="line">        algolia: &#123;&#125;,</span><br><span class="line">        nav: [&#123; <span class="attr">text</span>: <span class="string">"Nested"</span>, <span class="attr">link</span>: <span class="string">"/nested/"</span>, <span class="attr">ariaLabel</span>: <span class="string">"Nested"</span> &#125;],</span><br><span class="line">        sidebar: &#123;</span><br><span class="line">          <span class="string">"/"</span>: [</span><br><span class="line">            <span class="comment">/* ... */</span></span><br><span class="line">          ],</span><br><span class="line">          <span class="string">"/nested/"</span>: [</span><br><span class="line">            <span class="comment">/* ... */</span></span><br><span class="line">          ],</span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="string">"/zh/"</span>: &#123;</span><br><span class="line">        <span class="comment">// 多语言下拉菜单的标题</span></span><br><span class="line">        selectText: <span class="string">"选择语言"</span>,</span><br><span class="line">        <span class="comment">// 该语言在下拉菜单中的标签</span></span><br><span class="line">        label: <span class="string">"简体中文"</span>,</span><br><span class="line">        <span class="comment">// 编辑链接文字</span></span><br><span class="line">        editLinkText: <span class="string">"在 GitHub 上编辑此页"</span>,</span><br><span class="line">        <span class="comment">// Service Worker 的配置</span></span><br><span class="line">        serviceWorker: &#123;</span><br><span class="line">          updatePopup: &#123;</span><br><span class="line">            message: <span class="string">"发现新内容可用."</span>,</span><br><span class="line">            buttonText: <span class="string">"刷新"</span>,</span><br><span class="line">          &#125;,</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="comment">// 当前 locale 的 algolia docsearch 选项</span></span><br><span class="line">        algolia: &#123;&#125;,</span><br><span class="line">        nav: [&#123; <span class="attr">text</span>: <span class="string">"嵌套"</span>, <span class="attr">link</span>: <span class="string">"/zh/nested/"</span> &#125;],</span><br><span class="line">        sidebar: &#123;</span><br><span class="line">          <span class="string">"/zh/"</span>: [</span><br><span class="line">            <span class="comment">/* ... */</span></span><br><span class="line">          ],</span><br><span class="line">          <span class="string">"/zh/nested/"</span>: [</span><br><span class="line">            <span class="comment">/* ... */</span></span><br><span class="line">          ],</span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="全局计算属性"><a href="#全局计算属性" class="headerlink" title="全局计算属性"></a>全局计算属性</h2><ul>
+<li><code>vuepress</code>将一些站点、页面信息注入到<code>Vue.prototype</code>上，所以我们可以直接在<code>md</code>文件、<code>自定义vue组件</code>中直接使用</li>
+</ul>
+<h3 id="site"><a href="#site" class="headerlink" title="\$site"></a>\$site</h3><ul>
+<li>包含站点的信息</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"title"</span>: <span class="string">"VuePress"</span>,</span><br><span class="line">  <span class="string">"description"</span>: <span class="string">"Vue 驱动的静态网站生成器"</span>,</span><br><span class="line">  <span class="string">"base"</span>: <span class="string">"/"</span>,</span><br><span class="line">  <span class="string">"pages"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"lastUpdated"</span>: <span class="number">1524027677000</span>,</span><br><span class="line">      <span class="string">"path"</span>: <span class="string">"/"</span>,</span><br><span class="line">      <span class="string">"title"</span>: <span class="string">"VuePress"</span>,</span><br><span class="line">      <span class="string">"frontmatter"</span>: &#123;&#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    ...</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="page"><a href="#page" class="headerlink" title="\$page"></a>\$page</h3><ul>
+<li>包含当前页面的信息</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"title"</span>: <span class="string">"Global Computed"</span>,</span><br><span class="line">  <span class="string">"frontmatter"</span>: &#123;</span><br><span class="line">    <span class="string">"sidebar"</span>: <span class="string">"auto"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"regularPath"</span>: <span class="string">"/zh/miscellaneous/global-computed.html"</span>,</span><br><span class="line">  <span class="string">"key"</span>: <span class="string">"v-bc9a3e3f9692d"</span>,</span><br><span class="line">  <span class="string">"path"</span>: <span class="string">"/zh/miscellaneous/global-computed.html"</span>,</span><br><span class="line">  <span class="string">"headers"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"level"</span>: <span class="number">2</span>,</span><br><span class="line">      <span class="string">"title"</span>: <span class="string">"$site"</span>,</span><br><span class="line">      <span class="string">"slug"</span>: <span class="string">"site"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"level"</span>: <span class="number">2</span>,</span><br><span class="line">      <span class="string">"title"</span>: <span class="string">"$page"</span>,</span><br><span class="line">      <span class="string">"slug"</span>: <span class="string">"page"</span></span><br><span class="line">    &#125;,</span><br><span class="line">  ]</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="frontmatter"><a href="#frontmatter" class="headerlink" title="\$frontmatter"></a>\$frontmatter</h3><ul>
+<li><code>$page.frontmatter</code>的一个引用</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$page.frontmatter === $frontmatter  // true</span><br></pre></td></tr></table></figure>
+<h3 id="localePath"><a href="#localePath" class="headerlink" title="\$localePath"></a>\$localePath</h3><ul>
+<li>当前页面的 <code>locale</code> 路径前缀，默认值为  <code>/</code></li>
+<li>返回<code>config</code>中的<code>base</code>字段值？待确认</li>
+</ul>
+<h3 id="lang、-title、-description、-themeConfig"><a href="#lang、-title、-description、-themeConfig" class="headerlink" title="$lang、$title、$description、$themeConfig"></a>$lang、$title、$description、$themeConfig</h3><ul>
+<li><code>$lang</code>当前页面的语言，默认<code>en-US</code></li>
+<li><code>$title</code>当前页面<code>&lt;title&gt;</code>标签的值</li>
+<li><code>$description</code>用于当前页面的  <code>&lt;meta name=&quot;description&quot; content=&quot;...&quot;</code>&gt;  的  <code>content</code>  值</li>
+<li><code>$themeConfig</code>是<code>.vupress/config.js</code>中的<code>themeConfig</code><ul>
+<li><code>.vupress/config.js</code>导出的内容称为<code>siteConfig</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="Front-Matter"><a href="#Front-Matter" class="headerlink" title="Front Matter"></a>Front Matter</h2><ul>
+<li><code>vuepress</code>支持<a href="https://jekyllrb.com/docs/front-matter/" target="_blank" rel="noopener">YAML front matter</a><ul>
+<li><code>Front matter</code>可以理解为对<code>md</code>文件添加一些特殊字段(元信息)，用来自定义当前页面；用来增强<code>md</code>的表现力</li>
+</ul>
+</li>
+<li>在<code>md</code>文件中，一般开头<code>---</code>之间的内容为<code>Front matter</code></li>
+<li><code>vuepress</code>预定义了一些<code>front matter</code>，也可以自定义，然后使用<code>$frontmatter</code>来引用</li>
+<li>front-matter.png<ul>
+<li><img src="/2020/03/26/vuepress/front-matter.png" alt="front-matter.png"></li>
+</ul>
+</li>
+</ul>
+<h3 id="预定义-front-matter"><a href="#预定义-front-matter" class="headerlink" title="预定义 front matter"></a>预定义 front matter</h3><ul>
+<li><code>title</code><ul>
+<li>当前页面标题</li>
+</ul>
+</li>
+<li><code>lang</code><ul>
+<li>当前页面语言</li>
+</ul>
+</li>
+<li><code>description</code><ul>
+<li>当前页面描述</li>
+</ul>
+</li>
+<li><code>layout</code><ul>
+<li>当前页面的布局组件(默认为<code>Layout.vue</code>)</li>
+</ul>
+</li>
+<li><code>permalink</code><ul>
+<li>当前页面永久链接格式</li>
+</ul>
+</li>
+<li><code>metaTitle</code><ul>
+<li>重写页面的 title</li>
+</ul>
+</li>
+<li><code>meta</code><ul>
+<li>当前页面额外的<code>meta</code>标签</li>
+</ul>
+</li>
+<li>meta.png<ul>
+<li><img src="/2020/03/26/vuepress/meta.png" alt="meta.png"></li>
+</ul>
+</li>
+</ul>
+<h3 id="默认主题预定义变量"><a href="#默认主题预定义变量" class="headerlink" title="默认主题预定义变量"></a>默认主题预定义变量</h3><ul>
+<li>默认主题也提供了很多预定义变量用来控制当前页面一些布局组件的展示</li>
+<li>例如<code>navbar</code>、<code>sidebar</code>等等</li>
+<li>具体可参考<a href="https://vuepress.vuejs.org/zh/theme/default-theme-config.html#%E9%A6%96%E9%A1%B5" target="_blank" rel="noopener">https://vuepress.vuejs.org/zh/theme/default-theme-config.html#%E9%A6%96%E9%A1%B5</a></li>
+</ul>
+<h2 id="永久链接-permalink"><a href="#永久链接-permalink" class="headerlink" title="永久链接 permalink"></a>永久链接 permalink</h2><ul>
+<li>如果利用<code>vuepress</code>生成一个博客，那永久链接是必不可少的，为每一篇文章生成一个永久链接</li>
+</ul>
+<h3 id="配置-permalink"><a href="#配置-permalink" class="headerlink" title="配置 permalink"></a>配置 permalink</h3><ul>
+<li><code>permalink</code>拥有一些变量<ul>
+<li><code>:year</code><ul>
+<li>文章发布的年份 (4 数字)</li>
+</ul>
+</li>
+<li><code>:month</code><ul>
+<li>文章发布的月份 (2 数字)</li>
+</ul>
+</li>
+<li><code>:i_month</code><ul>
+<li>文章发布的月份 (前面不带 0)</li>
+</ul>
+</li>
+<li><code>:day</code><ul>
+<li>文章发布的日份 (2 数字)</li>
+</ul>
+</li>
+<li><code>:i_day</code><ul>
+<li>文章发布的日份 (前面不带 0)</li>
+</ul>
+</li>
+<li><code>:slug</code><ul>
+<li>不带扩展名的文件名</li>
+</ul>
+</li>
+<li><code>:regular</code><ul>
+<li>默认链接生成方式</li>
+<li><a href="https://vuepress.vuejs.org/zh/guide/directory-structure.html#%E9%BB%98%E8%AE%A4%E7%9A%84%E9%A1%B5%E9%9D%A2%E8%B7%AF%E7%94%B1" target="_blank" rel="noopener">https://vuepress.vuejs.org/zh/guide/directory-structure.html#%E9%BB%98%E8%AE%A4%E7%9A%84%E9%A1%B5%E9%9D%A2%E8%B7%AF%E7%94%B1</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// .vuepress/config.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  permalink: <span class="string">"/:year/:month/:day/:slug"</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在页面中，也可以用<code>front matter</code>为页面单独配置一个永久链接</li>
+<li>link.png<ul>
+<li><img src="/2020/03/26/vuepress/link.png" alt="link.png"></li>
+</ul>
+</li>
+</ul>
+<h2 id="部署到-github-pages"><a href="#部署到-github-pages" class="headerlink" title="部署到 github pages"></a>部署到 github pages</h2><ul>
+<li>第一步确定，静态存放目录<ul>
+<li>例如<code>https://github.com/bryanadamss/testrepo</code></li>
+</ul>
+</li>
+<li>确定仓库名<code>repoName</code><ul>
+<li><code>testrepo</code></li>
+</ul>
+</li>
+<li>配置<code>siteConfig.base</code>为<code>repoName</code></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// .vuepress/config.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  base: <span class="string">"/testrepo/"</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>设置仓库为<code>github pages</code></li>
+<li>编译文件<ul>
+<li>运行<code>npm run docs:build</code></li>
+</ul>
+</li>
+<li>上传静态文件<ul>
+<li>可以通过<code>shell</code>脚本上传，避免重复劳动</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#!/usr/bin/env sh</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 确保脚本抛出遇到的错误set -e</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成静态文件npm run docs:build</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 进入生成的文件夹cd docs/.vuepress/dist</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果是发布到自定义域名# echo 'www.example.com' &gt; CNAME</span></span><br><span class="line"></span><br><span class="line">git init</span><br><span class="line">git add -A</span><br><span class="line">git commit -m <span class="string">'deploy'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果发布到 https://&lt;USERNAME&gt;.github.io# git push -f git@github.com:&lt;USERNAME&gt;/&lt;USERNAME&gt;.github.io.git master</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果发布到 https://&lt;USERNAME&gt;.github.io/&lt;REPO&gt;# git push -f git@github.com:&lt;USERNAME&gt;/&lt;REPO&gt;.git master:gh-pages</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> -</span><br></pre></td></tr></table></figure>
+<ul>
+<li>具体可参考<ul>
+<li><a href="https://vuepress.vuejs.org/zh/guide/deploy.html#github-pages" target="_blank" rel="noopener">https://vuepress.vuejs.org/zh/guide/deploy.html#github-pages</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://vuepress.vuejs.org/zh/guide/" target="_blank" rel="noopener">https://vuepress.vuejs.org/zh/guide/</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vuepress/" rel="tag"># vuepress</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/23/xss/" rel="next" title="xss">
+                <i class="fa fa-chevron-left"></i> xss
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/27/ssh-multiple-account/" rel="prev" title="ssh-multiple-account">
+                ssh-multiple-account <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/Avatar.png"
+               alt="BryanAdamss" />
+          <p class="site-author-name" itemprop="name">BryanAdamss</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/BryanAdamss" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#vuepress"><span class="nav-number">1.</span> <span class="nav-text">vuepress</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目录结构"><span class="nav-number">1.3.</span> <span class="nav-text">目录结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#scripts"><span class="nav-number">1.4.</span> <span class="nav-text">scripts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">1.5.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本配置"><span class="nav-number">1.5.1.</span> <span class="nav-text">基本配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主题配置"><span class="nav-number">1.5.2.</span> <span class="nav-text">主题配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置主题"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">配置主题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用级配置"><span class="nav-number">1.5.3.</span> <span class="nav-text">应用级配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态资源"><span class="nav-number">1.6.</span> <span class="nav-text">静态资源</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#相对路径"><span class="nav-number">1.6.1.</span> <span class="nav-text">相对路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#路径别名"><span class="nav-number">1.6.2.</span> <span class="nav-text">路径别名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加载依赖包中资源"><span class="nav-number">1.6.3.</span> <span class="nav-text">加载依赖包中资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#公共资源"><span class="nav-number">1.6.4.</span> <span class="nav-text">公共资源</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#markdown-常规能力"><span class="nav-number">1.7.</span> <span class="nav-text">markdown 常规能力</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#链接"><span class="nav-number">1.7.1.</span> <span class="nav-text">链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#toc、Emoji、自定义容器"><span class="nav-number">1.7.2.</span> <span class="nav-text">toc、Emoji、自定义容器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#markdown-增强"><span class="nav-number">1.8.</span> <span class="nav-text">markdown 增强</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本原理"><span class="nav-number">1.8.1.</span> <span class="nav-text">基本原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插值表达式"><span class="nav-number">1.8.2.</span> <span class="nav-text">插值表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#转义"><span class="nav-number">1.8.3.</span> <span class="nav-text">转义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内置指令"><span class="nav-number">1.8.4.</span> <span class="nav-text">内置指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#访问网站的元数据"><span class="nav-number">1.8.5.</span> <span class="nav-text">访问网站的元数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用组件"><span class="nav-number">1.8.6.</span> <span class="nav-text">使用组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在标题中使用-vue-组件"><span class="nav-number">1.8.7.</span> <span class="nav-text">在标题中使用 vue 组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注意"><span class="nav-number">1.8.8.</span> <span class="nav-text">注意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#markdown-插槽"><span class="nav-number">1.8.9.</span> <span class="nav-text">markdown 插槽</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#样式"><span class="nav-number">1.9.</span> <span class="nav-text">样式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#预处理器"><span class="nav-number">1.9.1.</span> <span class="nav-text">预处理器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在页面使用页面级样式及脚本"><span class="nav-number">1.9.2.</span> <span class="nav-text">在页面使用页面级样式及脚本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内置组件"><span class="nav-number">1.10.</span> <span class="nav-text">内置组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多语言"><span class="nav-number">1.11.</span> <span class="nav-text">多语言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#全局计算属性"><span class="nav-number">1.12.</span> <span class="nav-text">全局计算属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#site"><span class="nav-number">1.12.1.</span> <span class="nav-text">\$site</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#page"><span class="nav-number">1.12.2.</span> <span class="nav-text">\$page</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#frontmatter"><span class="nav-number">1.12.3.</span> <span class="nav-text">\$frontmatter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#localePath"><span class="nav-number">1.12.4.</span> <span class="nav-text">\$localePath</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lang、-title、-description、-themeConfig"><span class="nav-number">1.12.5.</span> <span class="nav-text">$lang、$title、$description、$themeConfig</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Front-Matter"><span class="nav-number">1.13.</span> <span class="nav-text">Front Matter</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#预定义-front-matter"><span class="nav-number">1.13.1.</span> <span class="nav-text">预定义 front matter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#默认主题预定义变量"><span class="nav-number">1.13.2.</span> <span class="nav-text">默认主题预定义变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#永久链接-permalink"><span class="nav-number">1.14.</span> <span class="nav-text">永久链接 permalink</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-permalink"><span class="nav-number">1.14.1.</span> <span class="nav-text">配置 permalink</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署到-github-pages"><span class="nav-number">1.15.</span> <span class="nav-text">部署到 github pages</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.16.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BryanAdamss</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

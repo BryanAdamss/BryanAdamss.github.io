@@ -1,0 +1,1123 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="前端,history," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/Avatar.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="hashchange、beforeunload、popstatehashchange 事件触发时机 在页面 hash 片段(即 URL 中#和#后面的部分)改变时触发 hash（#）是 URL 的锚点，代表的是网页中的一个位置，单单改变#后的部分，浏览器只会滚动到相应位置，不会重新加载网页，也就是说 #是用来指导浏览器动作的，对服务器端完全无用，HTTP 请求中也不会不包括#；同时每一次改变#后的">
+<meta name="keywords" content="前端,history">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hashchange-beforeunload-popstate">
+<meta property="og:url" content="http://yoursite.com/2020/03/05/hashchange-beforeunload-popstate/index.html">
+<meta property="og:site_name" content="BryanAdamss的博客">
+<meta property="og:description" content="hashchange、beforeunload、popstatehashchange 事件触发时机 在页面 hash 片段(即 URL 中#和#后面的部分)改变时触发 hash（#）是 URL 的锚点，代表的是网页中的一个位置，单单改变#后的部分，浏览器只会滚动到相应位置，不会重新加载网页，也就是说 #是用来指导浏览器动作的，对服务器端完全无用，HTTP 请求中也不会不包括#；同时每一次改变#后的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/hashchange-beforeunload-popstate/router.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/hashchange-beforeunload-popstate/router2.png">
+<meta property="og:updated_time" content="2020-03-05T04:04:31.257Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="hashchange-beforeunload-popstate">
+<meta name="twitter:description" content="hashchange、beforeunload、popstatehashchange 事件触发时机 在页面 hash 片段(即 URL 中#和#后面的部分)改变时触发 hash（#）是 URL 的锚点，代表的是网页中的一个位置，单单改变#后的部分，浏览器只会滚动到相应位置，不会重新加载网页，也就是说 #是用来指导浏览器动作的，对服务器端完全无用，HTTP 请求中也不会不包括#；同时每一次改变#后的">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/05/hashchange-beforeunload-popstate/router.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/05/hashchange-beforeunload-popstate/"/>
+
+
+
+
+
+  <title> hashchange-beforeunload-popstate | BryanAdamss的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BryanAdamss的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个伪前端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/05/hashchange-beforeunload-popstate/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BryanAdamss">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/Avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BryanAdamss的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                hashchange-beforeunload-popstate
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-05T11:39:25+08:00">
+                2020-03-05 11:39:25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/other/" itemprop="url" rel="index">
+                    <span itemprop="name">其他</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="hashchange、beforeunload、popstate"><a href="#hashchange、beforeunload、popstate" class="headerlink" title="hashchange、beforeunload、popstate"></a>hashchange、beforeunload、popstate</h1><h2 id="hashchange-事件"><a href="#hashchange-事件" class="headerlink" title="hashchange 事件"></a>hashchange 事件</h2><h3 id="触发时机"><a href="#触发时机" class="headerlink" title="触发时机"></a>触发时机</h3><ul>
+<li>在页面 hash 片段(<code>即 URL 中#和#后面的部分</code>)改变时触发</li>
+<li>hash（#）是 URL 的锚点，代表的是网页中的一个位置，单单改变#后的部分，浏览器只会滚动到相应位置，不会重新加载网页，也就是说 <strong>#是用来指导浏览器动作的，对服务器端完全无用，HTTP 请求中也不会不包括#；同时每一次改变#后的部分，都会在浏览器的访问历史中增加一个记录，使用”后退”按钮，就可以回到上一个位置</strong>。(hash 虽然出现在 URL 中，但不会被包括在 HTTP 请求中。它是用来指导浏览器动作的，对服务器端完全无用，因此，改变 hash 不会重新加载页面)</li>
+</ul>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><ul>
+<li><code>hash</code> 改变时，会触发<code>hashchange</code>事件，<strong>并会在全局历史记录中添加一条记录</strong></li>
+</ul>
+<h2 id="beforeunload-事件"><a href="#beforeunload-事件" class="headerlink" title="beforeunload 事件"></a>beforeunload 事件</h2><h3 id="触发时机-1"><a href="#触发时机-1" class="headerlink" title="触发时机"></a>触发时机</h3><ul>
+<li><strong>仅在页面文档被卸载时触发</strong><ul>
+<li>如果处理函数为 <code>Event 对象</code>的<code>returnValue</code>属性赋值<code>非空字符串</code>，浏览器会弹出一个对话框，来询问用户是否确定要离开当前页面</li>
+<li>有些浏览器会将返回的字符串展示在弹框里，但有些其他浏览器只展示它们自定义的信息。没有赋值时，该事件不做任何响应<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">"beforeunload"</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> confirmationMessage = <span class="string">"离开提示信息"</span>;</span><br><span class="line">  (e || <span class="built_in">window</span>.event).returnValue = confirmationMessage;     <span class="comment">// Gecko and Trident</span></span><br><span class="line">  <span class="keyword">return</span> confirmationMessage;                                <span class="comment">// Gecko and WebKit&#125;);</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="相关场景"><a href="#相关场景" class="headerlink" title="相关场景"></a>相关场景</h3><ul>
+<li>刷新<ul>
+<li>刷新时，原有页面文档会被卸载，所以会触发；不会触发 popstate 事件</li>
+</ul>
+</li>
+<li>关闭<ul>
+<li>页面关闭，原有页面文档也会被卸载，所以也会触发；不会触发 popstate 事件</li>
+</ul>
+</li>
+<li>hashchange 时<ul>
+<li>hash 改变，原有页面文档不会被卸载，所以不会触发；会触发 popstate 事件</li>
+</ul>
+</li>
+<li><code>pushState、replaceState</code> 时<ul>
+<li>页面不会被卸载，所以不会触发<code>beforeunload</code>；不会触发 <code>popstate</code> 事件</li>
+</ul>
+</li>
+<li>返回、前进<ul>
+<li>当返回、前进操作引起页面卸载时，会触发；引起卸载时，不会触发 <code>popstate</code> 事件，没有引起卸载时，会触发 <code>popstate</code> 事件</li>
+</ul>
+</li>
+</ul>
+<h3 id="小技巧"><a href="#小技巧" class="headerlink" title="小技巧"></a>小技巧</h3><ul>
+<li>判断除关闭以外的操作是否会触发<code>beforeunload</code>的技巧(适用于 <code>chrome</code>)<ul>
+<li>进行操作时，查看当前浏览器 tab 上是否出现正在加载资源的标识</li>
+</ul>
+</li>
+</ul>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><ul>
+<li>此事件的处理函数中，会忽略对<code>window.alert(), window.confirm(), 和 window.prompt()</code>的调用</li>
+<li>如果页面<strong>没有发生交互，浏览器可能不会展示弹窗，甚至可能即使发生交互了也直接不显示</strong>，并且会提示如下错误信息；<a href="https://developer.mozilla.org/zh-CN/docs/Web/Events/beforeunload" target="_blank" rel="noopener">相关链接</a><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">     [Intervention] Blocked attempt to show a <span class="string">'beforeunload'</span> confirmation panel <span class="keyword">for</span> a frame that never had a user gesture since its load</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h3><ul>
+<li>beforeunload 仅在页面文档被卸载时触发</li>
+<li>可通过页面是否重新加载资源，来判断操作是否会触发 beforeunload</li>
+<li>即使触发了，也可能会被浏览器拦截</li>
+</ul>
+<h2 id="History-API"><a href="#History-API" class="headerlink" title="History API"></a>History API</h2><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><ul>
+<li>从 HTML5 开始——提供了对 history 栈中内容的进行操作的 API；</li>
+<li>由于安全原因，浏览器不允许脚本读取历史记录的地址，但是允许在地址之间导航</li>
+</ul>
+<h3 id="查看当前窗口历史记录栈长度"><a href="#查看当前窗口历史记录栈长度" class="headerlink" title="查看当前窗口历史记录栈长度"></a>查看当前窗口历史记录栈长度</h3><ul>
+<li>历史记录栈类型<ul>
+<li>当前窗口历史记录栈<ul>
+<li><code>由window.history维护</code></li>
+</ul>
+</li>
+<li>全局历史记录栈<ul>
+<li>chrome 中通过<code>ctrl+h</code>打开<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.history.length</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="前进、后退、跳到指定位置"><a href="#前进、后退、跳到指定位置" class="headerlink" title="前进、后退、跳到指定位置"></a>前进、后退、跳到指定位置</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在history中向后跳转；这和用户点击浏览器回退按钮的效果相同</span></span><br><span class="line"><span class="built_in">window</span>.history.back()</span><br><span class="line"><span class="comment">// 向前跳转（如同用户点击了前进按钮</span></span><br><span class="line"><span class="built_in">window</span>.history.forward()</span><br><span class="line"><span class="comment">// 向后移动一个页面 (等同于调用 back())</span></span><br><span class="line"><span class="built_in">window</span>.history.go(<span class="number">-1</span>)</span><br><span class="line"><span class="comment">// 向前移动一个页面, 等同于调用了 forward()</span></span><br><span class="line"><span class="built_in">window</span>.history.go(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="window-history-go-0"><a href="#window-history-go-0" class="headerlink" title="window.history.go(0)"></a><code>window.history.go(0)</code></h3><ul>
+<li>作用等同于刷新</li>
+<li><code>go(0)</code> vs <code>reload</code>的区别<ul>
+<li><code>reload</code>会重新拉取数据，<code>go(0)</code>直接从缓存中获取数据<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 直接读取缓存数据，不会从服务器端获取数据，也不会增加新的历史记录</span></span><br><span class="line"><span class="built_in">window</span>.history.go(<span class="number">0</span>)</span><br><span class="line"><span class="comment">// 是会从服务端获取数据的</span></span><br><span class="line"><span class="built_in">window</span>.location.reload()</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="添加、修改记录"><a href="#添加、修改记录" class="headerlink" title="添加、修改记录"></a>添加、修改记录</h3><ul>
+<li>使用<code>pushState</code>、<code>replaceState</code>方法<ul>
+<li>前者添加一条新记录、后者修改当前记录</li>
+</ul>
+</li>
+</ul>
+<h4 id="pushState、replaceState参数"><a href="#pushState、replaceState参数" class="headerlink" title="pushState、replaceState参数"></a><code>pushState、replaceState</code>参数</h4><ul>
+<li><code>pushState、replaceState</code>支持传入 3 个参数，依次为<code>stateObj</code>、<code>title</code>、<code>url</code></li>
+<li><p><code>stateObj</code>就是一个普通对象，与对应的历史记录条目绑定；</p>
+<ul>
+<li>stateObj 有大小限制<ul>
+<li><strong>stateObj 序列化后必须&lt;=640k</strong></li>
+</ul>
+</li>
+<li>每次，当用户路由到对应历史记录条目，则可以通过<code>history.state或者popstate事件</code>获取到对应的<code>stateObj</code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取当前历史记录的状态对象</span></span><br><span class="line">history.state</span><br><span class="line"><span class="comment">// 通过popstate事件获取stateObj</span></span><br><span class="line"><span class="built_in">window</span>.onpopstate = <span class="function"><span class="params">e</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(e.state)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>title</code>是一个可省略的标题</p>
+<ul>
+<li>建议即使不用时，也传递个空字符串</li>
+</ul>
+</li>
+<li><code>url</code>定义了新的历史 URL 记录<ul>
+<li><strong>必须是同域 url</strong></li>
+<li>可以是相对 url，也可以是绝对 url<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 当前页面地址www.a.com/foo/bar.html</span></span><br><span class="line"><span class="comment">// 相对路径</span></span><br><span class="line">history.pushState(&#123; <span class="attr">test</span>: <span class="number">1</span> &#125;, <span class="string">'test'</span>, <span class="string">'./test.html'</span>) <span class="comment">// 页面地址变为www.a.com/foo/test.html</span></span><br><span class="line"><span class="comment">// 绝对路径</span></span><br><span class="line">history.pushState(&#123; <span class="attr">test2</span>: <span class="number">2</span> &#125;, <span class="string">'test2'</span>, <span class="string">'/test2.html'</span>) <span class="comment">// 页面地址变为www.a.com/test2.html</span></span><br><span class="line"><span class="comment">// 非同域</span></span><br><span class="line">history.pushState(&#123; <span class="attr">test3</span>: <span class="number">3</span> &#125;, <span class="string">'test3'</span>, <span class="string">'http://www.baidu.com'</span>) <span class="comment">// 跨域，报错</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="注意-1"><a href="#注意-1" class="headerlink" title="注意"></a>注意</h4><ul>
+<li><strong>使用 pushState、replaceState 添加历史记录时，不会立即加载相应页面，甚至都不会检查新的历史记录地址是否真的存在</strong><ul>
+<li>它仅仅是在<strong>当前历史记录栈中</strong>新增了一条记录，并不会立即加载相应页面<ul>
+<li><strong>这样就实现了不刷新页面改变 URL</strong></li>
+</ul>
+</li>
+<li>只在刷新或先跳转到其他域页面，再返回的场景下，才会触发加载页面，否则都是无刷新的</li>
+</ul>
+</li>
+<li><strong>pushState()、replaceState()  绝对不会触发  hashchange  事件，即使新的 URL 与旧的 URL 仅哈希不同也是如此。</strong></li>
+</ul>
+<h4 id="pushState、replaceState-和改变-hash-来实现无刷新改变-URL-的区别"><a href="#pushState、replaceState-和改变-hash-来实现无刷新改变-URL-的区别" class="headerlink" title="pushState、replaceState 和改变 hash 来实现无刷新改变 URL 的区别"></a>pushState、replaceState 和改变 hash 来实现无刷新改变 URL 的区别</h4><ul>
+<li>前者可以修改同源下的任意路径；后者<strong>只能修改 hash 部分</strong></li>
+<li>前者即使<strong>在添加的 <code>url</code> 跟之前完全相同时</strong>，也会被添加到历史记录栈中，并会触发 <code>popstate</code> 事件；后者<strong>只有在新 hash 不同时</strong>，才会添加新的历史记录，并触发<code>hashchange</code>，否则无法触发<code>hashchange</code></li>
+<li>前者支持关联任意的数据到历史记录项上；后者只能把相关数据转成字符串添加到 hash 上，变相绑定相关数据</li>
+</ul>
+<h2 id="popstate-事件"><a href="#popstate-事件" class="headerlink" title="popstate 事件"></a>popstate 事件</h2><h3 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h3><ul>
+<li>每当处于激活状态的历史记录条目发生变化时，会触发<code>popstate</code>事件<ul>
+<li>更准确的定义：每当<strong>同一个文档</strong>的浏览历史（即 <code>history</code> 对象）出现变化时，就会触发 <code>popstate</code> 事件。当历史记录变化，引<strong>起文档变化(reload)时，popstate 不会触发</strong>(<code>A popstate event is dispatched to the window each time the active history entry changes between two history entries for the same document</code>)</li>
+</ul>
+</li>
+</ul>
+<h3 id="触发场景"><a href="#触发场景" class="headerlink" title="触发场景"></a>触发场景</h3><ul>
+<li>调用<code>pushState、replaceState</code>时，<strong>不会触发<code>popstate</code>事件</strong></li>
+<li>只有用户点击浏览器倒退按钮和前进按钮，或者使用 JavaScript 调用<code>History.back()、History.forward()、History.go()</code>方法导致历史记录条目变化时才会触发</li>
+<li>该事件只针对同一个文档，如果浏览历史的切换，<strong>导致加载不同的文档，该事件也不会触发</strong>。</li>
+<li><strong>当网页加载时,各浏览器对<code>popstate事件</code>是否触发有不同的表现,<code>Chrome</code> 和 <code>Safari</code>会触发<code>popstate</code>事件, 而<code>Firefox</code>不会.（有待验证）</strong></li>
+<li><code>hash</code>改变时，也会触发<code>popstate事件</code></li>
+</ul>
+<h3 id="注意-2"><a href="#注意-2" class="headerlink" title="注意"></a>注意</h3><ul>
+<li>如果当前处于激活状态的历史记录条目是由<code>history.pushState()方法</code>创建,或者由<code>history.replaceState()方法</code>修改过的, 则<code>popstate事件对象的state属性包含了当前这个历史记录条目的state对象的一个拷贝</code></li>
+<li>即便进入了那些非<code>pushState</code>和<code>replaceState</code>方法作用过的(比如<a href="http://example.com/example.html)没有" target="_blank" rel="noopener">http://example.com/example.html)没有</a> state 对象关联的那些网页, popstate 事件也仍然会被触发</li>
+</ul>
+<h3 id="demos"><a href="#demos" class="headerlink" title="demos"></a>demos</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 绑定事件处理函数.</span></span><br><span class="line"><span class="built_in">window</span>.onpopstate = <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">  alert(</span><br><span class="line">    <span class="string">'location: '</span> + <span class="built_in">document</span>.location + <span class="string">', state: '</span> + <span class="built_in">JSON</span>.stringify(event.state)</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 添加并激活一个历史记录条目 http://example.com/example.html?page=1,条目索引为1</span></span><br><span class="line">history.pushState(&#123; <span class="attr">page</span>: <span class="number">1</span> &#125;, <span class="string">'title 1'</span>, <span class="string">'?page=1'</span>)</span><br><span class="line"><span class="comment">// 添加并激活一个历史记录条目 http://example.com/example.html?page=2,条目索引为2</span></span><br><span class="line">history.pushState(&#123; <span class="attr">page</span>: <span class="number">2</span> &#125;, <span class="string">'title 2'</span>, <span class="string">'?page=2'</span>)</span><br><span class="line"><span class="comment">// 修改当前激活的历史记录条目 http://ex..?page=2 变为 http://ex..?page=3,条目索引为3</span></span><br><span class="line">history.replaceState(&#123; <span class="attr">page</span>: <span class="number">3</span> &#125;, <span class="string">'title 3'</span>, <span class="string">'?page=3'</span>)</span><br><span class="line"><span class="comment">// 弹出 "location: http://example.com/example.html?page=1, state: &#123;"page":1&#125;"</span></span><br><span class="line">history.back()</span><br><span class="line"><span class="comment">// 弹出 "location: http://example.com/example.html, state: null</span></span><br><span class="line">history.back()</span><br><span class="line"><span class="comment">// 弹出 "location: http://example.com/example.html?page=3, state: &#123;"page":3&#125;</span></span><br><span class="line">history.go(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="小结-2"><a href="#小结-2" class="headerlink" title="小结"></a>小结</h3><ul>
+<li><code>pushState、replaceState时</code>不会触发<code>popstate</code>事件</li>
+<li>加载不同的文档时，不会触发</li>
+<li><code>hash</code>改变时，会触发</li>
+</ul>
+<h2 id="vue-router-中的-hash、history-模式"><a href="#vue-router-中的-hash、history-模式" class="headerlink" title="vue-router 中的 hash、history 模式"></a>vue-router 中的 hash、history 模式</h2><h3 id="设置-mode-为-hash，并不一定用的就是-hash"><a href="#设置-mode-为-hash，并不一定用的就是-hash" class="headerlink" title="设置 mode 为 hash，并不一定用的就是 hash"></a>设置 mode 为 hash，并不一定用的就是 hash</h3><ul>
+<li>在新版本<code>vue-router</code>中，如果浏览器支持<code>History API</code>，<code>vue-router</code>会优先使用<code>History</code>相关 API（<code>pushState、replaceState</code>）来<code>模拟hash</code>，即使用户设置<code>mode</code>为<code>hash</code>；只有在浏览器不支持<code>History</code>时，才会使用<code>hashchange</code></li>
+</ul>
+<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><ul>
+<li><code>vue-router</code> 版本 <code>3.0.6</code>，设置<code>mode</code>为 <code>hash</code>；<code>chrome</code> 版本 <code>78</code></li>
+<li>结论<ul>
+<li>调用 <code>this.$router.push</code> 方法跳转新路由时，<code>没有触发popstate事件</code></li>
+<li>如果使用的<code>hashchange</code>，则<code>hash</code>改变时，肯定会触发<code>popstate事件</code></li>
+</ul>
+</li>
+<li>原因<ul>
+<li>正常认知下，设置了<code>hash模式</code>，<code>vue-router</code>内部肯定会用到<code>hashchange事件</code>，<code>$router.push</code>时，<code>hash改变</code>，肯定会触发<code>hashchange和popstate事件</code>，但实际上，两个事件都没有触发；原因是<code>vue-router</code>检测到浏览器支持<code>history</code>，强制使用了<code>history</code>的<code>pushState、replaceState</code>来模拟<code>hash</code>(URL 表现形式上仍然会出现#号)，而<code>pushState、replaceState</code>调用时，不会触发<code>popstate事件</code></li>
+</ul>
+</li>
+<li>源码<ul>
+<li>在 <code>HashHistory</code> 类的 <code>setupListeners</code> 方法中，是根据<code>supportsPushState</code>来确定是绑定<code>popstate</code>还是<code>hashchange</code>事件</li>
+<li><img src="/2020/03/05/hashchange-beforeunload-popstate/router.png" alt="router.png"></li>
+<li><code>supportsPushState</code> 的实现，主要判断了一些特定浏览器，直接返回 <code>false</code>，其他的通过特性检测来判断；所以，其并没有根据传入的 <code>mode</code> 来选择监听的事件类型，而是根据浏览器是否支持来确定监听事件的类型</li>
+<li><img src="/2020/03/05/hashchange-beforeunload-popstate/router2.png" alt="router2.png"></li>
+</ul>
+</li>
+</ul>
+<h2 id="触发时机总结"><a href="#触发时机总结" class="headerlink" title="触发时机总结"></a>触发时机总结</h2><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>hashchange</th>
+<th>popstate</th>
+<th>beforeunload</th>
+<th>beforeRouteLeave</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>点击刷新</td>
+<td>N</td>
+<td>N</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr>
+<td>点击主页</td>
+<td>N</td>
+<td>N</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr>
+<td>点击关闭 tab</td>
+<td>N</td>
+<td>N</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr>
+<td>手动修改 URL，引起页面加载</td>
+<td>N</td>
+<td>N</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr>
+<td>手动修改 hash</td>
+<td>Y</td>
+<td>Y</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+<tr>
+<td><code>history.pushState、history.replaceState</code></td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+<tr>
+<td><code>$router.push</code>(调用了 <code>history.pushState</code>)</td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+<tr>
+<td><code>$router.back</code>(调用了 <code>history.back</code>)</td>
+<td>Y</td>
+<td>Y</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+</tbody>
+</table>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><h3 id="vue-单页离开时，给予保存提示"><a href="#vue-单页离开时，给予保存提示" class="headerlink" title="vue 单页离开时，给予保存提示"></a>vue 单页离开时，给予保存提示</h3><ul>
+<li>监听<code>beforeunload</code>处理页面刷新、关闭</li>
+<li>监听组件内的<code>beforeRouteLeave</code>，处理页面内路由跳转</li>
+<li><code>vue</code>中可抽取成一个单独的<code>mixins</code>，供组件复用</li>
+<li>如果希望独立<code>vue</code>使用，考虑使用<code>popstate</code>替代<code>beforeRouteLeave</code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @author GuangHui</span></span><br><span class="line"><span class="comment"> * @description 页面离开提示 mixins</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> mixinsName = <span class="string">'LEAVE_TIPS_MIXINS'</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> getName = <span class="function"><span class="params">name</span> =&gt;</span> <span class="string">`<span class="subst">$&#123;mixinsName&#125;</span>_<span class="subst">$&#123;<span class="built_in">String</span>(name)&#125;</span>`</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      [getName(<span class="string">'tips'</span>)]: <span class="string">'系统可能不会保存您所做的更改'</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  created() &#123;</span><br><span class="line">    <span class="keyword">this</span>[getName(<span class="string">'init'</span>)]()</span><br><span class="line">  &#125;,</span><br><span class="line">  activated() &#123;</span><br><span class="line">    <span class="keyword">this</span>[getName(<span class="string">'init'</span>)]()</span><br><span class="line">  &#125;,</span><br><span class="line">  beforeRouteLeave(to, <span class="keyword">from</span>, next) &#123;</span><br><span class="line">    <span class="keyword">this</span>[getName(<span class="string">'handleBeforeRouteLeave'</span>)](to, <span class="keyword">from</span>, next)</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 处理beforeRouteLeave</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * @param &#123;*&#125; to</span></span><br><span class="line"><span class="comment">     * @param &#123;*&#125; from</span></span><br><span class="line"><span class="comment">     * @param &#123;*&#125; next</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    [getName(<span class="string">'handleBeforeRouteLeave'</span>)](to, <span class="keyword">from</span>, next) &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">this</span>[getName(<span class="string">'showTips'</span>)]()) &#123;</span><br><span class="line">        next()</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        next(<span class="literal">false</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 展示默认tips</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * @returns confrim返回值</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    [getName(<span class="string">'showTips'</span>)]() &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">window</span>.confirm(<span class="keyword">this</span>[getName(<span class="string">'tips'</span>)])</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 初始化</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    [getName(<span class="string">'init'</span>)]() &#123;</span><br><span class="line">      <span class="comment">/* eslint-disable-next-line */</span></span><br><span class="line">      <span class="keyword">this</span>[getName(<span class="string">'handleBeforeUnloadBinded'</span>)] = <span class="keyword">this</span>[</span><br><span class="line">        getName(<span class="string">'handleBeforeUnload'</span>)</span><br><span class="line">      ].bind(<span class="keyword">this</span>)</span><br><span class="line">      <span class="keyword">this</span>[getName(<span class="string">'bindEvents'</span>)]()</span><br><span class="line">      <span class="keyword">this</span>.$once(<span class="string">'hook:deactivated'</span>, <span class="keyword">this</span>[getName(<span class="string">'cleanEvents'</span>)])</span><br><span class="line">      <span class="keyword">this</span>.$once(<span class="string">'hook:beforeDestroy'</span>, <span class="keyword">this</span>[getName(<span class="string">'cleanEvents'</span>)])</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 处理beforeunload事件</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * @param &#123;*&#125; e 事件对象</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    [getName(<span class="string">'handleBeforeUnload'</span>)](e) &#123;</span><br><span class="line">      <span class="comment">// https://developer.mozilla.org/zh-CN/docs/Web/Events/beforeunload</span></span><br><span class="line">      ;(e || <span class="built_in">window</span>.event).returnValue = <span class="keyword">this</span>[getName(<span class="string">'tips'</span>)] <span class="comment">// Gecko and Trident</span></span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>[getName(<span class="string">'tips'</span>)] <span class="comment">// Gecko and WebKit</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 绑定事件</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    [getName(<span class="string">'bindEvents'</span>)]() &#123;</span><br><span class="line">      <span class="built_in">window</span>.addEventListener(</span><br><span class="line">        <span class="string">'beforeunload'</span>,</span><br><span class="line">        <span class="keyword">this</span>[getName(<span class="string">'handleBeforeUnloadBinded'</span>)],</span><br><span class="line">        <span class="literal">false</span></span><br><span class="line">      )</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 清除事件</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    [getName(<span class="string">'cleanEvents'</span>)]() &#123;</span><br><span class="line">      <span class="built_in">window</span>.removeEventListener(</span><br><span class="line">        <span class="string">'beforeunload'</span>,</span><br><span class="line">        <span class="keyword">this</span>[getName(<span class="string">'handleBeforeUnloadBinded'</span>)],</span><br><span class="line">        <span class="literal">false</span></span><br><span class="line">      )</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://www.cnblogs.com/wancheng7/p/8542544.html" target="_blank" rel="noopener">https://www.cnblogs.com/wancheng7/p/8542544.html</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/onpopstate" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/API/Window/onpopstate</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/前端/" rel="tag"># 前端</a>
+          
+            <a href="/tags/history/" rel="tag"># history</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/05/vue-options-merge/" rel="next" title="vue-options-merge">
+                <i class="fa fa-chevron-left"></i> vue-options-merge
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/05/style-lint/" rel="prev" title="style-lint">
+                style-lint <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/Avatar.png"
+               alt="BryanAdamss" />
+          <p class="site-author-name" itemprop="name">BryanAdamss</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/BryanAdamss" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#hashchange、beforeunload、popstate"><span class="nav-number">1.</span> <span class="nav-text">hashchange、beforeunload、popstate</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#hashchange-事件"><span class="nav-number">1.1.</span> <span class="nav-text">hashchange 事件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#触发时机"><span class="nav-number">1.1.1.</span> <span class="nav-text">触发时机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">1.1.2.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#beforeunload-事件"><span class="nav-number">1.2.</span> <span class="nav-text">beforeunload 事件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#触发时机-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">触发时机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相关场景"><span class="nav-number">1.2.2.</span> <span class="nav-text">相关场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小技巧"><span class="nav-number">1.2.3.</span> <span class="nav-text">小技巧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注意"><span class="nav-number">1.2.4.</span> <span class="nav-text">注意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结-1"><span class="nav-number">1.2.5.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#History-API"><span class="nav-number">1.3.</span> <span class="nav-text">History API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#介绍"><span class="nav-number">1.3.1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看当前窗口历史记录栈长度"><span class="nav-number">1.3.2.</span> <span class="nav-text">查看当前窗口历史记录栈长度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前进、后退、跳到指定位置"><span class="nav-number">1.3.3.</span> <span class="nav-text">前进、后退、跳到指定位置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#window-history-go-0"><span class="nav-number">1.3.4.</span> <span class="nav-text">window.history.go(0)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加、修改记录"><span class="nav-number">1.3.5.</span> <span class="nav-text">添加、修改记录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#pushState、replaceState参数"><span class="nav-number">1.3.5.1.</span> <span class="nav-text">pushState、replaceState参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注意-1"><span class="nav-number">1.3.5.2.</span> <span class="nav-text">注意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pushState、replaceState-和改变-hash-来实现无刷新改变-URL-的区别"><span class="nav-number">1.3.5.3.</span> <span class="nav-text">pushState、replaceState 和改变 hash 来实现无刷新改变 URL 的区别</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#popstate-事件"><span class="nav-number">1.4.</span> <span class="nav-text">popstate 事件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#介绍-1"><span class="nav-number">1.4.1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#触发场景"><span class="nav-number">1.4.2.</span> <span class="nav-text">触发场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注意-2"><span class="nav-number">1.4.3.</span> <span class="nav-text">注意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#demos"><span class="nav-number">1.4.4.</span> <span class="nav-text">demos</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结-2"><span class="nav-number">1.4.5.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vue-router-中的-hash、history-模式"><span class="nav-number">1.5.</span> <span class="nav-text">vue-router 中的 hash、history 模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设置-mode-为-hash，并不一定用的就是-hash"><span class="nav-number">1.5.1.</span> <span class="nav-text">设置 mode 为 hash，并不一定用的就是 hash</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证"><span class="nav-number">1.5.2.</span> <span class="nav-text">验证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#触发时机总结"><span class="nav-number">1.6.</span> <span class="nav-text">触发时机总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用"><span class="nav-number">1.7.</span> <span class="nav-text">应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vue-单页离开时，给予保存提示"><span class="nav-number">1.7.1.</span> <span class="nav-text">vue 单页离开时，给予保存提示</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.8.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BryanAdamss</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

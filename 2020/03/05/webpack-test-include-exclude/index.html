@@ -1,0 +1,956 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="webpack,工程化," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/Avatar.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="webpack test、include、exclude介绍 webpack module rules中的test、include、exclude都是针对处理当前rule的loader做范围限制的，换句话说是做范围匹配的 loader会针对依赖图中的所有module运行匹配逻辑，如果匹配了，则用当前loader进行处理 三者可单独指定，也可同时指定12345678910111213141516//">
+<meta name="keywords" content="webpack,工程化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webpack-test-include-exclude">
+<meta property="og:url" content="http://yoursite.com/2020/03/05/webpack-test-include-exclude/index.html">
+<meta property="og:site_name" content="BryanAdamss的博客">
+<meta property="og:description" content="webpack test、include、exclude介绍 webpack module rules中的test、include、exclude都是针对处理当前rule的loader做范围限制的，换句话说是做范围匹配的 loader会针对依赖图中的所有module运行匹配逻辑，如果匹配了，则用当前loader进行处理 三者可单独指定，也可同时指定12345678910111213141516//">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-03-05T04:19:54.856Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="webpack-test-include-exclude">
+<meta name="twitter:description" content="webpack test、include、exclude介绍 webpack module rules中的test、include、exclude都是针对处理当前rule的loader做范围限制的，换句话说是做范围匹配的 loader会针对依赖图中的所有module运行匹配逻辑，如果匹配了，则用当前loader进行处理 三者可单独指定，也可同时指定12345678910111213141516//">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/05/webpack-test-include-exclude/"/>
+
+
+
+
+
+  <title> webpack-test-include-exclude | BryanAdamss的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BryanAdamss的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个伪前端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/05/webpack-test-include-exclude/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BryanAdamss">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/Avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BryanAdamss的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                webpack-test-include-exclude
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-05T12:19:25+08:00">
+                2020-03-05 12:19:25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FrontEnd/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="webpack-test、include、exclude"><a href="#webpack-test、include、exclude" class="headerlink" title="webpack test、include、exclude"></a>webpack test、include、exclude</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><ul>
+<li>webpack <code>module rules</code>中的<code>test、include、exclude</code>都是针对处理<code>当前rule</code>的<code>loader</code>做范围限制的，换句话说是做<strong>范围匹配</strong>的</li>
+<li><code>loader</code>会针对依赖图中的所有<code>module</code>运行匹配逻辑，如果匹配了，则用当前<code>loader</code>进行处理</li>
+<li>三者可单独指定，也可同时指定<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// webpack.config.js</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports=&#123;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">module</span>:&#123;</span><br><span class="line">    </span><br><span class="line">        rules:[</span><br><span class="line">            &#123;</span><br><span class="line">                test:<span class="regexp">/\.css$/</span>, <span class="comment">// test、include、exclude三者可单独指定，也可同时指定</span></span><br><span class="line">                <span class="comment">// inculde:path.join(__dirname,'./src')</span></span><br><span class="line">                <span class="comment">// inculde:path.join(__dirname,'./static')</span></span><br><span class="line">                loader:<span class="string">'css-loader'</span></span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="相关源码"><a href="#相关源码" class="headerlink" title="相关源码"></a>相关源码</h2><ul>
+<li>与<code>test</code>、<code>include</code>、<code>exclude</code>相关的匹配规则生成源码，在<code>RuleSet.js</code>中</li>
+<li><code>module.rules</code>一般我们会传递一个数组，所以其会逐条<code>序列化rule(normalizeRule)</code></li>
+<li>在<code>序列化rule</code>时，会检查是否既设置了<code>test、include、exclude</code>又设置了<code>resource</code>字段，<code>webpack</code>会报错，因为不允许同时设置这两个字段；<a href="https://webpack.docschina.org/configuration/module/#rule-include" target="_blank" rel="noopener">https://webpack.docschina.org/configuration/module/#rule-include</a></li>
+<li>如果未同时设置，则会利用<code>test、include、exclude</code>生成一个<code>condition对象</code>，然后使用<code>normalizeCondition</code>进行序列化，<code>normalizeCondition</code>函数总是返回一个<code>条件函数</code></li>
+<li>在<code>normalizeCondition</code>中，会判断<code>condition对象</code>的类型<ul>
+<li>如果是<code>string</code>,则返回一个<code>条件函数</code>，此<code>条件函数</code>内部利用<code>indexOf</code>判断<code>module路径</code>是否以<code>condition</code>开头来匹配</li>
+<li>如果是<code>function</code>，则将传入的<code>function</code>做为<code>条件函数</code>返回</li>
+<li>如果为正则表达式，则对其的<code>test</code>方法先绑定上下文，然后将<code>test</code> 方法做为<code>条件函数</code>返回</li>
+<li>如果是<code>object</code>，则遍历<code>condition对象</code>的<code>keys</code>，调用<code>normalizeCondition</code>生成<code>条件函数</code><ul>
+<li>如果发现<code>condition对象</code>的<code>key</code>是<code>or、include、test</code>，则直接生成一个<code>条件函数</code>并<code>push</code>到预先定义好的<code>matchers</code>数组中</li>
+<li>如果<code>key</code>是<code>and</code>，则遍历<code>key</code>对应的<code>value</code>数组，生成一个由<code>条件函数</code>组成的数组<code>items</code>，并将<code>items</code>传入<code>andMatcher</code>函数，返回一个经过<code>andMatcher</code>包装的<code>条件函数</code>并将其<code>push</code>到<code>matchers</code>中；<ul>
+<li>经过<code>andMathcer</code>包装后的<code>条件函数</code>，在执行时，要求入参必须让<code>items</code>中的所有<code>条件函数</code>都返回<code>true</code>才通过(且的关系)；相当于所有<code>条件函数</code>的返回值使用<code>&amp;&amp;</code>连接了</li>
+</ul>
+</li>
+<li>如果<code>key</code>是<code>not、exclude</code>，则生成一个条件函数，传入<code>notMatcher</code>中，进而返回一个被<code>notMathcer</code>包装后的<code>条件函数</code>，再将包装后的<code>条件函数`</code>push<code>到</code>matchers`中<ul>
+<li>经过<code>notMathcer</code>包装后的<code>条件函数</code>，在执行时，要求入参必须让<code>条件函数</code>返回<code>false</code> 才通过(非的关系)；</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>经过上面逻辑后，<code>mathers</code>数组将包含所有的<code>条件函数</code>，最后使用<code>andMatcher</code>函数，将<code>matchers</code>中保存的<code>条件函数</code>使用<code>&amp;&amp;</code>连接起来<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// RuleSet.js</span></span><br><span class="line"></span><br><span class="line"><span class="string">"use strict"</span>;</span><br><span class="line"><span class="built_in">module</span>.exports = <span class="class"><span class="keyword">class</span> <span class="title">RuleSet</span> </span>&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 序列化rules</span></span><br><span class="line">  <span class="keyword">static</span> normalizeRules(rules, refs, ident) &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 数组，逐条序列化</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(rules)) &#123;</span><br><span class="line">      <span class="keyword">return</span> rules.map(<span class="function">(<span class="params">rule, idx</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> RuleSet.normalizeRule(rule, refs, <span class="string">`<span class="subst">$&#123;ident&#125;</span>-<span class="subst">$&#123;idx&#125;</span>`</span>);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (rules) &#123;</span><br><span class="line">      <span class="keyword">return</span> [RuleSet.normalizeRule(rules, refs, ident)];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> [];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 序列化rule</span></span><br><span class="line">  <span class="keyword">static</span> normalizeRule(rule, refs, ident) &#123;</span><br><span class="line">     <span class="comment">// ...</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">const</span> newRule = &#123;&#125;;</span><br><span class="line">    <span class="keyword">let</span> useSource;</span><br><span class="line">    <span class="keyword">let</span> resourceSource;</span><br><span class="line">    <span class="keyword">let</span> condition;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 传递了test或include或exclude</span></span><br><span class="line">    <span class="keyword">if</span> (rule.test || rule.include || rule.exclude) &#123;</span><br><span class="line">      <span class="comment">// test、include、exclude和Rule.resource是互斥的，所以这里需要检查，如果发现都设置了，则报错提示</span></span><br><span class="line">      checkResourceSource(<span class="string">"test + include + exclude"</span>);</span><br><span class="line">      </span><br><span class="line">      condition = &#123;</span><br><span class="line">        test: rule.test,</span><br><span class="line">        include: rule.include,</span><br><span class="line">        exclude: rule.exclude</span><br><span class="line">      &#125;;</span><br><span class="line">      </span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 序列化condition</span></span><br><span class="line">        newRule.resource = RuleSet.normalizeCondition(condition);</span><br><span class="line">      &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(RuleSet.buildErrorMessage(condition, error));</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">return</span> newRule;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 序列化condition，总是返回一个条件函数</span></span><br><span class="line">  <span class="keyword">static</span> normalizeCondition(condition) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!condition) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"Expected condition but got falsy value"</span>);</span><br><span class="line">    <span class="comment">// 如果配置数据类型为 string，那么直接使用 indexOf 作为路径匹配规则</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> condition === <span class="string">"string"</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="params">str</span> =&gt;</span> str.indexOf(condition) === <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 如果为 function 函数，那么使用这个开发者自己定义的 function 作为路径匹配规则</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> condition === <span class="string">"function"</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> condition;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 如果为正则表达式，则绑定上下文后，使用正则来匹配</span></span><br><span class="line">    <span class="keyword">if</span> (condition <span class="keyword">instanceof</span> <span class="built_in">RegExp</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> condition.test.bind(condition);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 如果condition是数组，则生成orMatcher，orMathcer是一个高阶函数，会返回一个接收str的函数；其要求str满足items中的一项即可(或的关系)</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(condition)) &#123;</span><br><span class="line">      <span class="keyword">const</span> items = condition.map(<span class="function"><span class="params">c</span> =&gt;</span> RuleSet.normalizeCondition(c));</span><br><span class="line">      <span class="keyword">return</span> orMatcher(items);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> condition !== <span class="string">"object"</span>)</span><br><span class="line">      <span class="keyword">throw</span> <span class="built_in">Error</span>(</span><br><span class="line">        <span class="string">"Unexcepted "</span> +</span><br><span class="line">          <span class="keyword">typeof</span> condition +</span><br><span class="line">          <span class="string">" when condition was expected ("</span> +</span><br><span class="line">          condition +</span><br><span class="line">          <span class="string">")"</span></span><br><span class="line">      );</span><br><span class="line">    <span class="comment">// condition是一个对象，则遍历对象的keys</span></span><br><span class="line">    <span class="keyword">const</span> matchers = [];</span><br><span class="line">    <span class="built_in">Object</span>.keys(condition).forEach(<span class="function"><span class="params">key</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> value = condition[key];</span><br><span class="line">      <span class="keyword">switch</span> (key) &#123;</span><br><span class="line">        <span class="comment">// 如果key是or、include、test，则根据value值生成一个条件函数</span></span><br><span class="line">        <span class="keyword">case</span> <span class="string">"or"</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="string">"include"</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="string">"test"</span>:</span><br><span class="line">          <span class="keyword">if</span> (value) matchers.push(RuleSet.normalizeCondition(value));</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        <span class="comment">// 如果key是and，则遍历value，生成多个条件函数，并用andMatcher返回一个函数，此函数要求传入的str必须满足items中的所有条件(且的关系)</span></span><br><span class="line">        <span class="keyword">case</span> <span class="string">"and"</span>:</span><br><span class="line">          <span class="keyword">if</span> (value) &#123;</span><br><span class="line">            <span class="keyword">const</span> items = value.map(<span class="function"><span class="params">c</span> =&gt;</span> RuleSet.normalizeCondition(c));</span><br><span class="line">            matchers.push(andMatcher(items));</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        <span class="comment">// not或exclude，序列化value后，生成一个notMatcher</span></span><br><span class="line">        <span class="keyword">case</span> <span class="string">"not"</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="string">"exclude"</span>:</span><br><span class="line">          <span class="keyword">if</span> (value) &#123;</span><br><span class="line">            <span class="keyword">const</span> matcher = RuleSet.normalizeCondition(value);</span><br><span class="line">            matchers.push(notMatcher(matcher));</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">          <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"Unexcepted property "</span> + key + <span class="string">" in condition"</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">if</span> (matchers.length === <span class="number">0</span>)</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"Excepted condition but got "</span> + condition);</span><br><span class="line">    <span class="keyword">if</span> (matchers.length === <span class="number">1</span>) <span class="keyword">return</span> matchers[<span class="number">0</span>];</span><br><span class="line">    <span class="comment">// 将上面生成好的条件函数数组，用且的关系连接起来；符合这条rule的module，就会用对应的loader做转换</span></span><br><span class="line">    <span class="keyword">return</span> andMatcher(matchers);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">notMatcher</span>(<span class="params">matcher</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">str</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> !matcher(str);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">orMatcher</span>(<span class="params">items</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">str</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; items.length; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (items[i](str)) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">andMatcher</span>(<span class="params">items</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">str</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; items.length; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!items[i](str)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><h3 id="单独指定一个字段"><a href="#单独指定一个字段" class="headerlink" title="单独指定一个字段"></a>单独指定一个字段</h3><ul>
+<li>单独指定<code>test</code><ul>
+<li>只要<code>module</code>符合<code>test</code>指定的正则，就可以使用对应<code>loader</code>转换</li>
+</ul>
+</li>
+<li>单独指定<code>include</code><ul>
+<li>只会针对<code>include</code>中指定的模块，会使用对应<code>loader</code>转换，不管是否真的能转换</li>
+</ul>
+</li>
+<li>单独指定<code>exclude</code><ul>
+<li>会对<code>exclude</code>以外的所有模块，使用对应<code>loader</code>转换，不管是否真的能转换</li>
+</ul>
+</li>
+</ul>
+<h3 id="指定两个字段"><a href="#指定两个字段" class="headerlink" title="指定两个字段"></a>指定两个字段</h3><ul>
+<li><code>test + include</code><ul>
+<li>通过源码我们知道，在<code>normalizeCondition</code>时，遇到<code>test、include</code>都是拿对应字段的<code>value</code>直接生成一个<code>条件函数</code>，然后<code>push</code>进<code>matchers</code>中</li>
+<li>但要注意在<code>normalizeCondition</code>的最后，他们使用<code>andMatcher</code>连接了，所以<code>module</code>必须同时满足<code>test</code>和<code>include</code>，才能被对应<code>loader</code>转换</li>
+<li>所有可以说，同时指定<code>test</code>和<code>include</code>，二者是<code>test &amp;&amp; include</code>的关系</li>
+</ul>
+</li>
+<li><code>test + exclude</code><ul>
+<li>因为<code>exclude</code>返回的<code>条件函数</code>是通过<code>notMatcher</code>包装的，所以要求<code>module的路径</code>必须不在<code>exclude</code>指定范围内，才能被对应<code>loader</code>转换</li>
+<li>所以同时指定<code>test + exclude</code>他们的关系是<code>test &amp;&amp; (!exclude)</code></li>
+</ul>
+</li>
+<li><code>include + exclude</code><ul>
+<li>和<code>test + exclude</code>类似</li>
+<li>同时指定时的关系是<code>include &amp;&amp; (!exclude)</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="同时指定三个字段"><a href="#同时指定三个字段" class="headerlink" title="同时指定三个字段"></a>同时指定三个字段</h3><ul>
+<li>同时指定三个字段，跟同时指定两个字段有一定的相同；<code>test</code>和<code>include</code>是<code>&amp;</code>的关系，<code>exclude</code>是<code>!</code></li>
+<li>所以同时指定时三者关系是<code>test &amp;&amp; include &amp;&amp; (!exclude)</code></li>
+</ul>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ul>
+<li>起初，我以为<code>test</code>、<code>include</code>之间是<code>或</code>的关系取并集的操作，发现错了，原来他们取的是交集</li>
+<li><code>test</code>、<code>include</code>、<code>exclude</code>确定范围时的关系是<code>test &amp;&amp; include &amp;&amp; (!exclude)</code></li>
+<li>只要指定了<code>exclude</code>，则其匹配的<code>module</code>必将不会被对应<code>loader</code>转换</li>
+</ul>
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><ul>
+<li>根据官网上的文档有以下最佳实践</li>
+<li>使用<code>test + include</code>，避免使用<code>exclude</code><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">// 这里是匹配条件，每个选项都接收一个正则表达式或字符串</span></span><br><span class="line"><span class="comment">// test 和 include 具有相同的作用，都是必须匹配选项</span></span><br><span class="line"><span class="comment">// exclude 是必不匹配选项（优先于 test 和 include）</span></span><br><span class="line"><span class="comment">// 最佳实践：</span></span><br><span class="line"><span class="comment">// - 只在 test 和 文件名匹配 中使用正则表达式</span></span><br><span class="line"><span class="comment">// - 在 include 和 exclude 中使用绝对路径数组</span></span><br><span class="line"><span class="comment">// - 尽量避免 exclude，更倾向于使用 include</span></span><br><span class="line">        test: <span class="regexp">/\.jsx?$/</span>,</span><br><span class="line">        include: [</span><br><span class="line">          path.resolve(__dirname, <span class="string">"app"</span>)</span><br><span class="line">        ],</span><br><span class="line">        exclude: [</span><br><span class="line">          path.resolve(__dirname, <span class="string">"app/demo-files"</span>)</span><br><span class="line">        ],</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="相关项目"><a href="#相关项目" class="headerlink" title="相关项目"></a>相关项目</h2><ul>
+<li><a href="https://github.com/BryanAdamss/webpack-chain-source" target="_blank" rel="noopener">webpack-chain源码分析</a></li>
+<li><a href="https://github.com/BryanAdamss/webpack4-template-use-webpack-chain" target="_blank" rel="noopener">使用webpack-chain编写webpack的实践</a></li>
+<li><a href="https://github.com/BryanAdamss/webpack-dive-into-demos" target="_blank" rel="noopener">《深入浅出Webpack》学习demos</a></li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://github.com/CommanderXL/Biu-blog/issues/30" target="_blank" rel="noopener">https://github.com/CommanderXL/Biu-blog/issues/30</a></li>
+<li><a href="https://webpack.docschina.org/configuration/" target="_blank" rel="noopener">https://webpack.docschina.org/configuration/</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/webpack/" rel="tag"># webpack</a>
+          
+            <a href="/tags/工程化/" rel="tag"># 工程化</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/05/webpack-hash-chunkhash-contenthash/" rel="next" title="webpack-hash-chunkhash-contenthash">
+                <i class="fa fa-chevron-left"></i> webpack-hash-chunkhash-contenthash
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/05/bfc/" rel="prev" title="bfc">
+                bfc <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/Avatar.png"
+               alt="BryanAdamss" />
+          <p class="site-author-name" itemprop="name">BryanAdamss</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/BryanAdamss" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#webpack-test、include、exclude"><span class="nav-number">1.</span> <span class="nav-text">webpack test、include、exclude</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关源码"><span class="nav-number">1.2.</span> <span class="nav-text">相关源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解释"><span class="nav-number">1.3.</span> <span class="nav-text">解释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单独指定一个字段"><span class="nav-number">1.3.1.</span> <span class="nav-text">单独指定一个字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指定两个字段"><span class="nav-number">1.3.2.</span> <span class="nav-text">指定两个字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同时指定三个字段"><span class="nav-number">1.3.3.</span> <span class="nav-text">同时指定三个字段</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结论"><span class="nav-number">1.4.</span> <span class="nav-text">结论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最佳实践"><span class="nav-number">1.5.</span> <span class="nav-text">最佳实践</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关项目"><span class="nav-number">1.6.</span> <span class="nav-text">相关项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.7.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BryanAdamss</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

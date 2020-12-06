@@ -1,0 +1,1027 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="vue," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/Avatar.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Vue、Vue.extend、Vue.component、vm.mixins、vm.extends的区别及选项合并策略Vue、Vue.extend、Vue.component、vm.mixins、vm.extends的区别Vue Vue构造器(类)主要用来创建vue根实例，参数是一个选项对象； vue中组件是一个带有名字的可复用vue实例(组件也是一个个的vue实例)，其本质也是借助Vue构造器(">
+<meta name="keywords" content="vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue-options-merge">
+<meta property="og:url" content="http://yoursite.com/2020/03/05/vue-options-merge/index.html">
+<meta property="og:site_name" content="BryanAdamss的博客">
+<meta property="og:description" content="Vue、Vue.extend、Vue.component、vm.mixins、vm.extends的区别及选项合并策略Vue、Vue.extend、Vue.component、vm.mixins、vm.extends的区别Vue Vue构造器(类)主要用来创建vue根实例，参数是一个选项对象； vue中组件是一个带有名字的可复用vue实例(组件也是一个个的vue实例)，其本质也是借助Vue构造器(">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/vue-options-merge/mixin.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/vue-options-merge/comp.png">
+<meta property="og:updated_time" content="2020-03-05T03:34:31.796Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue-options-merge">
+<meta name="twitter:description" content="Vue、Vue.extend、Vue.component、vm.mixins、vm.extends的区别及选项合并策略Vue、Vue.extend、Vue.component、vm.mixins、vm.extends的区别Vue Vue构造器(类)主要用来创建vue根实例，参数是一个选项对象； vue中组件是一个带有名字的可复用vue实例(组件也是一个个的vue实例)，其本质也是借助Vue构造器(">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/05/vue-options-merge/mixin.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/05/vue-options-merge/"/>
+
+
+
+
+
+  <title> vue-options-merge | BryanAdamss的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BryanAdamss的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个伪前端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/05/vue-options-merge/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BryanAdamss">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/Avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BryanAdamss的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                vue-options-merge
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-05T11:29:03+08:00">
+                2020-03-05 11:29:03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FrontEnd/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Vue、Vue-extend、Vue-component、vm-mixins、vm-extends的区别及选项合并策略"><a href="#Vue、Vue-extend、Vue-component、vm-mixins、vm-extends的区别及选项合并策略" class="headerlink" title="Vue、Vue.extend、Vue.component、vm.mixins、vm.extends的区别及选项合并策略"></a>Vue、Vue.extend、Vue.component、vm.mixins、vm.extends的区别及选项合并策略</h1><h2 id="Vue、Vue-extend、Vue-component、vm-mixins、vm-extends的区别"><a href="#Vue、Vue-extend、Vue-component、vm-mixins、vm-extends的区别" class="headerlink" title="Vue、Vue.extend、Vue.component、vm.mixins、vm.extends的区别"></a>Vue、Vue.extend、Vue.component、vm.mixins、vm.extends的区别</h2><h3 id="Vue"><a href="#Vue" class="headerlink" title="Vue"></a>Vue</h3><ul>
+<li><code>Vue构造器(类)</code>主要用来创建<code>vue根实例</code>，参数是一个选项对象；</li>
+<li><code>vue</code>中<code>组件</code>是一个<code>带有名字</code>的<code>可复用vue实例</code>(组件也是一个个的vue实例)，其本质也是借助<code>Vue构造器(类)</code>来生成的，所以组件定义的参数和<code>Vue构造器</code>需要的参数基本一致，仅有的例外是像<code>el</code>这样根实例特有的选项。 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">    el:<span class="string">'#app'</span>,</span><br><span class="line">    render:<span class="function"><span class="params">h</span>=&gt;</span>h(App)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Vue-extend"><a href="#Vue-extend" class="headerlink" title="Vue.extend"></a>Vue.extend</h3><ul>
+<li>基于<code>Vue类</code>，创建一个<code>子类</code>，参数是一个包含组件选项的对象</li>
+<li>主要用于vue中创建可复用的组件，见<code>Vue.component</code></li>
+<li>一些特殊场景<ul>
+<li>例如在指令中使用Vue.extend创建一个vue实例，并用$mount挂载到dom中<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> BaseLoadingSpinner <span class="keyword">from</span> <span class="string">'Base/BaseLoadingSpinner'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> ExtendLoading = Vue.extend(&#123;</span><br><span class="line">    components: &#123;</span><br><span class="line">        BaseLoadingSpinner</span><br><span class="line">    &#125;,</span><br><span class="line">    template: <span class="string">'&lt;div style="text-align:center;font-size:20px;"&gt;&lt;BaseLoadingSpinner/&gt;&lt;/div&gt;'</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> MyLoading = <span class="keyword">new</span> ExtendLoading().$mount()</span><br><span class="line"><span class="built_in">document</span>.body.appendChild(MyLoading.$el)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Vue-component"><a href="#Vue-component" class="headerlink" title="Vue.component"></a>Vue.component</h3><ul>
+<li>注册\查询全局组件</li>
+<li>内部借助<code>Vue.extend</code>来实现<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Vue.component(<span class="string">'global-component'</span>, Vue.extend(baseOptions));</span><br><span class="line"><span class="comment">//传入一个选项对象（自动调用 Vue.extend）,等价于上行代码.</span></span><br><span class="line">Vue.component(<span class="string">'global-component'</span>, baseOptions);</span><br><span class="line"><span class="comment">// 获取注册的组件（始终返回构造器）</span></span><br><span class="line"><span class="keyword">var</span> MyComponent = Vue.component(<span class="string">'my-component'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="vm-mixins"><a href="#vm-mixins" class="headerlink" title="vm.mixins"></a>vm.mixins</h3><ul>
+<li><code>Vue实例(组件)</code>上的方法，主要利用<code>混入</code>来扩展组件的功能，它接收一个<code>混入对象的数组</code></li>
+<li>混入对象是一个<code>Vue选项对象</code>，<code>Vue构造器</code>能使用的选项，混入对象都可以使用</li>
+<li>如果混入对象和组件原有选项出现同名选项如何处理？<ul>
+<li>生命周期hook及watch<ul>
+<li>同名的生命周期hook，将按照minxins传入顺序依次调用<ul>
+<li>不同名的生命周期hook，将按照原先的生命周期顺序调用</li>
+</ul>
+</li>
+<li>同名的watch和生命周期hook的处理方式相同，也是按照minxins传入顺序依次调用</li>
+</ul>
+</li>
+<li>非生命周期hook及watch的选项字段<ul>
+<li>同名的，都以当前组件为主(覆盖混入对象的字段)</li>
+<li>非同名的，合并<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> mixin1 = &#123;</span><br><span class="line">data() &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        text: <span class="string">'mixin1'</span>,</span><br><span class="line">        test: &#123;</span><br><span class="line">            source: <span class="string">'from mixin1'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;,</span><br><span class="line">computed: &#123;</span><br><span class="line">    computedText() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">`I am <span class="subst">$&#123;<span class="keyword">this</span>.text&#125;</span>`</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;,</span><br><span class="line">created() &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'mixin1 text'</span>, <span class="keyword">this</span>.text)</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'mixin1 computedText'</span>, <span class="keyword">this</span>.computedText)</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'mixin1 test'</span>, <span class="keyword">this</span>.test)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> mixin2 = &#123;</span><br><span class="line">    data() &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        text: <span class="string">'mixin2'</span>,</span><br><span class="line">        test: &#123;</span><br><span class="line">            source: <span class="string">'from mixin2'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;,</span><br><span class="line">computed: &#123;</span><br><span class="line">    computedText() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">`I am <span class="subst">$&#123;<span class="keyword">this</span>.text&#125;</span>`</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;,</span><br><span class="line">created() &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'mixin2 text'</span>, <span class="keyword">this</span>.text)</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'mixin2 computedText'</span>, <span class="keyword">this</span>.computedText)</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'mixin2 test'</span>, <span class="keyword">this</span>.test)</span><br><span class="line">&#125;,</span><br><span class="line">mounted() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'mixin2 mounted'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> compa = &#123;</span><br><span class="line">    name: <span class="string">'CompA'</span>,</span><br><span class="line">    <span class="comment">// mixins: [mixin1],</span></span><br><span class="line">    mixins: [mixin1, mixin2],</span><br><span class="line">    <span class="comment">// extends: mixin2,</span></span><br><span class="line">    data() &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        text: <span class="string">'compa'</span>,</span><br><span class="line">        test: &#123;</span><br><span class="line">                source: <span class="string">'from compa'</span>,</span><br><span class="line">                own: <span class="string">'compa'</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    computed: &#123;</span><br><span class="line">        computedText() &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="string">`I am <span class="subst">$&#123;<span class="keyword">this</span>.text&#125;</span>`</span></span><br><span class="line">            &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    created() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'compa text'</span>, <span class="keyword">this</span>.text)</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'compa computedText'</span>, <span class="keyword">this</span>.computedText)</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'compa test'</span>, <span class="keyword">this</span>.test)</span><br><span class="line">    &#125;,</span><br><span class="line">    render: <span class="function"><span class="params">h</span> =&gt;</span> h(<span class="string">'div'</span>, <span class="string">'compa'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> App = &#123;</span><br><span class="line">    name: <span class="string">'App'</span>,</span><br><span class="line">    render: <span class="function"><span class="params">h</span> =&gt;</span> h(compa)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> baseOptions = &#123;</span><br><span class="line">    el: <span class="string">'#app'</span>,</span><br><span class="line">    render: <span class="function"><span class="params">h</span> =&gt;</span> h(App)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">new</span> Vue(baseOptions)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/03/05/vue-options-merge/mixin.png" alt="mixin.png"></p>
+<ul>
+<li>可以看到，同名的created钩子，按照传入顺序依次调用，compa的mounted钩子在所有的created执行完后再执行的；同名的非hook、watch的选项，如data、computed都优先使用当前组件的，所以最终own、source都是compa中定义</li>
+</ul>
+<h3 id="vm-extends"><a href="#vm-extends" class="headerlink" title="vm.extends"></a>vm.extends</h3><ul>
+<li>作用基本和mixins类似，都用来扩充组件功能，但有细微却别</li>
+<li>区别<ul>
+<li><code>mixins</code>是将一个个独立的功能扩充到当前组件上，相当于为当前组件添加某种能力，先有功能，再将功能添加到当前组件上；利用的是<code>组合思想</code></li>
+<li><code>vm.extends</code>是继承一个组件，并在其之上再添加功能，相当于扩充一个已有组件的功能；利用的是<code>继承思想</code></li>
+<li>mixins接收一个数组，extends接收一个组件</li>
+</ul>
+</li>
+<li>既然是继承，肯定会出现同名冲突的情况，其处理策略和<code>vm.mixins选项合并策略一样</code>；其实<code>Vue.extend、vm.mixins、vm.extends</code>他们的选项合并策略都是一样的；</li>
+</ul>
+<h2 id="选项合并策略"><a href="#选项合并策略" class="headerlink" title="选项合并策略"></a>选项合并策略</h2><ul>
+<li>vue中选项合并的策略，主要用在<code>Vue.extend、vm.mixins、vm.extends</code>等需要合并选项对象的地方</li>
+<li>vue版本<code>2.5.21</code></li>
+</ul>
+<h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><h4 id="默认合并策略"><a href="#默认合并策略" class="headerlink" title="默认合并策略"></a>默认合并策略</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">// src\core\util\options.js</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* Default strategy.</span></span><br><span class="line"><span class="comment">* 默认策略</span></span><br><span class="line"><span class="comment">* 只有在子选项没传时才使用`parentVal`，否则都使用`childVal`</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> defaultStrat = <span class="function"><span class="keyword">function</span> (<span class="params">parentVal: any, childVal: any</span>): <span class="title">any</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> childVal === <span class="literal">undefined</span></span><br><span class="line">        ? parentVal</span><br><span class="line">        : childVal</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">defaultStrat(&#123;<span class="attr">name</span>:<span class="string">'parentVal'</span>&#125;,&#123;<span class="attr">name</span>:<span class="string">'childVal'</span>&#125;) <span class="comment">// &#123;name:'childVal&#125;</span></span><br><span class="line">defaultStrat(&#123;<span class="attr">name</span>:<span class="string">'parentVal'</span>&#125;) <span class="comment">// &#123;name:'parentVal&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>parentVal</code>对应父选项，<code>childVal</code>对应子选项，只有在子选项没传时才使用<code>parentVal</code>，否则都使用<code>childVal</code></li>
+<li>针对不同的选项字段，vue有不同的合并策略</li>
+</ul>
+<h4 id="父、子选项对象如何界定"><a href="#父、子选项对象如何界定" class="headerlink" title="父、子选项对象如何界定"></a>父、子选项对象如何界定</h4><ul>
+<li><p>使用<code>vm.mixins</code>时</p>
+<ul>
+<li>混入对象为父选项对象、当前组件(vm)选项为子选项对象<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Vue.component(<span class="string">'A'</span>,&#123; <span class="comment">// A视为子选项对象</span></span><br><span class="line">    mixins:[B] <span class="comment">// B视为父选项对象</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>使用<code>vm.extends</code>时</p>
+<ul>
+<li>继承的组件选项为父选项对象，当前组件(vm)选项为子选项对象<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Vue.component(<span class="string">'A'</span>,&#123; <span class="comment">// A视为子选项对象</span></span><br><span class="line">    extends:B <span class="comment">// B视为父选项对象</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>使用<code>Vue.extend</code>时</p>
+<ul>
+<li><code>Vue.extend</code>接收的选项对象为子选项对象，Vue默认选项对象为父选项对象<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Vue.extend(B) <span class="comment">// B视为子选项对象，Vue默认选项对象为父选项对象</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="递归合并对象"><a href="#递归合并对象" class="headerlink" title="递归合并对象"></a>递归合并对象</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src\core\util\options.js</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* Helper that recursively merges two data objects together.</span></span><br><span class="line"><span class="comment">* 合并规则：</span></span><br><span class="line"><span class="comment"> * 1. 如果from中的某个属性to中有，保留to中的，什么都不做。</span></span><br><span class="line"><span class="comment"> * 2. 如果to中没有，赋值。</span></span><br><span class="line"><span class="comment"> * 3. 如果to中和from中的某个属性值都是对象，递归调用。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mergeData</span> (<span class="params">to: Object, from: ?Object</span>): <span class="title">Object</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">from</span>) <span class="keyword">return</span> to</span><br><span class="line">    <span class="keyword">let</span> key, toVal, fromVal</span><br><span class="line">    <span class="keyword">const</span> keys = <span class="built_in">Object</span>.keys(<span class="keyword">from</span>)</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; keys.length; i++) &#123;</span><br><span class="line">        key = keys[i]</span><br><span class="line">        toVal = to[key]</span><br><span class="line">        fromVal = <span class="keyword">from</span>[key]</span><br><span class="line">        <span class="keyword">if</span> (!hasOwn(to, key)) &#123;</span><br><span class="line">            set(to, key, fromVal)</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (</span><br><span class="line">            toVal !== fromVal &amp;&amp;</span><br><span class="line">            isPlainObject(toVal) &amp;&amp;</span><br><span class="line">            isPlainObject(fromVal)</span><br><span class="line">        ) &#123;</span><br><span class="line">            mergeData(toVal, fromVal)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> to</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">mergeData(&#123;</span><br><span class="line">    name:<span class="string">'parentVal'</span>,</span><br><span class="line">    testObj:&#123;</span><br><span class="line">        a:<span class="number">3</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;,</span><br><span class="line">&#123;</span><br><span class="line">    name:<span class="string">'childVal'</span>,</span><br><span class="line">    test:<span class="string">'childTest'</span>,</span><br><span class="line">    testObj:&#123;</span><br><span class="line">        a:<span class="number">4</span> ,</span><br><span class="line">        b:<span class="number">5</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;) </span><br><span class="line"><span class="comment">// &#123;</span></span><br><span class="line"><span class="comment">// name:'parentVal',</span></span><br><span class="line"><span class="comment">// test:'childTest',</span></span><br><span class="line"><span class="comment">// testObj:&#123;</span></span><br><span class="line"><span class="comment">//    a:3,</span></span><br><span class="line"><span class="comment">//    b:5</span></span><br><span class="line"><span class="comment">// &#125;&#125;</span></span><br></pre></td></tr></table></figure>
+<h4 id="混入属性到目标对象中"><a href="#混入属性到目标对象中" class="headerlink" title="混入属性到目标对象中"></a>混入属性到目标对象中</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src\shared\util.js</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* Mix properties into target object.</span></span><br><span class="line"><span class="comment">* to、from有相同key时，会覆盖to</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">extend</span> (<span class="params">to: Object, _from: ?Object</span>): <span class="title">Object</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">in</span> _from) &#123;</span><br><span class="line">        to[key] = _from[key]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> to</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">extend(&#123;<span class="attr">name</span>:<span class="string">'parentVal'</span>&#125;,&#123;<span class="attr">name</span>:<span class="string">'childVal'</span>&#125;) <span class="comment">// &#123;name:'childVal'&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="el、propsData合并策略"><a href="#el、propsData合并策略" class="headerlink" title="el、propsData合并策略"></a>el、propsData合并策略</h3><ul>
+<li>使用默认合并策略(child选项没传时才使用parent选项，否则都用child选项)</li>
+<li>子选项对象优先<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src\core\util\options.js</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* Options with restrictions</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span>) &#123;</span><br><span class="line">    strats.el = strats.propsData = <span class="function"><span class="keyword">function</span> (<span class="params">parent, child, vm, key</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!vm) &#123;</span><br><span class="line">            warn(</span><br><span class="line">            <span class="string">`option "<span class="subst">$&#123;key&#125;</span>" can only be used during instance `</span> +</span><br><span class="line">            <span class="string">'creation with the `new` keyword.'</span></span><br><span class="line">            )</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 使用默认合并策略(child没传时才使用parent，否则都用child)</span></span><br><span class="line">        <span class="keyword">return</span> defaultStrat(parent, child)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="data合并策略"><a href="#data合并策略" class="headerlink" title="data合并策略"></a>data合并策略</h3><ul>
+<li>由于data在组件中是一个函数，所以会先调用，然后通过<code>mergeData</code>将父选项对象递归合并到子选项对象中<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src\core\util\options.js</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* Data</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">mergeDataOrFn</span> (<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    parentVal: any,</span></span></span><br><span class="line"><span class="function"><span class="params">    childVal: any,</span></span></span><br><span class="line"><span class="function"><span class="params">    vm?: Component</span></span></span><br><span class="line"><span class="function"><span class="params">    </span>): ?<span class="title">Function</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!vm) &#123;</span><br><span class="line">        <span class="comment">// in a Vue.extend merge, both should be functions</span></span><br><span class="line">        <span class="keyword">if</span> (!childVal) &#123;</span><br><span class="line">            <span class="keyword">return</span> parentVal</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!parentVal) &#123;</span><br><span class="line">            <span class="keyword">return</span> childVal</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// when parentVal &amp; childVal are both present,</span></span><br><span class="line">        <span class="comment">// we need to return a function that returns the</span></span><br><span class="line">        <span class="comment">// merged result of both functions... no need to</span></span><br><span class="line">        <span class="comment">// check if parentVal is a function here because</span></span><br><span class="line">        <span class="comment">// it has to be a function to pass previous merges.</span></span><br><span class="line">        <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">mergedDataFn</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="comment">// 递归合并选项对象（将parentVal递归合并到childVal中）</span></span><br><span class="line">            <span class="keyword">return</span> mergeData(</span><br><span class="line">            <span class="keyword">typeof</span> childVal === <span class="string">'function'</span> ? childVal.call(<span class="keyword">this</span>, <span class="keyword">this</span>) : childVal,</span><br><span class="line">            <span class="keyword">typeof</span> parentVal === <span class="string">'function'</span> ? parentVal.call(<span class="keyword">this</span>, <span class="keyword">this</span>) : parentVal</span><br><span class="line">            )</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">mergedInstanceDataFn</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// instance merge</span></span><br><span class="line">        <span class="keyword">const</span> instanceData = <span class="keyword">typeof</span> childVal === <span class="string">'function'</span></span><br><span class="line">        ? childVal.call(vm, vm)</span><br><span class="line">        : childVal</span><br><span class="line">        <span class="keyword">const</span> defaultData = <span class="keyword">typeof</span> parentVal === <span class="string">'function'</span></span><br><span class="line">        ? parentVal.call(vm, vm)</span><br><span class="line">        : parentVal</span><br><span class="line">        </span><br><span class="line">            <span class="keyword">if</span> (instanceData) &#123;</span><br><span class="line">              <span class="comment">// 递归合并选项对象（将defaultData递归合并到instanceData中）</span></span><br><span class="line">                <span class="keyword">return</span> mergeData(instanceData, defaultData)</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> defaultData</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="components、directives、filters合并策略"><a href="#components、directives、filters合并策略" class="headerlink" title="components、directives、filters合并策略"></a>components、directives、filters合并策略</h3><ul>
+<li>这三个被vue视为<code>ASSET</code></li>
+<li>使用原型委托将<code>最终选项对象</code>的<code>__proto__指向了父选项对象</code>，并调用<code>extend</code>函数将<code>子选项对象</code>的所有属性混入到<code>最终选项对象</code>，最终效果就是，<code>子选项对象</code>中找不到时，会顺着原型链找到<code>父选项对象</code>，结果是<code>子选项对象</code>的字段会优先被使用<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src\shared\constants.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> ASSET_TYPES = [</span><br><span class="line">    <span class="string">'component'</span>,</span><br><span class="line">    <span class="string">'directive'</span>,</span><br><span class="line">    <span class="string">'filter'</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment">// src\core\util\options.js</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* Assets</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* When a vm is present (instance creation), we need to do</span></span><br><span class="line"><span class="comment">* a three-way merge between constructor options, instance</span></span><br><span class="line"><span class="comment">* options and parent options.</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mergeAssets</span> (<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">parentVal: ?Object,</span></span></span><br><span class="line"><span class="function"><span class="params">childVal: ?Object,</span></span></span><br><span class="line"><span class="function"><span class="params">vm?: Component,</span></span></span><br><span class="line"><span class="function"><span class="params">key: string</span></span></span><br><span class="line"><span class="function"><span class="params"></span>): <span class="title">Object</span> </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> res = <span class="built_in">Object</span>.create(parentVal || <span class="literal">null</span>) <span class="comment">// res.__proto__指向parentVal</span></span><br><span class="line">    <span class="keyword">if</span> (childVal) &#123;</span><br><span class="line">    process.env.NODE_ENV !== <span class="string">'production'</span> &amp;&amp; assertObjectType(key, childVal, vm)</span><br><span class="line">        <span class="keyword">return</span> extend(res, childVal) <span class="comment">// 将子选项对象所有属性混入到res</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="props、methods、inject、computed合并策略"><a href="#props、methods、inject、computed合并策略" class="headerlink" title="props、methods、inject、computed合并策略"></a>props、methods、inject、computed合并策略</h3><ul>
+<li>先调用<code>extend</code>将<code>父选项对象</code>所有属性混入到空对象obj上，再调用<code>extend</code>将<code>子选项对象</code>所有属性混入到obj上；最终还是<code>子选项对象</code>的字段会被优先使用<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* Other object hashes.</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">strats.props =</span><br><span class="line">strats.methods =</span><br><span class="line">strats.inject =</span><br><span class="line">strats.computed = <span class="function"><span class="keyword">function</span> (<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">parentVal: ?Object,</span></span></span><br><span class="line"><span class="function"><span class="params">childVal: ?Object,</span></span></span><br><span class="line"><span class="function"><span class="params">vm?: Component,</span></span></span><br><span class="line"><span class="function"><span class="params">key: string</span></span></span><br><span class="line"><span class="function"><span class="params"></span>): ?<span class="title">Object</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (childVal &amp;&amp; process.env.NODE_ENV !== <span class="string">'production'</span>) &#123;</span><br><span class="line">    assertObjectType(key, childVal, vm)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (!parentVal) <span class="keyword">return</span> childVal</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">const</span> ret = <span class="built_in">Object</span>.create(<span class="literal">null</span>) <span class="comment">// 空对象</span></span><br><span class="line">    </span><br><span class="line">    extend(ret, parentVal) <span class="comment">// 先混入parentVal所有属性</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (childVal) extend(ret, childVal)   <span class="comment">// 再混入childVal所有属性，当childVal和parentVal出现同名属性时，将覆盖parentVal</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="provide合并策略"><a href="#provide合并策略" class="headerlink" title="provide合并策略"></a>provide合并策略</h3><ul>
+<li>其和data合并策略是一样的</li>
+<li>它使用data合并策略中的<code>mergeDataOrFn</code>方法来合并<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strats.provide = mergeDataOrFn</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="生命周期hook"><a href="#生命周期hook" class="headerlink" title="生命周期hook"></a>生命周期hook</h3><ul>
+<li>同名的生命周期hook，会合并到一个数组中，并且父选项对象的hook会先执行；</li>
+<li>不同名的生命周期hook，会按照生命周期，依次调用<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src\core\util\options.js</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* Hooks and props are merged as arrays.</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mergeHook</span> (<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">parentVal: ?Array&lt;Function&gt;,</span></span></span><br><span class="line"><span class="function"><span class="params">childVal: ?Function | ?Array&lt;Function&gt;</span></span></span><br><span class="line"><span class="function"><span class="params"></span>): ?<span class="title">Array</span>&lt;<span class="title">Function</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> childVal</span><br><span class="line">    ? parentVal</span><br><span class="line">        ? parentVal.concat(childVal) <span class="comment">// 父子选项对象都存在，则直接合并到一个数组中</span></span><br><span class="line">            : <span class="built_in">Array</span>.isArray(childVal)</span><br><span class="line">                ? childVal</span><br><span class="line">                    : [childVal]</span><br><span class="line">                    : parentVal</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">LIFECYCLE_HOOKS.forEach(<span class="function"><span class="params">hook</span> =&gt;</span> &#123;</span><br><span class="line">    strats[hook] = mergeHook</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="watch合并策略"><a href="#watch合并策略" class="headerlink" title="watch合并策略"></a>watch合并策略</h3><ul>
+<li>其合并策略和生命周期hook类似；父子选项对象的watch会合并到同一个数组中，并且父选项的watch在前<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src\core\util\options.js</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* Watchers.</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* Watchers hashes should not overwrite one</span></span><br><span class="line"><span class="comment">* another, so we merge them as arrays.</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">strats.watch = <span class="function"><span class="keyword">function</span> (<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">parentVal: ?Object,</span></span></span><br><span class="line"><span class="function"><span class="params">childVal: ?Object,</span></span></span><br><span class="line"><span class="function"><span class="params">vm?: Component,</span></span></span><br><span class="line"><span class="function"><span class="params">key: string</span></span></span><br><span class="line"><span class="function"><span class="params"></span>): ?<span class="title">Object</span> </span>&#123;</span><br><span class="line">    <span class="comment">// work around Firefox's Object.prototype.watch...</span></span><br><span class="line">    <span class="keyword">if</span> (parentVal === nativeWatch) parentVal = <span class="literal">undefined</span></span><br><span class="line">    <span class="keyword">if</span> (childVal === nativeWatch) childVal = <span class="literal">undefined</span></span><br><span class="line">    <span class="comment">/* istanbul ignore if */</span></span><br><span class="line">    <span class="keyword">if</span> (!childVal) <span class="keyword">return</span> <span class="built_in">Object</span>.create(parentVal || <span class="literal">null</span>)</span><br><span class="line">    <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span>) &#123;</span><br><span class="line">        assertObjectType(key, childVal, vm)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!parentVal) <span class="keyword">return</span> childVal</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">const</span> ret = &#123;&#125;</span><br><span class="line">    extend(ret, parentVal) <span class="comment">// 混入父选项对象所有属性 </span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">in</span> childVal) &#123;</span><br><span class="line">        <span class="keyword">let</span> parent = ret[key]</span><br><span class="line">        <span class="keyword">const</span> child = childVal[key]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (parent &amp;&amp; !<span class="built_in">Array</span>.isArray(parent)) &#123;</span><br><span class="line">            parent = [parent]</span><br><span class="line">        &#125;</span><br><span class="line">        ret[key] = parent</span><br><span class="line">            ? parent.concat(child) <span class="comment">// 合并到一个数组中</span></span><br><span class="line">                : <span class="built_in">Array</span>.isArray(child) </span><br><span class="line">                    ? child : [child]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="当同时使用Vue-extend、vm-extends、vm-mixins时选项如何合并"><a href="#当同时使用Vue-extend、vm-extends、vm-mixins时选项如何合并" class="headerlink" title="当同时使用Vue.extend、vm.extends、vm.mixins时选项如何合并"></a>当同时使用Vue.extend、vm.extends、vm.mixins时选项如何合并</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> mixin1 = &#123;</span><br><span class="line">    data() &#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            text: <span class="string">'mixin1'</span>,</span><br><span class="line">            test: &#123;</span><br><span class="line">                source: <span class="string">'from mixin1'</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    computed: &#123;</span><br><span class="line">        computedText() &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">`I am <span class="subst">$&#123;<span class="keyword">this</span>.text&#125;</span>`</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    created() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'mixin1 text'</span>, <span class="keyword">this</span>.text)</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'mixin1 computedText'</span>, <span class="keyword">this</span>.computedText)</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'mixin1 test'</span>, <span class="keyword">this</span>.test)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> mixin2 = &#123;</span><br><span class="line">    data() &#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            text: <span class="string">'mixin2'</span>,</span><br><span class="line">            test: &#123;</span><br><span class="line">                source: <span class="string">'from mixin2'</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    computed: &#123;</span><br><span class="line">        computedText() &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">`I am <span class="subst">$&#123;<span class="keyword">this</span>.text&#125;</span>`</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    created() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'mixin2 text'</span>, <span class="keyword">this</span>.text)</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'mixin2 computedText'</span>, <span class="keyword">this</span>.computedText)</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'mixin2 test'</span>, <span class="keyword">this</span>.test)</span><br><span class="line">    &#125;,</span><br><span class="line">    mounted() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'mixin2 mounted'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> compb = &#123;</span><br><span class="line">name: <span class="string">'CompB'</span>,</span><br><span class="line">data() &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        text: <span class="string">'compb'</span>,</span><br><span class="line">        test: &#123;</span><br><span class="line">            source: <span class="string">'from compb'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;,</span><br><span class="line">computed: &#123;</span><br><span class="line">    computedText() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">`I am <span class="subst">$&#123;<span class="keyword">this</span>.text&#125;</span>`</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;,</span><br><span class="line">created() &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'compb text'</span>, <span class="keyword">this</span>.text)</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'compb computedText'</span>, <span class="keyword">this</span>.computedText)</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'compb test'</span>, <span class="keyword">this</span>.test)</span><br><span class="line">&#125;,</span><br><span class="line">render: <span class="function"><span class="params">h</span> =&gt;</span> h(<span class="string">'div'</span>, <span class="string">'compb'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> compc = &#123;</span><br><span class="line">name: <span class="string">'CompC'</span>,</span><br><span class="line">data() &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        text: <span class="string">'compc'</span>,</span><br><span class="line">        test: &#123;</span><br><span class="line">            source: <span class="string">'from compc'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;,</span><br><span class="line">computed: &#123;</span><br><span class="line">    computedText() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">`I am <span class="subst">$&#123;<span class="keyword">this</span>.text&#125;</span>`</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;,</span><br><span class="line">created() &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'compc text'</span>, <span class="keyword">this</span>.text)</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'compc computedText'</span>, <span class="keyword">this</span>.computedText)</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'compc test'</span>, <span class="keyword">this</span>.test)</span><br><span class="line">&#125;,</span><br><span class="line">render: <span class="function"><span class="params">h</span> =&gt;</span> h(<span class="string">'div'</span>, <span class="string">'compc'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> compa = &#123;</span><br><span class="line">    name: <span class="string">'CompA'</span>,</span><br><span class="line">    <span class="comment">// mixins: [mixin1],</span></span><br><span class="line">    mixins: [mixin1, mixin2],</span><br><span class="line">    extends: compb,</span><br><span class="line">    data() &#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            text: <span class="string">'compa'</span>,</span><br><span class="line">            test: &#123;</span><br><span class="line">                source: <span class="string">'from compa'</span>,</span><br><span class="line">                own: <span class="string">'compa'</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    computed: &#123;</span><br><span class="line">        computedText() &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">`I am <span class="subst">$&#123;<span class="keyword">this</span>.text&#125;</span>`</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    created() &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'compa text'</span>, <span class="keyword">this</span>.text)</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'compa computedText'</span>, <span class="keyword">this</span>.computedText)</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'compa test'</span>, <span class="keyword">this</span>.test)</span><br><span class="line">    &#125;,</span><br><span class="line">    render: <span class="function"><span class="params">h</span> =&gt;</span> h(<span class="string">'div'</span>, <span class="string">'compa'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> ExtendC = Vue.extend(compc)</span><br><span class="line">  <span class="keyword">const</span> ExtendCA = ExtendC.extend(compa)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">new</span> ExtendCA().$mount(<span class="string">'#app'</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/03/05/vue-options-merge/comp.png" alt="comp.png"></p>
+<ul>
+<li>会看到<code>created</code>钩子被调用的顺序依次为<code>compc、compb、mixin1、mixin2、compa</code></li>
+<li>data都为<code>compa</code></li>
+<li>总结<ul>
+<li>extend、extends、mixins同时使用时<ul>
+<li><code>hook及watch</code>的执行顺序:extend&gt;extends&gt;mixins&gt;当前组件</li>
+<li><code>非hook及watch</code>会使用当前组件的值</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li><code>Vue.extend、vm.extends、vm.mixins</code>使用相同的选项合并策略<ul>
+<li>未出现同名选项时，会使用类似<code>Object.assign</code>的机制来合并选项<ul>
+<li><code>const newOption=Object.assign({},parentVal,childVal)</code></li>
+</ul>
+</li>
+<li>出现同名选项时<ul>
+<li><code>hook、watch选项</code>出现同名时，会将其合并到一个数组中，并且父选项对象的先执行</li>
+<li><code>非hook、watch选项</code>出现同名时，优先使用子选项对象的值</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>同时使用<code>Vue.extend、vm.extends、vm.mixins</code>时<ul>
+<li>未出现同名选项时，会使用类似<code>Object.assign</code>的机制来合并选项</li>
+<li>出现同名选项时<ul>
+<li><code>hook及watch</code>的执行顺序:extend&gt;extends&gt;mixins&gt;当前组件</li>
+<li><code>非hook及watch</code>会使用当前组件的值</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><blockquote>
+<p><a href="https://segmentfault.com/a/1190000010095089" target="_blank" rel="noopener">https://segmentfault.com/a/1190000010095089</a><br><a href="https://segmentfault.com/a/1190000007087912" target="_blank" rel="noopener">https://segmentfault.com/a/1190000007087912</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vue/" rel="tag"># vue</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/16/git-commit-message/" rel="next" title="git-commit-message">
+                <i class="fa fa-chevron-left"></i> git-commit-message
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/05/hashchange-beforeunload-popstate/" rel="prev" title="hashchange-beforeunload-popstate">
+                hashchange-beforeunload-popstate <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/Avatar.png"
+               alt="BryanAdamss" />
+          <p class="site-author-name" itemprop="name">BryanAdamss</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/BryanAdamss" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Vue、Vue-extend、Vue-component、vm-mixins、vm-extends的区别及选项合并策略"><span class="nav-number">1.</span> <span class="nav-text">Vue、Vue.extend、Vue.component、vm.mixins、vm.extends的区别及选项合并策略</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Vue、Vue-extend、Vue-component、vm-mixins、vm-extends的区别"><span class="nav-number">1.1.</span> <span class="nav-text">Vue、Vue.extend、Vue.component、vm.mixins、vm.extends的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Vue"><span class="nav-number">1.1.1.</span> <span class="nav-text">Vue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Vue-extend"><span class="nav-number">1.1.2.</span> <span class="nav-text">Vue.extend</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Vue-component"><span class="nav-number">1.1.3.</span> <span class="nav-text">Vue.component</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vm-mixins"><span class="nav-number">1.1.4.</span> <span class="nav-text">vm.mixins</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vm-extends"><span class="nav-number">1.1.5.</span> <span class="nav-text">vm.extends</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#选项合并策略"><span class="nav-number">1.2.</span> <span class="nav-text">选项合并策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前置知识"><span class="nav-number">1.2.1.</span> <span class="nav-text">前置知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#默认合并策略"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">默认合并策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#父、子选项对象如何界定"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">父、子选项对象如何界定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#递归合并对象"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">递归合并对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#混入属性到目标对象中"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">混入属性到目标对象中</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#el、propsData合并策略"><span class="nav-number">1.2.2.</span> <span class="nav-text">el、propsData合并策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#data合并策略"><span class="nav-number">1.2.3.</span> <span class="nav-text">data合并策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#components、directives、filters合并策略"><span class="nav-number">1.2.4.</span> <span class="nav-text">components、directives、filters合并策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#props、methods、inject、computed合并策略"><span class="nav-number">1.2.5.</span> <span class="nav-text">props、methods、inject、computed合并策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#provide合并策略"><span class="nav-number">1.2.6.</span> <span class="nav-text">provide合并策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生命周期hook"><span class="nav-number">1.2.7.</span> <span class="nav-text">生命周期hook</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#watch合并策略"><span class="nav-number">1.2.8.</span> <span class="nav-text">watch合并策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#当同时使用Vue-extend、vm-extends、vm-mixins时选项如何合并"><span class="nav-number">1.2.9.</span> <span class="nav-text">当同时使用Vue.extend、vm.extends、vm.mixins时选项如何合并</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">1.2.10.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">1.2.11.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BryanAdamss</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

@@ -1,0 +1,692 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/Avatar.png?v=5.1.0" />
+
+
+
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="tags">
+<meta property="og:url" content="http://yoursite.com/tags/index.html">
+<meta property="og:site_name" content="BryanAdamss的博客">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-02-27T06:09:31.574Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tags">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/tags/"/>
+
+
+
+
+
+  <title>
+  
+
+  
+    tags | BryanAdamss的博客
+  
+</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left  ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BryanAdamss的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个伪前端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+  <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline">tags</h1>
+
+
+
+</header>
+
+    
+    
+      <div class="tag-cloud">
+        <div class="tag-cloud-title">
+            目前共计 91 个标签
+        </div>
+        <div class="tag-cloud-tags">
+          <a href="/tags/Angular/" style="font-size: 15.6px; color: #a7a7a7">Angular</a> <a href="/tags/CORS/" style="font-size: 12px; color: #ccc">CORS</a> <a href="/tags/Chrome/" style="font-size: 12px; color: #ccc">Chrome</a> <a href="/tags/DevTools/" style="font-size: 12px; color: #ccc">DevTools</a> <a href="/tags/ES6/" style="font-size: 12px; color: #ccc">ES6</a> <a href="/tags/Graphviz/" style="font-size: 12px; color: #ccc">Graphviz</a> <a href="/tags/Handlebars/" style="font-size: 12px; color: #ccc">Handlebars</a> <a href="/tags/JSONP/" style="font-size: 12px; color: #ccc">JSONP</a> <a href="/tags/MVC/" style="font-size: 12px; color: #ccc">MVC</a> <a href="/tags/Markdown/" style="font-size: 12px; color: #ccc">Markdown</a> <a href="/tags/Promise/" style="font-size: 12px; color: #ccc">Promise</a> <a href="/tags/bem/" style="font-size: 12px; color: #ccc">bem</a> <a href="/tags/bfc/" style="font-size: 12px; color: #ccc">bfc</a> <a href="/tags/clean/" style="font-size: 12px; color: #ccc">clean</a> <a href="/tags/commit-message/" style="font-size: 12px; color: #ccc">commit message</a> <a href="/tags/css/" style="font-size: 22.8px; color: #5c5c5c">css</a> <a href="/tags/eslint/" style="font-size: 15.6px; color: #a7a7a7">eslint</a> <a href="/tags/flat/" style="font-size: 12px; color: #ccc">flat</a> <a href="/tags/flex/" style="font-size: 12px; color: #ccc">flex</a> <a href="/tags/flip/" style="font-size: 12px; color: #ccc">flip</a> <a href="/tags/framework/" style="font-size: 12px; color: #ccc">framework</a> <a href="/tags/git/" style="font-size: 22.8px; color: #5c5c5c">git</a> <a href="/tags/github/" style="font-size: 12px; color: #ccc">github</a> <a href="/tags/gitlab/" style="font-size: 15.6px; color: #a7a7a7">gitlab</a> <a href="/tags/gitlab-ci/" style="font-size: 12px; color: #ccc">gitlab-ci</a> <a href="/tags/history/" style="font-size: 12px; color: #ccc">history</a> <a href="/tags/husky/" style="font-size: 12px; color: #ccc">husky</a> <a href="/tags/im/" style="font-size: 12px; color: #ccc">im</a> <a href="/tags/js/" style="font-size: 12px; color: #ccc">js</a> <a href="/tags/latex/" style="font-size: 12px; color: #ccc">latex</a> <a href="/tags/line-height/" style="font-size: 12px; color: #ccc">line-height</a> <a href="/tags/lint-staged/" style="font-size: 12px; color: #ccc">lint-staged</a> <a href="/tags/mock/" style="font-size: 12px; color: #ccc">mock</a> <a href="/tags/mysql/" style="font-size: 12px; color: #ccc">mysql</a> <a href="/tags/nodejs/" style="font-size: 12px; color: #ccc">nodejs</a> <a href="/tags/npm/" style="font-size: 15.6px; color: #a7a7a7">npm</a> <a href="/tags/oop/" style="font-size: 12px; color: #ccc">oop</a> <a href="/tags/package/" style="font-size: 12px; color: #ccc">package</a> <a href="/tags/post/" style="font-size: 12px; color: #ccc">post</a> <a href="/tags/postman/" style="font-size: 12px; color: #ccc">postman</a> <a href="/tags/pre/" style="font-size: 12px; color: #ccc">pre</a> <a href="/tags/prettier/" style="font-size: 12px; color: #ccc">prettier</a> <a href="/tags/publish/" style="font-size: 12px; color: #ccc">publish</a> <a href="/tags/sql/" style="font-size: 12px; color: #ccc">sql</a> <a href="/tags/ssh/" style="font-size: 12px; color: #ccc">ssh</a> <a href="/tags/stacking-context/" style="font-size: 12px; color: #ccc">stacking context</a> <a href="/tags/stylelint/" style="font-size: 12px; color: #ccc">stylelint</a> <a href="/tags/suit/" style="font-size: 12px; color: #ccc">suit</a> <a href="/tags/swiper/" style="font-size: 12px; color: #ccc">swiper</a> <a href="/tags/tbs/" style="font-size: 12px; color: #ccc">tbs</a> <a href="/tags/timer/" style="font-size: 12px; color: #ccc">timer</a> <a href="/tags/todoMVC/" style="font-size: 12px; color: #ccc">todoMVC</a> <a href="/tags/uml/" style="font-size: 12px; color: #ccc">uml</a> <a href="/tags/video/" style="font-size: 12px; color: #ccc">video</a> <a href="/tags/virtual/" style="font-size: 12px; color: #ccc">virtual</a> <a href="/tags/vue/" style="font-size: 30px; color: #111">vue</a> <a href="/tags/vue-cli/" style="font-size: 12px; color: #ccc">vue-cli</a> <a href="/tags/vue-router/" style="font-size: 19.2px; color: #818181">vue-router</a> <a href="/tags/vuepress/" style="font-size: 12px; color: #ccc">vuepress</a> <a href="/tags/vuex/" style="font-size: 12px; color: #ccc">vuex</a> <a href="/tags/webpack/" style="font-size: 26.4px; color: #363636">webpack</a> <a href="/tags/websocket/" style="font-size: 12px; color: #ccc">websocket</a> <a href="/tags/x5/" style="font-size: 12px; color: #ccc">x5</a> <a href="/tags/xss/" style="font-size: 12px; color: #ccc">xss</a> <a href="/tags/z-index/" style="font-size: 12px; color: #ccc">z-index</a> <a href="/tags/创建对象/" style="font-size: 12px; color: #ccc">创建对象</a> <a href="/tags/前端/" style="font-size: 12px; color: #ccc">前端</a> <a href="/tags/动画/" style="font-size: 12px; color: #ccc">动画</a> <a href="/tags/命名/" style="font-size: 12px; color: #ccc">命名</a> <a href="/tags/存在性/" style="font-size: 12px; color: #ccc">存在性</a> <a href="/tags/安全/" style="font-size: 12px; color: #ccc">安全</a> <a href="/tags/小程序/" style="font-size: 12px; color: #ccc">小程序</a> <a href="/tags/工时/" style="font-size: 12px; color: #ccc">工时</a> <a href="/tags/工程化/" style="font-size: 22.8px; color: #5c5c5c">工程化</a> <a href="/tags/布局/" style="font-size: 12px; color: #ccc">布局</a> <a href="/tags/库/" style="font-size: 12px; color: #ccc">库</a> <a href="/tags/异步/" style="font-size: 12px; color: #ccc">异步</a> <a href="/tags/扁平化/" style="font-size: 12px; color: #ccc">扁平化</a> <a href="/tags/构建/" style="font-size: 12px; color: #ccc">构建</a> <a href="/tags/模拟数据/" style="font-size: 12px; color: #ccc">模拟数据</a> <a href="/tags/源码解析/" style="font-size: 19.2px; color: #818181">源码解析</a> <a href="/tags/类型检测/" style="font-size: 12px; color: #ccc">类型检测</a> <a href="/tags/绘图/" style="font-size: 12px; color: #ccc">绘图</a> <a href="/tags/继承/" style="font-size: 12px; color: #ccc">继承</a> <a href="/tags/聊天室/" style="font-size: 12px; color: #ccc">聊天室</a> <a href="/tags/表格/" style="font-size: 12px; color: #ccc">表格</a> <a href="/tags/设计模式/" style="font-size: 12px; color: #ccc">设计模式</a> <a href="/tags/评估/" style="font-size: 12px; color: #ccc">评估</a> <a href="/tags/调试/" style="font-size: 12px; color: #ccc">调试</a> <a href="/tags/跨域/" style="font-size: 12px; color: #ccc">跨域</a> <a href="/tags/面向对象/" style="font-size: 12px; color: #ccc">面向对象</a>
+        </div>
+      </div>
+    
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/Avatar.png"
+               alt="BryanAdamss" />
+          <p class="site-author-name" itemprop="name">BryanAdamss</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/BryanAdamss" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BryanAdamss</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

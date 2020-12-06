@@ -1,0 +1,1036 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="bfc," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/Avatar.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="BFC定位方案(positioning scheme)布局的核心 html 中的元素是一个一个的盒子 布局的核心是如何将一系列将盒子放在x-y-z坐标系的合适位置上 x、y的坐标其实是由定位方案(positioning scheme)来决定的；  定位方案是什么 定位方案是 css 布局的一个最高层抽象，确定了定位方案后，其可以进一步被一些特殊的布局模式(layout modes)修改，例如dis">
+<meta name="keywords" content="bfc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bfc">
+<meta property="og:url" content="http://yoursite.com/2020/03/05/bfc/index.html">
+<meta property="og:site_name" content="BryanAdamss的博客">
+<meta property="og:description" content="BFC定位方案(positioning scheme)布局的核心 html 中的元素是一个一个的盒子 布局的核心是如何将一系列将盒子放在x-y-z坐标系的合适位置上 x、y的坐标其实是由定位方案(positioning scheme)来决定的；  定位方案是什么 定位方案是 css 布局的一个最高层抽象，确定了定位方案后，其可以进一步被一些特殊的布局模式(layout modes)修改，例如dis">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-03-07T08:12:38.343Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="bfc">
+<meta name="twitter:description" content="BFC定位方案(positioning scheme)布局的核心 html 中的元素是一个一个的盒子 布局的核心是如何将一系列将盒子放在x-y-z坐标系的合适位置上 x、y的坐标其实是由定位方案(positioning scheme)来决定的；  定位方案是什么 定位方案是 css 布局的一个最高层抽象，确定了定位方案后，其可以进一步被一些特殊的布局模式(layout modes)修改，例如dis">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/05/bfc/"/>
+
+
+
+
+
+  <title> bfc | BryanAdamss的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BryanAdamss的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个伪前端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/05/bfc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BryanAdamss">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/Avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BryanAdamss的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                bfc
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-05T12:21:04+08:00">
+                2020-03-05 12:21:04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FrontEnd/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="BFC"><a href="#BFC" class="headerlink" title="BFC"></a>BFC</h1><h2 id="定位方案-positioning-scheme"><a href="#定位方案-positioning-scheme" class="headerlink" title="定位方案(positioning scheme)"></a>定位方案(positioning scheme)</h2><h3 id="布局的核心"><a href="#布局的核心" class="headerlink" title="布局的核心"></a>布局的核心</h3><ul>
+<li>html 中的元素是一个一个的盒子</li>
+<li>布局的核心是如何将一系列将盒子放在<code>x-y-z坐标系</code>的合适位置上</li>
+<li><code>x、y</code>的坐标其实是由<code>定位方案(positioning scheme)</code>来决定的；</li>
+</ul>
+<h3 id="定位方案是什么"><a href="#定位方案是什么" class="headerlink" title="定位方案是什么"></a>定位方案是什么</h3><ul>
+<li>定位方案是 css 布局的一个最高层抽象，确定了定位方案后，其可以进一步被一些特殊的<code>布局模式(layout modes)</code>修改，例如<code>display:table，display:inline-table</code>；</li>
+<li>哪怕最新的布局模式<code>flexbox</code>、<code>grid</code>都属于某一定位方案(<code>normal flow</code>)中</li>
+</ul>
+<h3 id="定位方案的分类"><a href="#定位方案的分类" class="headerlink" title="定位方案的分类"></a>定位方案的分类</h3><ul>
+<li>css2.1 中确定了三种定位方案<ul>
+<li><code>normal flow</code><ul>
+<li>常说的文档流或普通流定位</li>
+<li>按照次序依次定位每个盒子</li>
+<li>其包含了以下<code>格式化上下文(formatting context)</code><ul>
+<li><code>block formatting contexts</code></li>
+<li><code>inline formatting contexts</code></li>
+<li><code>relative formatting contexts</code></li>
+<li><code>flex formatting contexts</code> css3 新增</li>
+<li><code>grid formatting contexts</code> css3 新增</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>floats</code><ul>
+<li>浮动定位</li>
+<li>将盒子从普通流中单独拎出来，将其放到外层盒子的某一边</li>
+<li>其与<code>normal flow</code>互动，很多网格框架都使用了它</li>
+</ul>
+</li>
+<li><code>absolute positioning</code><ul>
+<li>绝对定位</li>
+<li>按照绝对位置来定位盒子，其位置根据盒子的包含元素所建立的绝对坐标系来计算，因此绝对定位元素有可能会覆盖其他元素</li>
+<li>主要用来处理<code>absolute</code>和<code>fixed</code>元素相对于<code>normal flow</code>的定位</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>所有的元素除非通过设置<code>float</code>和<code>position</code>属性从<code>normal flow</code>中移除，默认都属于<code>normal flow</code>。</strong></li>
+</ul>
+<h3 id="布局需要关心的点"><a href="#布局需要关心的点" class="headerlink" title="布局需要关心的点"></a>布局需要关心的点</h3><ul>
+<li>其实布局需要关心两个点<ul>
+<li>元素盒子的尺寸和对齐方式；<ul>
+<li>这一般由<code>display、width、height、margin</code>等来控制</li>
+</ul>
+</li>
+<li>特定父元素中的子元素(直接子元素)间如何相对彼此放置<ul>
+<li>这一般由<code>formatting context</code>来控制</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="格式化上下文-formatting-context"><a href="#格式化上下文-formatting-context" class="headerlink" title="格式化上下文(formatting context)"></a>格式化上下文(formatting context)</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><ul>
+<li>它是一种渲染规则，决定了其子元素将如何定位，以及和其他元素的关系和相互作用<ul>
+<li>通俗理解是它是一种规则，用来确定页面如何布局(排版)</li>
+</ul>
+</li>
+</ul>
+<h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><ul>
+<li>控制特定父元素中的子元素(直接子元素)间如何相对彼此放置</li>
+</ul>
+<h3 id="创建者"><a href="#创建者" class="headerlink" title="创建者"></a>创建者</h3><ul>
+<li>父元素<ul>
+<li>一个父元素的子元素的相对位置是通过父元素为子元素建立的<code>formatting context</code>控制的</li>
+</ul>
+</li>
+</ul>
+<h3 id="作用对象"><a href="#作用对象" class="headerlink" title="作用对象"></a>作用对象</h3><ul>
+<li><strong>创建者</strong>的<strong>直接</strong>子元素</li>
+</ul>
+<h3 id="常见-fc"><a href="#常见-fc" class="headerlink" title="常见 fc"></a>常见 fc</h3><ul>
+<li><code>block formatting contexts</code></li>
+<li><code>inline formatting contexts</code></li>
+<li><code>relative formatting contexts</code></li>
+<li><code>flex formatting contexts</code> css3 新增</li>
+<li><code>grid formatting contexts</code> css3 新增</li>
+</ul>
+<h2 id="BFC-1"><a href="#BFC-1" class="headerlink" title="BFC"></a>BFC</h2><h3 id="规则定义"><a href="#规则定义" class="headerlink" title="规则定义"></a>规则定义</h3><ul>
+<li>其是一个独立区域，内部的元素不会影响到<code>BFC</code>外部<ul>
+<li>BFC 就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素，反之亦然</li>
+</ul>
+</li>
+<li>处于同一个<code>BFC</code>的直接子盒子将依次自顶向下垂直排列</li>
+<li>两个相邻的盒子之间的距离由由<code>margin</code>属性确定</li>
+<li>相邻<code>block-level盒子</code>的<code>垂直的margin</code>可能发生重叠<code>margin collapsing(外边距重叠、边界折叠)</code><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing</a><ul>
+<li>外边距折叠只会发生在属于同一 BFC 的块级元素之间。</li>
+</ul>
+</li>
+<li>每个盒子的左外边缘触碰到<code>containing block</code>的左边缘，<code>rtl</code>时右边缘会相触</li>
+<li><code>BFC</code>将包含<strong>创建它的元素</strong>(一般为父盒子)内部的所有内容<ul>
+<li>创建 bfc 元素的高度将会计算内部所有内容，包括内部浮动的元素</li>
+</ul>
+</li>
+<li>浮动定位和清除浮动时只会应用于同一个 BFC 内的元素<ul>
+<li>浮动不会影响其它 BFC 中元素的布局，而清除浮动只能清除同一 BFC 中在它前面的元素的浮动。</li>
+</ul>
+</li>
+</ul>
+<h3 id="创建-BFC"><a href="#创建-BFC" class="headerlink" title="创建 BFC"></a>创建 BFC</h3><ul>
+<li>下列方式将会创建一个新的 BFC<ul>
+<li>根元素(<html>)<ul>
+<li>html 自带 BFC，所以 html 内部盒子默认都是垂直排列的</li>
+</ul>
+</html></li>
+<li>浮动元素（元素的  float  不是  none）</li>
+<li>绝对定位元素（元素的  position  为  absolute  或  fixed）</li>
+<li>行内块元素（元素的  display  为  inline-block）</li>
+<li>表格单元格（元素的  display 为  table-cell，HTML 表格单元格默认为该值）</li>
+<li>表格标题（元素的  display  为  table-caption，HTML 表格标题默认为该值）</li>
+<li>匿名表格单元格元素（元素的  display 为  table、table-row、 table-row-group、table-header-group、table-footer-group（分别是 HTML table、row、tbody、thead、tfoot 的默认属性）或  inline-table）</li>
+<li>overflow  值不为  visible  的块元素</li>
+<li>display  值为  flow-root  的元素</li>
+<li>contain  值为  layout、content 或  paint  的元素</li>
+<li>弹性元素（display 为  flex  或  inline-flex 元素的直接子元素）</li>
+<li>网格元素（display 为  grid  或  inline-grid  元素的直接子元素）</li>
+<li>多列容器（元素的  column-count  或  column-width  不为  auto，包括  column-count  为  1）</li>
+<li>column-span  为  all  的元素始终会创建一个新的 BFC，即使该元素没有包裹在一个多列容器中（标准变更，Chrome bug）。</li>
+</ul>
+</li>
+</ul>
+<h3 id="BFC-的应用"><a href="#BFC-的应用" class="headerlink" title="BFC 的应用"></a>BFC 的应用</h3><h4 id="让浮动内容和周围的内容等高-类似-clear-清除浮动效果"><a href="#让浮动内容和周围的内容等高-类似-clear-清除浮动效果" class="headerlink" title="让浮动内容和周围的内容等高(类似 clear 清除浮动效果)"></a>让浮动内容和周围的内容等高(类似 clear 清除浮动效果)</h4><ul>
+<li>一般会使用清除浮动，这里也可以利用 bfc 特性来实现</li>
+<li>原理：创建 BFC 的元素将包含其内部所有内容</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="css">  <span class="selector-class">.box</span> &#123;</span></span><br><span class="line"><span class="undefined">    background-color: rgb(224, 206, 247);</span></span><br><span class="line"><span class="undefined">    border: 5px solid rebeccapurple;</span></span><br><span class="line"><span class="undefined">  &#125;</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="css">  <span class="selector-class">.float</span> &#123;</span></span><br><span class="line"><span class="undefined">    float: left;</span></span><br><span class="line"><span class="undefined">    width: 200px;</span></span><br><span class="line"><span class="undefined">    height: 150px;</span></span><br><span class="line"><span class="undefined">    background-color: white;</span></span><br><span class="line"><span class="undefined">    border: 1px solid black;</span></span><br><span class="line"><span class="undefined">    padding: 10px;</span></span><br><span class="line"><span class="undefined">  &#125;</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"float"</span>&gt;</span>I am a floated box!<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>I am content inside the container.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>可给<code>.box</code>元素添加<code>overflow:auto;</code>来创建一个<code>bfc</code>，进而利用创建<code>bfc</code>的元素必须包含其内部所有元素特性</li>
+</ul>
+<h4 id="避免外边距重叠"><a href="#避免外边距重叠" class="headerlink" title="避免外边距重叠"></a>避免外边距重叠</h4><ul>
+<li>创建新的 BFC 避免两个相邻  <div>  之间的   外边距重叠   问题</div></li>
+<li>原理：外边距重叠只会发生在属于同一 BFC 的块级元素之间，通过创建新的 BFC 来避免重叠</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="css">  <span class="selector-class">.blue</span>,</span></span><br><span class="line"><span class="css">  <span class="selector-class">.red-inner</span> &#123;</span></span><br><span class="line"><span class="undefined">    height: 50px;</span></span><br><span class="line"><span class="undefined">    margin: 10px 0;</span></span><br><span class="line"><span class="undefined">  &#125;</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="css">  <span class="selector-class">.blue</span> &#123;</span></span><br><span class="line"><span class="undefined">    background: blue;</span></span><br><span class="line"><span class="undefined">  &#125;</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="css">  <span class="selector-class">.red-outer</span> &#123;</span></span><br><span class="line"><span class="undefined">    overflow: hidden;</span></span><br><span class="line"><span class="css">     <span class="comment">/* 创建bfc，避免折叠*/</span></span></span><br><span class="line"><span class="undefined">  background: red;</span></span><br><span class="line"><span class="undefined">  &#125;</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"blue"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"red-outer"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"red-inner"</span>&gt;</span>red inner<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="display-flow-root-无副作用创建-BFC"><a href="#display-flow-root-无副作用创建-BFC" class="headerlink" title="display:flow-root 无副作用创建 BFC"></a>display:flow-root 无副作用创建 BFC</h4><ul>
+<li>使用<code>display:flow-root</code>无副作用创建 BFC</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="css">  <span class="selector-class">.box</span> &#123;</span></span><br><span class="line"><span class="undefined">    background-color: rgb(224, 206, 247);</span></span><br><span class="line"><span class="undefined">    border: 5px solid rebeccapurple;</span></span><br><span class="line"><span class="css">    <span class="selector-tag">display</span>: <span class="selector-tag">flow-root</span>; <span class="comment">/* 创建bfc */</span></span></span><br><span class="line"><span class="undefined">  &#125;</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="css">  <span class="selector-class">.float</span> &#123;</span></span><br><span class="line"><span class="undefined">    float: left;</span></span><br><span class="line"><span class="undefined">    width: 200px;</span></span><br><span class="line"><span class="undefined">    height: 150px;</span></span><br><span class="line"><span class="undefined">    background-color: white;</span></span><br><span class="line"><span class="undefined">    border: 1px solid black;</span></span><br><span class="line"><span class="undefined">    padding: 10px;</span></span><br><span class="line"><span class="undefined">  &#125;</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"float"</span>&gt;</span>I am a floated box!<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>I am content inside the container.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>网页中每个元素都是一个盒子</li>
+<li>布局就是将盒子放到合适的位置上</li>
+<li>浏览器准备了几种大的定位方案(normal flow、float、positioning)用来确定盒子布局的大方法</li>
+<li>确定了大的定位方案后，就需要考虑如何将盒子放到准确的位置上</li>
+<li>放到准确的位置上需要考虑两点</li>
+<li>1.盒子自身的尺寸，这一般由盒子类型(display)、width、height 来决定</li>
+<li>2.盒子的位置(盒子同其他盒子的关系)，一般由 formatting context 决定</li>
+<li>常见 fc 有 bfc、ifc、rfc、ffc、gfc</li>
+<li>在不同场景下会创建不同的 fc 来确定其内部直接子盒子同其他直接子盒子的位置关系</li>
+<li>fc 一般由父元素创建，作用于直接子元素</li>
+<li>最常见的是 bfc</li>
+<li>bfc 是一个独立布局区域，其内外部不会相互影响</li>
+<li>bfc 中的盒子，会垂直排列，间距由 margin 决定</li>
+<li>bfc 中块级盒子的垂直边距会发生重叠</li>
+<li>外边距重叠只会出现同一个 bfc 中的块级盒子</li>
+<li>所以创建一个新的 bfc 能避免外边距重叠</li>
+<li>使用 clear 清除浮动也只会作用于同一个 bfc 中的元素</li>
+<li>创建 bfc 的元素的会包含其内部所有元素，包括内部浮动元素</li>
+<li>所以可以利用创建 bfc，来实现类似 clear 清除浮动效果(使内部有 float 盒子的元素高度包含 float 盒子)</li>
+<li>创建 bfc 有很多方式，无副作用的是使用 display:flow-root</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Visual_formatting_model" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Visual_formatting_model</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Flow_Layout/在Flow中和Flow之外" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Flow_Layout/在Flow中和Flow之外</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context</a></li>
+<li><a href="http://book.mixu.net/css/index.html" target="_blank" rel="noopener">http://book.mixu.net/css/index.html</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/23829153" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/23829153</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/23856688" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/23856688</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/bfc/" rel="tag"># bfc</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/05/webpack-test-include-exclude/" rel="next" title="webpack-test-include-exclude">
+                <i class="fa fa-chevron-left"></i> webpack-test-include-exclude
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/05/line-height/" rel="prev" title="line-height">
+                line-height <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/Avatar.png"
+               alt="BryanAdamss" />
+          <p class="site-author-name" itemprop="name">BryanAdamss</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/BryanAdamss" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#BFC"><span class="nav-number">1.</span> <span class="nav-text">BFC</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定位方案-positioning-scheme"><span class="nav-number">1.1.</span> <span class="nav-text">定位方案(positioning scheme)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#布局的核心"><span class="nav-number">1.1.1.</span> <span class="nav-text">布局的核心</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定位方案是什么"><span class="nav-number">1.1.2.</span> <span class="nav-text">定位方案是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定位方案的分类"><span class="nav-number">1.1.3.</span> <span class="nav-text">定位方案的分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#布局需要关心的点"><span class="nav-number">1.1.4.</span> <span class="nav-text">布局需要关心的点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#格式化上下文-formatting-context"><span class="nav-number">1.2.</span> <span class="nav-text">格式化上下文(formatting context)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义"><span class="nav-number">1.2.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#作用"><span class="nav-number">1.2.2.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建者"><span class="nav-number">1.2.3.</span> <span class="nav-text">创建者</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#作用对象"><span class="nav-number">1.2.4.</span> <span class="nav-text">作用对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见-fc"><span class="nav-number">1.2.5.</span> <span class="nav-text">常见 fc</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BFC-1"><span class="nav-number">1.3.</span> <span class="nav-text">BFC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#规则定义"><span class="nav-number">1.3.1.</span> <span class="nav-text">规则定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建-BFC"><span class="nav-number">1.3.2.</span> <span class="nav-text">创建 BFC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BFC-的应用"><span class="nav-number">1.3.3.</span> <span class="nav-text">BFC 的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#让浮动内容和周围的内容等高-类似-clear-清除浮动效果"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">让浮动内容和周围的内容等高(类似 clear 清除浮动效果)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#避免外边距重叠"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">避免外边距重叠</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#display-flow-root-无副作用创建-BFC"><span class="nav-number">1.3.3.3.</span> <span class="nav-text">display:flow-root 无副作用创建 BFC</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.5.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BryanAdamss</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

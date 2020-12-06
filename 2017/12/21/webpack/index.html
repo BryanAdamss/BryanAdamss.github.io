@@ -1,0 +1,1013 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="webpack,构建," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/Avatar.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="webpack官方指南学习笔记  webpack官方指南学习笔记起步 packagejson.js必须是纯正的json文件，用双引号，结尾不能有逗号 npm init -y会默认全选yes来初始化package.json npm中可以直接使用模块名来引用本地安装的包，而不需要写出完整路径 ./node_modules/.bin/webpack src/index.js dist/bundle.j">
+<meta name="keywords" content="webpack,构建">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webpack">
+<meta property="og:url" content="http://yoursite.com/2017/12/21/webpack/index.html">
+<meta property="og:site_name" content="BryanAdamss的博客">
+<meta property="og:description" content="webpack官方指南学习笔记  webpack官方指南学习笔记起步 packagejson.js必须是纯正的json文件，用双引号，结尾不能有逗号 npm init -y会默认全选yes来初始化package.json npm中可以直接使用模块名来引用本地安装的包，而不需要写出完整路径 ./node_modules/.bin/webpack src/index.js dist/bundle.j">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-22T06:46:04.375Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="webpack">
+<meta name="twitter:description" content="webpack官方指南学习笔记  webpack官方指南学习笔记起步 packagejson.js必须是纯正的json文件，用双引号，结尾不能有逗号 npm init -y会默认全选yes来初始化package.json npm中可以直接使用模块名来引用本地安装的包，而不需要写出完整路径 ./node_modules/.bin/webpack src/index.js dist/bundle.j">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/12/21/webpack/"/>
+
+
+
+
+
+  <title> webpack | BryanAdamss的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BryanAdamss的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个伪前端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/21/webpack/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BryanAdamss">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/Avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BryanAdamss的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                webpack
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-21T14:59:17+08:00">
+                2017-12-21 14:59:17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FrontEnd/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>webpack官方指南学习笔记</p>
+</blockquote>
+<h1 id="webpack官方指南学习笔记"><a href="#webpack官方指南学习笔记" class="headerlink" title="webpack官方指南学习笔记"></a>webpack官方指南学习笔记</h1><h2 id="起步"><a href="#起步" class="headerlink" title="起步"></a>起步</h2><ul>
+<li><code>packagejson.js</code>必须是纯正的json文件，用双引号，结尾不能有逗号</li>
+<li><code>npm init -y</code>会默认全选<code>yes</code>来初始化<code>package.json</code></li>
+<li>npm中可以直接使用模块名来引用本地安装的包，而不需要写出完整路径<ul>
+<li><code>./node_modules/.bin/webpack src/index.js dist/bundle.js</code>可替换为<code>webpack src/index.js dist/bundle.js</code></li>
+</ul>
+</li>
+<li><code>webpack</code>命令默认会查找<code>webpack.config.js</code>配置文件。可以通过<code>--config</code>来使用其他配置文件打包</li>
+<li>可以使用<code>npm run 命令名</code>的形式来运用<code>package.json</code>中<code>scripts</code>声明的自定义命令  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> ...</span><br><span class="line">  <span class="string">"scripts"</span>: &#123;</span><br><span class="line">    <span class="string">"build"</span>: <span class="string">"webpack"</span></span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用</span></span><br><span class="line">npm run build</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="管理资源"><a href="#管理资源" class="headerlink" title="管理资源"></a>管理资源</h2><ul>
+<li><p>加载css</p>
+<ul>
+<li>在webpack所有资源都可以看成模块，css也不例外</li>
+<li>通过<code>css-loader</code>可以在js文件中使用<code>import &#39;./css/style.css&#39;</code>的形式导入样式</li>
+<li>通过<code>style-loader</code>可以将样式文件提取出来生成一个<code>&lt;style&gt;</code>标签插入到<code>&lt;head&gt;</code>中，如果是单页面应用，则可以减少请求(当前也可以分离样式到单独的文件中)<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// nodejs获取路径</span></span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    entry: <span class="string">'./src/index.js'</span>, <span class="comment">// 入口</span></span><br><span class="line">    output: &#123; <span class="comment">// 出口</span></span><br><span class="line">        filename: <span class="string">'bundle.js'</span>,</span><br><span class="line">        path: path.resolve(__dirname, <span class="string">'dist'</span>), <span class="comment">//__dirname是nodejs中的全局变量用于获取当前文件的完整绝对路径</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="built_in">module</span>: &#123;</span><br><span class="line">        rules: [&#123; <span class="comment">// 针对收集到的.css结尾的依赖，先使用css-loader，再使用style-loader</span></span><br><span class="line">            test: <span class="regexp">/\.css$/</span>,</span><br><span class="line">            use: [<span class="string">'style-loader'</span>, <span class="string">'css-loader'</span>],<span class="comment">// 同一个依赖依次使用多个loader时要按照从右往左的顺序</span></span><br><span class="line">        &#125;]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>加载图片</p>
+<ul>
+<li>通过<code>file-loader</code>可以在js文件中使用<code>import Img from &#39;./img/icon.jpg&#39;</code>形式来使用图片，并<code>Img</code>变量包含该图像在处理后的最终url；当使用了<code>css-loader</code>后，css中的<code>url(&quot;./img/icon/jpg&quot;)</code>路径也会被替换；当使用<code>html-loader</code>后，html中的<code>&lt;img src=&quot;./my-image.png&quot; /&gt;</code>路径也会被替换<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">import</span> Cat <span class="keyword">from</span> <span class="string">'./img/cat.jpg'</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">component</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">        <span class="keyword">var</span> image = <span class="keyword">new</span> Image();</span><br><span class="line">        image.src = Cat;</span><br><span class="line">        image.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            element.appendChild(image);</span><br><span class="line">        &#125;;</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">return</span> element;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="string">``</span><span class="string">`    </span></span><br><span class="line"><span class="string">- 加载字体</span></span><br><span class="line"><span class="string">    - 加载字体的策略和加载图片的策略基本一致，可以通过`</span>file-loader<span class="string">`实现</span></span><br><span class="line"><span class="string">- 加载CSV、XML</span></span><br><span class="line"><span class="string">    - 可以通过对应的loader来处理</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">## 管理输出</span></span><br><span class="line"><span class="string">- 生成模板</span></span><br><span class="line"><span class="string">    - 使用`</span>html-webpack-plugin<span class="string">`插件，可以动态生成html文件，并自动添加上生成的包</span></span><br><span class="line"><span class="string">    `</span><span class="string">``</span>javascript</span><br><span class="line">       plugins: [</span><br><span class="line">         <span class="keyword">new</span> HtmlWebpackPlugin(&#123;</span><br><span class="line">           title: <span class="string">'我是标题'</span></span><br><span class="line">         &#125;)</span><br><span class="line">       ],</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>清理文件夹</p>
+<ul>
+<li>使用<code>clean-webpack-plugin</code>插件，来清理指定文件夹<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">plugins: [</span><br><span class="line">    <span class="keyword">new</span> CleanWebpackPlugin([<span class="string">'dist'</span>]),<span class="comment">// 指定要清理的文件夹</span></span><br><span class="line">    <span class="keyword">new</span> HtmlWebpackPlugin(&#123;</span><br><span class="line">        title: <span class="string">'Output Management'</span></span><br><span class="line">    &#125;)</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>使用<code>webpack</code>自带插件时，需要先<code>require(&#39;webpack&#39;)</code></p>
+</li>
+</ul>
+<h2 id="开发"><a href="#开发" class="headerlink" title="开发"></a>开发</h2><ul>
+<li>sourceMap<ul>
+<li>可以将编译后的代码映射回原始源代码</li>
+<li>通过配置webpack的<code>devtool</code><ul>
+<li><code>devtool: &#39;inline-source-map&#39;,</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>自动编译</p>
+<ul>
+<li><p>webpack watch模式</p>
+<ul>
+<li>使用<code>webpack --watch</code>观测文件的变动，有变动，则自动编译，可以将<code>webpack --watch</code>写入到<code>package.json</code>的<code>scripts</code>中；缺点是无法自动刷新浏览器，重新编译后需要手动刷新浏览器<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"scripts"</span>: &#123;</span><br><span class="line">      <span class="string">"test"</span>: <span class="string">"echo \"Error: no test specified\" &amp;&amp; exit 1"</span>,</span><br><span class="line">      <span class="string">"watch"</span>: <span class="string">"webpack --watch"</span>,</span><br><span class="line">      <span class="string">"build"</span>: <span class="string">"webpack"</span></span><br><span class="line">    &#125;,</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>使用<code>webpack-dev-server</code></p>
+<ul>
+<li>包含一个简单web服务器，并能实现自动刷新</li>
+<li><p>需配置<code>devServer</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">devServer: &#123;</span><br><span class="line">  contentBase: <span class="string">'./dist'</span> <span class="comment">// 将dist文件夹下的文件作为可访问文件</span></span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用<code>webpack-dev-server --open</code>启动，可将其写到<code>package.json</code>的<code>scripts</code>中</p>
+</li>
+</ul>
+</li>
+<li>使用<code>webpack-dev-middleware</code><ul>
+<li>它是一个中间件容器，可以将webpack处理后的文件发布到另外一个服务器中，<code>webpack-dev-server</code>中也使用了它，可以配合<code>express</code>来使用</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="模块热替换MHR"><a href="#模块热替换MHR" class="headerlink" title="模块热替换MHR"></a>模块热替换MHR</h2><ul>
+<li>可以在不刷新浏览器的情况下替换模块，如css、图片、js。重要的是在替换js模块时还能保留js模块运行时的相关环境</li>
+<li>使用<ul>
+<li><code>webpack-dev-server</code>中可以通过配置<code>devServer</code>的<code>hot</code>为<code>true</code>，并使用<code>webpack</code>自带的<code>HotModuleReplacementPlugin</code>插件来实现</li>
+</ul>
+</li>
+</ul>
+<h2 id="Tree-Shaking"><a href="#Tree-Shaking" class="headerlink" title="Tree Shaking"></a>Tree Shaking</h2><ul>
+<li>通过<code>uglifyjs-webpack-plugin</code>插件实现，此插件自带Tree Shaking功能，能剔除掉未用到的模块</li>
+<li>使用Tree Shaking功能必须使用ES2015的模块语法</li>
+</ul>
+<h2 id="生产环境构建"><a href="#生产环境构建" class="headerlink" title="生产环境构建"></a>生产环境构建</h2><ul>
+<li>为了区分开发环境和生产环境，可以提取出一个公用配置文件并分别配置不同的配置文件。</li>
+<li>不同配置文件的合并需要使用到<code>webpack-merge</code>工具</li>
+<li>可以使用<code>webpack</code>自带的<code>DefinePlugin</code>插件指定环境<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> webpack.DefinePlugin(&#123;</span><br><span class="line">  <span class="string">'process.env'</span>: &#123;</span><br><span class="line">    <span class="string">'NODE_ENV'</span>: <span class="built_in">JSON</span>.stringify(<span class="string">'production'</span>),<span class="comment">// 定义的NODE_ENV可以被/src下的所有文件访问到</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="代码分离"><a href="#代码分离" class="headerlink" title="代码分离"></a>代码分离</h2><ul>
+<li><p>分离代码的方法</p>
+<ul>
+<li><p>配置不同的入口起点，手动分离代码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">entry: &#123;</span><br><span class="line">  index: <span class="string">'./src/index.js'</span>,</span><br><span class="line">  another: <span class="string">'./src/another-module.js'</span></span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用<code>CommonsChunkPlugin</code>去重和分离块</p>
+<ul>
+<li><p>不同模块A、B，可能会引用同一个模块C,打包后的A、B会默认包含C，使用<code>webpack</code>自带的<code>CommonsChunkPlugin</code>插件可以提取相同代码到同一个包中</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> webpack.optimize.CommonsChunkPlugin(&#123;</span><br><span class="line">  name: <span class="string">'common'</span> <span class="comment">// 指定公共 bundle 的名称。</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可以使用<code>ExtractTextPlugin</code>将css从主程序中分离出来</p>
+</li>
+<li><code>promise-loader</code>用于分离代码和延迟加载生成的 bundle，主要用promise</li>
+</ul>
+</li>
+<li>动态导入<ul>
+<li>使用<code>import()</code>函数，并设置<code>chunkFilename</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="懒加载"><a href="#懒加载" class="headerlink" title="懒加载"></a>懒加载</h2><ul>
+<li>在需要某个模块的时候使用<code>import()</code>动态导入</li>
+<li>注意当调用 ES6 模块的 import() 方法（引入模块）时，必须指向模块的 .default 值，因为它才是 promise 被处理后返回的实际的 module 对象。</li>
+</ul>
+<h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><ul>
+<li><code>[hash]</code>可以给文件打上统一的项目指纹</li>
+<li><code>[chunkhash]</code>可以给文件打上唯一的文件指纹</li>
+</ul>
+<h2 id="创建Library"><a href="#创建Library" class="headerlink" title="创建Library"></a>创建Library</h2><ul>
+<li>可以通过指定<code>externals</code>来外部化一些依赖</li>
+</ul>
+<h2 id="Shimming"><a href="#Shimming" class="headerlink" title="Shimming"></a>Shimming</h2><ul>
+<li>可以使用<code>ProvidePlugin</code>在合适时机加载一些全局变量。</li>
+</ul>
+<h2 id="Typescript"><a href="#Typescript" class="headerlink" title="Typescript"></a>Typescript</h2><ul>
+<li>可以使用<code>ts-loader</code>来编译typescript</li>
+</ul>
+<h2 id="构建性能"><a href="#构建性能" class="headerlink" title="构建性能"></a>构建性能</h2><ul>
+<li>后期补</li>
+</ul>
+<h2 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h2><ul>
+<li>后期补</li>
+</ul>
+<h2 id="管理依赖"><a href="#管理依赖" class="headerlink" title="管理依赖"></a>管理依赖</h2><ul>
+<li>后期补</li>
+</ul>
+<h2 id="Public-Path"><a href="#Public-Path" class="headerlink" title="Public Path"></a>Public Path</h2><ul>
+<li>后期补</li>
+</ul>
+<h2 id="集成"><a href="#集成" class="headerlink" title="集成"></a>集成</h2><ul>
+<li>后期补</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/webpack/" rel="tag"># webpack</a>
+          
+            <a href="/tags/构建/" rel="tag"># 构建</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/13/CSS-Secrets/" rel="next" title="CSS_Secrets">
+                <i class="fa fa-chevron-left"></i> CSS_Secrets
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/02/webpack-multi-page/" rel="prev" title="webpack-multi-page">
+                webpack-multi-page <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/Avatar.png"
+               alt="BryanAdamss" />
+          <p class="site-author-name" itemprop="name">BryanAdamss</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/BryanAdamss" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#webpack官方指南学习笔记"><span class="nav-number">1.</span> <span class="nav-text">webpack官方指南学习笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#起步"><span class="nav-number">1.1.</span> <span class="nav-text">起步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管理资源"><span class="nav-number">1.2.</span> <span class="nav-text">管理资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开发"><span class="nav-number">1.3.</span> <span class="nav-text">开发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模块热替换MHR"><span class="nav-number">1.4.</span> <span class="nav-text">模块热替换MHR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tree-Shaking"><span class="nav-number">1.5.</span> <span class="nav-text">Tree Shaking</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生产环境构建"><span class="nav-number">1.6.</span> <span class="nav-text">生产环境构建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码分离"><span class="nav-number">1.7.</span> <span class="nav-text">代码分离</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#懒加载"><span class="nav-number">1.8.</span> <span class="nav-text">懒加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存"><span class="nav-number">1.9.</span> <span class="nav-text">缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建Library"><span class="nav-number">1.10.</span> <span class="nav-text">创建Library</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shimming"><span class="nav-number">1.11.</span> <span class="nav-text">Shimming</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Typescript"><span class="nav-number">1.12.</span> <span class="nav-text">Typescript</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建性能"><span class="nav-number">1.13.</span> <span class="nav-text">构建性能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境变量"><span class="nav-number">1.14.</span> <span class="nav-text">环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管理依赖"><span class="nav-number">1.15.</span> <span class="nav-text">管理依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Public-Path"><span class="nav-number">1.16.</span> <span class="nav-text">Public Path</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集成"><span class="nav-number">1.17.</span> <span class="nav-text">集成</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BryanAdamss</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

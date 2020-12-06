@@ -1,0 +1,1026 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="异步,Promise," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/Avatar.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="在最近项目中经常会遇到异步处理的相关问题，在查阅相关资料后，特在此做一篇笔记。  使用Deferred、Promise解决jQuery中异步相关问题问题 ABC是3个异步请求，现在要求C在AB三个异步请求都成功返回的情况下再执行。这种就比较麻烦，可以尝试设置请求完成状态变量，当AB的请求完成变量都true时再请求C；如果不只3个请求，这种方法就会很糟糕。 ABC是3个异步请求，现在要求ABC3个">
+<meta name="keywords" content="异步,Promise">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Deferred_Promise">
+<meta property="og:url" content="http://yoursite.com/2017/09/07/Deferred-Promise/index.html">
+<meta property="og:site_name" content="BryanAdamss的博客">
+<meta property="og:description" content="在最近项目中经常会遇到异步处理的相关问题，在查阅相关资料后，特在此做一篇笔记。  使用Deferred、Promise解决jQuery中异步相关问题问题 ABC是3个异步请求，现在要求C在AB三个异步请求都成功返回的情况下再执行。这种就比较麻烦，可以尝试设置请求完成状态变量，当AB的请求完成变量都true时再请求C；如果不只3个请求，这种方法就会很糟糕。 ABC是3个异步请求，现在要求ABC3个">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-08T03:35:13.697Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Deferred_Promise">
+<meta name="twitter:description" content="在最近项目中经常会遇到异步处理的相关问题，在查阅相关资料后，特在此做一篇笔记。  使用Deferred、Promise解决jQuery中异步相关问题问题 ABC是3个异步请求，现在要求C在AB三个异步请求都成功返回的情况下再执行。这种就比较麻烦，可以尝试设置请求完成状态变量，当AB的请求完成变量都true时再请求C；如果不只3个请求，这种方法就会很糟糕。 ABC是3个异步请求，现在要求ABC3个">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/07/Deferred-Promise/"/>
+
+
+
+
+
+  <title> Deferred_Promise | BryanAdamss的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BryanAdamss的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个伪前端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/07/Deferred-Promise/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BryanAdamss">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/Avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BryanAdamss的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Deferred_Promise
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-07T20:56:31+08:00">
+                2017-09-07 20:56:31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FrontEnd/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>在最近项目中经常会遇到异步处理的相关问题，在查阅相关资料后，特在此做一篇笔记。</p>
+</blockquote>
+<h1 id="使用Deferred、Promise解决jQuery中异步相关问题"><a href="#使用Deferred、Promise解决jQuery中异步相关问题" class="headerlink" title="使用Deferred、Promise解决jQuery中异步相关问题"></a>使用Deferred、Promise解决jQuery中异步相关问题</h1><h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
+<li>ABC是3个异步请求，现在要求C在AB三个异步请求都成功返回的情况下再执行。这种就比较麻烦，可以尝试设置请求完成状态变量，当AB的请求完成变量都true时再请求C；如果不只3个请求，这种方法就会很糟糕。</li>
+<li>ABC是3个异步请求，现在要求ABC3个请求按顺序依次执行，A-&gt;B-&gt;C。这种用传统方法可能就需要用回调嵌套的方法来实现</li>
+</ol>
+<hr>
+<p>以上两种情况是在异步中经常遇到的，用传统方法编写，会导致嵌套层次过多，不仅影响可读性，还不易于维护。为了解决这种问题，CommonJs组织制定了异步编程规范<a href="http://wiki.commonjs.org/wiki/Promises/A" target="_blank" rel="noopener">Promises/A</a>。这个规范有很多实现，如when.js、ES6的Promise等。<br>今天就借助jQuery的Deferred、Promise对象来做个简单了解。</p>
+<h2 id="Promise状态"><a href="#Promise状态" class="headerlink" title="Promise状态"></a>Promise状态</h2><h3 id="Promise对象存在3种状态"><a href="#Promise对象存在3种状态" class="headerlink" title="Promise对象存在3种状态"></a>Promise对象存在3种状态</h3><ul>
+<li>pending(未完成状态)</li>
+<li>resolved(肯定状态)</li>
+<li>rejected(否定状态)</li>
+</ul>
+<h3 id="这三种状态的转换关系"><a href="#这三种状态的转换关系" class="headerlink" title="这三种状态的转换关系"></a>这三种状态的转换关系</h3><ul>
+<li>pending-&gt;resolved</li>
+<li>pending-&gt;rejected</li>
+<li>pending-&gt;pending</li>
+</ul>
+<h3 id="当转换到resolved或者rejected状态时，状态是无法再发生变化，即下面的状态转换都是不可行的"><a href="#当转换到resolved或者rejected状态时，状态是无法再发生变化，即下面的状态转换都是不可行的" class="headerlink" title="当转换到resolved或者rejected状态时，状态是无法再发生变化，即下面的状态转换都是不可行的"></a>当转换到resolved或者rejected状态时，状态是无法再发生变化，即下面的状态转换都是不可行的</h3><ul>
+<li>resolved-&gt;rejected</li>
+<li>resolved-&gt;pending</li>
+<li>rejected-&gt;resolved</li>
+<li>rejected-&gt;pending</li>
+</ul>
+<h2 id="创建一个Promise对象"><a href="#创建一个Promise对象" class="headerlink" title="创建一个Promise对象"></a>创建一个Promise对象</h2><h3 id="在jQuery中Deferred可以理解为Promise的加强版，先不做区分，可以将Deferred当成就是Promise，后面会介绍二者区别。"><a href="#在jQuery中Deferred可以理解为Promise的加强版，先不做区分，可以将Deferred当成就是Promise，后面会介绍二者区别。" class="headerlink" title="在jQuery中Deferred可以理解为Promise的加强版，先不做区分，可以将Deferred当成就是Promise，后面会介绍二者区别。"></a>在jQuery中Deferred可以理解为Promise的加强版，先不做区分，可以将Deferred当成就是Promise，后面会介绍二者区别。</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> dfr=$.Deferred();<span class="comment">// 创建一个Deferred对象(就是Promise对象)</span></span><br><span class="line"><span class="built_in">console</span>.log(dfr.state());<span class="comment">// 获取当前状态,pending</span></span><br><span class="line">dfr.resolve();<span class="comment">// 将Deferred对象状态改变为resolved</span></span><br><span class="line"><span class="built_in">console</span>.log(dfr.state());<span class="comment">// resolved</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> dfr2=$.Deferred();</span><br><span class="line"><span class="built_in">console</span>.log(dfr2.state());<span class="comment">// 获取当前状态,pending</span></span><br><span class="line">dfr.reject();<span class="comment">// 将Deferred对象状态改变为rejected</span></span><br><span class="line"><span class="built_in">console</span>.log(dfr2.state());<span class="comment">// rejected</span></span><br></pre></td></tr></table></figure>
+<h3 id="状态的作用"><a href="#状态的作用" class="headerlink" title="状态的作用"></a>状态的作用</h3><ul>
+<li>通过上面的例子，我们可以知道，可以人为的改变Deferred对象的状态。状态不一样有什么用呢？我们可以根据不同的状态进行不同的操作(添加不同的回调函数)。</li>
+</ul>
+<h2 id="给Promise对象添加回调"><a href="#给Promise对象添加回调" class="headerlink" title="给Promise对象添加回调"></a>给Promise对象添加回调</h2><h3 id="添加回调，并触发"><a href="#添加回调，并触发" class="headerlink" title="添加回调，并触发"></a>添加回调，并触发</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> dfr=$.Deferred();<span class="comment">// 创建Deferred对象</span></span><br><span class="line">dfr</span><br><span class="line">.done(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;<span class="comment">// Deferred对象状态变为resolved时的回调</span></span><br><span class="line">    alert(<span class="string">'成功'</span>);</span><br><span class="line">&#125;)</span><br><span class="line">.fail(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;<span class="comment">// Deferred对象状态变为reject时的回调</span></span><br><span class="line">    alert(<span class="string">'失败'</span>);</span><br><span class="line">&#125;)</span><br><span class="line">.progress(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;<span class="comment">// Deferred对象状态为pending时的回调</span></span><br><span class="line">    alert(<span class="string">'进行中...'</span>);</span><br><span class="line">&#125;);</span><br><span class="line">dfr.notify(); <span class="comment">// 触发Deferred对象pending状态的回调</span></span><br><span class="line">dfr.resolve();<span class="comment">// 触发Deferred对象resolved状态的回调</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>通过done()、fail()、progress()给Deferred对象的不同状态分别添加了回调，并通过notify()、resolve触发了响应的回调</li>
+</ul>
+<h3 id="传递数据"><a href="#传递数据" class="headerlink" title="传递数据"></a>传递数据</h3><ul>
+<li>通过done()、fail()、progress()触发Deferred对象的回调时，可传递一些数据(任何类型)给回调函数<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> dfr2=$.Deferred();<span class="comment">// 创建Deferred对象</span></span><br><span class="line">dfr2</span><br><span class="line">.done(<span class="function"><span class="keyword">function</span>(<span class="params">msg</span>)</span>&#123;<span class="comment">// Deferred对象状态变为resolved时的回调</span></span><br><span class="line">    alert(msg+<span class="string">'成功'</span>);</span><br><span class="line">&#125;)</span><br><span class="line">.fail(<span class="function"><span class="keyword">function</span>(<span class="params">msg</span>)</span>&#123;<span class="comment">// Deferred对象状态变为reject时的回调</span></span><br><span class="line">    alert(msg+<span class="string">'失败'</span>);</span><br><span class="line">&#125;)</span><br><span class="line">.progress(<span class="function"><span class="keyword">function</span>(<span class="params">msg</span>)</span>&#123;<span class="comment">// Deferred对象状态为pending时的回调</span></span><br><span class="line">    alert(msg+<span class="string">'进行中...'</span>);</span><br><span class="line">&#125;);</span><br><span class="line">dfr2.notify(<span class="string">'dfr2'</span>); <span class="comment">// dfr2进行中...</span></span><br><span class="line">dfr2.reject(<span class="string">'dfr2'</span>);<span class="comment">// dfr2失败</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="链式调用"><a href="#链式调用" class="headerlink" title="链式调用"></a>链式调用</h3><ul>
+<li>done()、fail()、progress()会返回调用者对象Deferred对象，因此可以进行无限的链式调用；可以在done()后再添加done()、fail()、progress()，他们会在对应状态被激活时，依次按照添加顺序调用。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> dfr=$.Deferred();</span><br><span class="line">dfr</span><br><span class="line">.done(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="comment">// 回调1</span></span><br><span class="line">    alert(<span class="string">'成功1'</span>);</span><br><span class="line">&#125;)</span><br><span class="line">.fail(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    alert(<span class="string">'失败'</span>);</span><br><span class="line">&#125;)</span><br><span class="line">.progress(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    alert(<span class="string">'进行中...'</span>);</span><br><span class="line">&#125;)</span><br><span class="line">.done(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;<span class="comment">// 回调2</span></span><br><span class="line">    alert(<span class="string">'成功2'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">dfr.resolve();<span class="comment">// 成功1-&gt;成功2</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="deferred-always"><a href="#deferred-always" class="headerlink" title="deferred.always()"></a>deferred.always()</h3><ul>
+<li>通过deferred.always()添加的回调，无论状态是resolved还是rejected都会在最后被调用<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> dfr=$.Deferred();</span><br><span class="line">dfr</span><br><span class="line">.done(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;<span class="comment">// </span></span><br><span class="line">    alert(<span class="string">'成功1'</span>);</span><br><span class="line">&#125;)</span><br><span class="line">.fail(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    alert(<span class="string">'失败'</span>);</span><br><span class="line">&#125;)</span><br><span class="line">.progress(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    alert(<span class="string">'进行中...'</span>);</span><br><span class="line">&#125;)</span><br><span class="line">.always(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    alert(<span class="string">'我总会被执行'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">dfr.resolve();<span class="comment">// 成功1-&gt;我总会被执行</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Deferred对象使用方式"><a href="#Deferred对象使用方式" class="headerlink" title="Deferred对象使用方式"></a>Deferred对象使用方式</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> dfr = $.Deferred();<span class="comment">// 创建一个Deferred对象</span></span><br><span class="line"><span class="keyword">var</span> task = <span class="function"><span class="keyword">function</span>(<span class="params">dtd</span>) </span>&#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'timeOut'</span>);</span><br><span class="line">        dtd.resolve(); <span class="comment">// 异步任务结束，手动resolve</span></span><br><span class="line">    &#125;, <span class="number">3000</span>);</span><br><span class="line">    <span class="keyword">return</span> dtd;<span class="comment">// 返回Deferred对象，供$.when()使用</span></span><br><span class="line">&#125;;</span><br><span class="line">$.when(task(dfr)).done(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    alert(<span class="string">'success'</span>);<span class="comment">// 3s后弹出</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>上面例子由于dfr是全局对象，并且包含改变状态的方法resolve、reject，所以可以在外部提前终止任务</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> dfr = $.Deferred();<span class="comment">// 创建一个Deferred对象</span></span><br><span class="line"><span class="keyword">var</span> task = <span class="function"><span class="keyword">function</span>(<span class="params">dtd</span>) </span>&#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'timeOut'</span>);</span><br><span class="line">        dtd.resolve(); <span class="comment">// 异步任务结束，手动resolve</span></span><br><span class="line">    &#125;, <span class="number">3000</span>);</span><br><span class="line">    <span class="keyword">return</span> dtd;<span class="comment">// 返回Deferred对象，供$.when()使用</span></span><br><span class="line">&#125;;</span><br><span class="line">$.when(task(dfr)).done(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    alert(<span class="string">'success'</span>);<span class="comment">// 立即弹出</span></span><br><span class="line">&#125;);</span><br><span class="line">dfr.resolve();<span class="comment">// 外部resolve后会立即执行done</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>防止外部终止，可以将全局的dfr放到函数内部</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> task = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> dfr = $.Deferred();<span class="comment">// 创建一个Deferred对象</span></span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'timeOut'</span>);</span><br><span class="line">        dfr.resolve(); <span class="comment">// 异步任务结束，手动resolve</span></span><br><span class="line">    &#125;, <span class="number">3000</span>);</span><br><span class="line">    <span class="keyword">return</span> dfr;<span class="comment">// 返回Deferred对象，供$.when()使用</span></span><br><span class="line">&#125;;</span><br><span class="line">$.when(task()).done(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    alert(<span class="string">'success'</span>);<span class="comment">// 立即弹出</span></span><br><span class="line">&#125;);</span><br><span class="line">dfr.resolve();<span class="comment">// 无法调用</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="jQuery中Deferred和Promise的区别"><a href="#jQuery中Deferred和Promise的区别" class="headerlink" title="jQuery中Deferred和Promise的区别"></a>jQuery中Deferred和Promise的区别</h2><ul>
+<li>Deferred对象可以理解为Promise对象的加强版。</li>
+<li>Deferred对象包含改变状态的方法，如dfr.resolve()、dfr.reject()、dfr.notify()</li>
+<li>Promise对象则不包含以上方法；</li>
+<li><strong>要想改变状态必须在Deferred对象上调用相关方法，Promise对象没有相关方法。</strong></li>
+<li>通过deferred.promise()可以将Deferred对象转换为Promise对象</li>
+</ul>
+<h2 id="在ajax中使用Promise"><a href="#在ajax中使用Promise" class="headerlink" title="在ajax中使用Promise"></a>在ajax中使用Promise</h2><h3 id="ajax和Promise的关系"><a href="#ajax和Promise的关系" class="headerlink" title="ajax和Promise的关系"></a>ajax和Promise的关系</h3><ul>
+<li>在jQuery1.5之前$.ajax()返回的是一个jqXHR对象，1.5之后返回的是一个类Promise对象，它在原先的jqXHR对象基础上又添加一些Promise方法，因此我们能在$.ajax()之后链式调用Promise相关方法；</li>
+<li>注意返回的是一个类Promise对象，因此它不包含改变状态的相关方法；</li>
+<li><strong>改变相关状态由ajax内部完成，无需手动调用相关方法(也无法调用)；</strong><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 老的ajax写法  </span></span><br><span class="line">$.ajax(&#123;  </span><br><span class="line">　　url: <span class="string">"a.html"</span>,  </span><br><span class="line">　　success: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;  </span><br><span class="line">　　　　alert(<span class="string">"成功"</span>);  </span><br><span class="line">　　&#125;,  </span><br><span class="line">　　error:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;  </span><br><span class="line">　　　　alert(<span class="string">"错误"</span>);  </span><br><span class="line">　　&#125;  </span><br><span class="line">&#125;);  </span><br><span class="line">  </span><br><span class="line"><span class="comment">// 使用promise后的写法  </span></span><br><span class="line">$.ajax(<span class="string">"test.html"</span>)  </span><br><span class="line"> .done(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;)  </span><br><span class="line"> .fail(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;)  </span><br><span class="line"> .done(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;)  </span><br><span class="line"> .fail(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="解决问题1"><a href="#解决问题1" class="headerlink" title="解决问题1"></a>解决问题1</h3><ul>
+<li><p>问题1要求C在AB都执行完后再执行。即A&amp;&amp;B-&gt;C；这时候就需要使用jQuery提供的$.when()函数。$.when()返回一个Promise对象。所以可以调用done、fail、progress等函数</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$.when($.ajax(url1),$.ajax(url2))</span><br><span class="line">.done(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'url1、url2都请求成功'</span>);</span><br><span class="line">    $.ajax(url3)</span><br><span class="line">&#125;)</span><br><span class="line">.fail(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'url1、url2有一个或者两个没请求成功'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>$.when()实现了多个ajax请求完成后再执行某些操作；即实现了A&amp;&amp;B-&gt;C的效果</p>
+</li>
+</ul>
+<h3 id="解决问题2"><a href="#解决问题2" class="headerlink" title="解决问题2"></a>解决问题2</h3><ul>
+<li><p>问题2的要求是ABC3个异步请求顺序执行。传统写法可能是</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">    url:<span class="string">'a.json'</span>,</span><br><span class="line">    success:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        $.ajax(&#123;</span><br><span class="line">            url:<span class="string">'b.json'</span>,</span><br><span class="line">            success:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">                $.ajax(&#123;</span><br><span class="line">                url:<span class="string">'c.json'</span>,</span><br><span class="line">                success:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">'gg'</span>);   </span><br><span class="line">            &#125;    </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可读性很差，还不方便维护。为解决问题2需要使用到jQuery提供的Deferred.then()方法；</p>
+</li>
+<li><p>then方法可以传入3个回调，分别是resolved、rejected、pending状态的回调；</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">success</span>(<span class="params">data</span>)  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    alert(<span class="string">"success data = "</span> + data);  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fail</span>(<span class="params">data</span>)  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    alert(<span class="string">"fail data = "</span> + data);  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">progress</span>(<span class="params">data</span>)  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    alert(<span class="string">"progress data = "</span> + data);  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">var</span> deferred = $.Deferred();  </span><br><span class="line">  </span><br><span class="line"><span class="comment">// 一起注册回调  </span></span><br><span class="line">deferred.then(success, fail, progress);  </span><br><span class="line">  </span><br><span class="line"><span class="comment">// 分别注册回调  </span></span><br><span class="line">deferred.done(success);  </span><br><span class="line">deferred.fail(fail);  </span><br><span class="line">deferred.progress(progress);  </span><br><span class="line">  </span><br><span class="line">deferred.notify(<span class="string">"10%"</span>);  </span><br><span class="line">deferred.resolve(<span class="string">"ok"</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>其实在执行then方法后将返回一个新的Promise对象</strong></p>
+<ul>
+<li><strong>可以在后面无限级联调用相关Promise方法.then().then().done().fail()….</strong></li>
+<li>这就意味着在then后就无法在返回对象(返回的是Promise对象)上手动改变状态了。</li>
+<li><strong>必须在原先的Deferred对象上调用方法改变状态</strong><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">success</span>(<span class="params">data</span>)  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    alert(<span class="string">"success data = "</span> + data);  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fail</span>(<span class="params">data</span>)  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    alert(<span class="string">"fail data = "</span> + data);  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">progress</span>(<span class="params">data</span>)  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    alert(<span class="string">"progress data = "</span> + data);  </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">var</span> dfr=$.Deferred();</span><br><span class="line"><span class="keyword">var</span> pro=dfr.then(success,fail,progress);</span><br><span class="line"><span class="built_in">console</span>.log(dfr===pro);<span class="comment">// false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 没有改变状态的方法</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'resolve'</span> <span class="keyword">in</span> pro); <span class="comment">// false</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'reject'</span> <span class="keyword">in</span> pro); <span class="comment">// false</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'notify'</span> <span class="keyword">in</span> pro); <span class="comment">// false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 只能在原先的Deferred对象调用相关方法</span></span><br><span class="line">dfr.resolve(<span class="string">'resolved'</span>); <span class="comment">// success data = resolved</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>其实then()中传入的不是回调函数，官方说法又叫做过滤函数；前面说过Deferred对象在调用改变状态方法时，可以传递数据，其实通过then注册的回调可以对数据进行过滤，然后通过return将数据传递给下一个回调函数(done、fail、progress)，如果下一个回调函数是通过then注册的，则可以继续对数据进行过滤，并传递给下一个对应状态的回调函数；</p>
+</li>
+<li>我们知道deferred.resolve()、deferred.reject()、deferred.notify()可以指定参数值，这个参数会传递给相应状态下的回调函数。</li>
+<li><strong>如果我们使用的是done()、fail()、progress()注册的回调函数，那么某个状态下的所有回调函数得到的都是相同参数</strong>。</li>
+<li><p>不是通过then注册的回调函数，无法对数据过滤并通过return传递给下一个回调，他们得到的都是相同值，可看下面例子</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> dfr = $.Deferred();</span><br><span class="line">dfr</span><br><span class="line">.done(<span class="function"><span class="keyword">function</span>(<span class="params">type</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(type);<span class="comment">// resolved</span></span><br><span class="line">    <span class="keyword">return</span> type + <span class="string">'first'</span>;</span><br><span class="line">&#125;)</span><br><span class="line">.done(<span class="function"><span class="keyword">function</span>(<span class="params">type</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(type);<span class="comment">// resolved</span></span><br><span class="line">    <span class="keyword">return</span> type + <span class="string">'last'</span>;</span><br><span class="line">&#125;)</span><br><span class="line">.done(<span class="function"><span class="keyword">function</span>(<span class="params">type</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(type);<span class="comment">// resolved</span></span><br><span class="line">&#125;);</span><br><span class="line">dfr.resolve(<span class="string">'resolved'</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>但是如果我们<strong>使用了then()注册回调函数，那么第一回调函数的返回值将作为第二个回调函数的参数，同样的第二个函数的返回值是第三个回调函数的参数</strong>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> deferred = $.Deferred();  </span><br><span class="line">  </span><br><span class="line"><span class="comment">// then()返回的是一个新Promise对象  </span></span><br><span class="line"><span class="comment">//then注册的回调函数的返回值将作为这个新Promise的参数  </span></span><br><span class="line"><span class="keyword">var</span> then_ret = deferred.then(<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;  </span><br><span class="line">    alert(<span class="string">"data="</span>+data);<span class="comment">//5  对数据进行过滤</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">2</span> * data;  <span class="comment">// 并通过return 传递给下一个done</span></span><br><span class="line">&#125;);</span><br><span class="line">  </span><br><span class="line">alert(then_ret == deferred);<span class="comment">//false  </span></span><br><span class="line">  </span><br><span class="line">then_ret.done(<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;  </span><br><span class="line">    alert(<span class="string">"data="</span>+data);<span class="comment">//10  </span></span><br><span class="line">&#125;);  </span><br><span class="line">  </span><br><span class="line">deferred.resolve( <span class="number">5</span> );</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果仔细观察，会发现在上面例子中，我们返回的是普通值，如果我们返回的是Deferred或者Promise对象，它会将返回的Deferred、Promise对象的状态和返回值传递给下一个回调函数，做为其触发依据和参数。可以用这种方法解决问题2</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> promise1 = $.ajax(url1);  </span><br><span class="line"><span class="keyword">var</span> promise2 = promise1.then(<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> $.ajax(url2, &#123; <span class="string">"data"</span>: data &#125;);<span class="comment">// 返回一个promise，它的状态将决定触发promise2.then中的哪个回调，它的返回值将传递给对应的回调函数</span></span><br><span class="line">&#125;);  </span><br><span class="line"><span class="keyword">var</span> promise3 = promise2.then(<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> $.ajax(url3);<span class="comment">// 返回一个promise，它的状态将决定触发promise3中的哪个回调，它的返回值将传递给对应的回调函数</span></span><br><span class="line">&#125;);  </span><br><span class="line">promise3.done(<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;  </span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>这样其实我们可以得到一个范式，处理有依赖关系的异步请求时，可以.then().then().done().fail()，通过then中的回调(过滤)函数，对数据进行加工，最后交给不是通过then注册的done或者fail来进行最后处理；done其实就预示着对传过来的数据不进行加工了；</p>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>jQuery中的Deferred、Promise对象主要用来解决异步任务中嵌套问题</li>
+<li>Deferred可以理解为Promise对象的加强版<ul>
+<li>Deferred对象拥有方法resolve、reject、notify来手动改变状态</li>
+<li>Promise对象无法手动改变状态</li>
+<li>deferred.promise()可以将一个Deferred对象转换成Promise对象</li>
+<li>jQuery中异步任务返回的都是Promise对象或者类Promise对象(ajax返回的)，它们都无法手动改变状态，它们状态的改变是jQuery在内部自动完成的</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li>$.Deferred()返回一个Deferred对象</li>
+<li>deferred.done、deferred.fail、deferred.progress用来定义Deferred对象状态对应的回调函数</li>
+<li>deferred.always()来用定义无论成功还是失败都会调用回调函数</li>
+<li>deferred.resolve()、deferred.reject()手动改变Deferred对象的状态<ul>
+<li>改变状态时，可以传递数据给回调函数<ul>
+<li>deferred.resolve(‘msg’)</li>
+</ul>
+</li>
+<li>防止改变状态方法在异步任务外调用<ul>
+<li>可将Deferred对象定义为异步任务内的局部变量</li>
+<li>可以使用deferred.promise()转换成Promise对象</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>deferred.notify()用来触发deferred.progress定义的回调函数，实际可以用来完成进度条效果</li>
+<li>deferred.then()会返回一个新的promise对象<ul>
+<li>then中定义的回调函数可以理解为过滤函数，可对resolve、reject中传递的数据进行加工、过滤，然后通过return传递给下一个回调函数<ul>
+<li>如果return的是Deferred或者Promise对象，它会将返回的Deferred、Promise对象的状态和返回值传递给下一个回调函数，做为其触发依据和参数。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li><p>A&amp;&amp;B-&gt;C类型异步任务可以使用$.when()来解决；见上面例子</p>
+<ul>
+<li>范式<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$.when($.ajax(url1),$.ajax(url2))</span><br><span class="line">.done(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    $.ajax(url3);</span><br><span class="line">&#125;).fail(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'出错'</span>);</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>A-&gt;B-&gt;C类型异步任务可以使用Promise对象的then()来解决；见上面例子</p>
+<ul>
+<li>范式<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(url1)</span><br><span class="line">.then(<span class="function"><span class="keyword">function</span>(<span class="params">url1Data</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> $.ajax(url2);</span><br><span class="line">&#125;)</span><br><span class="line">.then(<span class="function"><span class="keyword">function</span>(<span class="params">url2Data</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> $.ajax(url3);</span><br><span class="line">&#125;)</span><br><span class="line">.done(<span class="function"><span class="keyword">function</span>(<span class="params">url3Data</span>)</span>&#123;</span><br><span class="line">    <span class="comment">// 最终成功处理</span></span><br><span class="line">&#125;)</span><br><span class="line">.fail(<span class="function"><span class="keyword">function</span>(<span class="params">url3Data</span>)</span>&#123;</span><br><span class="line">    <span class="comment">// 最终失败处理</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/异步/" rel="tag"># 异步</a>
+          
+            <a href="/tags/Promise/" rel="tag"># Promise</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/07/Bootstrap-table-API/" rel="next" title="Bootstrap-table_API">
+                <i class="fa fa-chevron-left"></i> Bootstrap-table_API
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/26/ES6-learning/" rel="prev" title="ES6-learning">
+                ES6-learning <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/Avatar.png"
+               alt="BryanAdamss" />
+          <p class="site-author-name" itemprop="name">BryanAdamss</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/BryanAdamss" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用Deferred、Promise解决jQuery中异步相关问题"><span class="nav-number">1.</span> <span class="nav-text">使用Deferred、Promise解决jQuery中异步相关问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题"><span class="nav-number">1.1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Promise状态"><span class="nav-number">1.2.</span> <span class="nav-text">Promise状态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Promise对象存在3种状态"><span class="nav-number">1.2.1.</span> <span class="nav-text">Promise对象存在3种状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#这三种状态的转换关系"><span class="nav-number">1.2.2.</span> <span class="nav-text">这三种状态的转换关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#当转换到resolved或者rejected状态时，状态是无法再发生变化，即下面的状态转换都是不可行的"><span class="nav-number">1.2.3.</span> <span class="nav-text">当转换到resolved或者rejected状态时，状态是无法再发生变化，即下面的状态转换都是不可行的</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个Promise对象"><span class="nav-number">1.3.</span> <span class="nav-text">创建一个Promise对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在jQuery中Deferred可以理解为Promise的加强版，先不做区分，可以将Deferred当成就是Promise，后面会介绍二者区别。"><span class="nav-number">1.3.1.</span> <span class="nav-text">在jQuery中Deferred可以理解为Promise的加强版，先不做区分，可以将Deferred当成就是Promise，后面会介绍二者区别。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#状态的作用"><span class="nav-number">1.3.2.</span> <span class="nav-text">状态的作用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#给Promise对象添加回调"><span class="nav-number">1.4.</span> <span class="nav-text">给Promise对象添加回调</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加回调，并触发"><span class="nav-number">1.4.1.</span> <span class="nav-text">添加回调，并触发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#传递数据"><span class="nav-number">1.4.2.</span> <span class="nav-text">传递数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#链式调用"><span class="nav-number">1.4.3.</span> <span class="nav-text">链式调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#deferred-always"><span class="nav-number">1.4.4.</span> <span class="nav-text">deferred.always()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deferred对象使用方式"><span class="nav-number">1.4.5.</span> <span class="nav-text">Deferred对象使用方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jQuery中Deferred和Promise的区别"><span class="nav-number">1.5.</span> <span class="nav-text">jQuery中Deferred和Promise的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在ajax中使用Promise"><span class="nav-number">1.6.</span> <span class="nav-text">在ajax中使用Promise</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ajax和Promise的关系"><span class="nav-number">1.6.1.</span> <span class="nav-text">ajax和Promise的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决问题1"><span class="nav-number">1.6.2.</span> <span class="nav-text">解决问题1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决问题2"><span class="nav-number">1.6.3.</span> <span class="nav-text">解决问题2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.7.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BryanAdamss</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

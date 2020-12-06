@@ -1,0 +1,989 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="vue-cli,webpack," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/Avatar.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="vue-cli4 mode、NODE_ENV、webpack mode 最近使用vue-cli4初始化了一个项目，对其中mode、NODE_ENV、webpack mode的关系有点迷 所以花了点时间整理了下  vue-cli4 环境变量声明环境变量 vue-cli可通过.env前缀的环境文件来声明环境变量  123# .envFoo=BarVUE_APP_TITLE=标题  被载入的变量将会对v">
+<meta name="keywords" content="vue-cli,webpack">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue-cli-mode">
+<meta property="og:url" content="http://yoursite.com/2020/06/22/vue-cli-mode/index.html">
+<meta property="og:site_name" content="BryanAdamss的博客">
+<meta property="og:description" content="vue-cli4 mode、NODE_ENV、webpack mode 最近使用vue-cli4初始化了一个项目，对其中mode、NODE_ENV、webpack mode的关系有点迷 所以花了点时间整理了下  vue-cli4 环境变量声明环境变量 vue-cli可通过.env前缀的环境文件来声明环境变量  123# .envFoo=BarVUE_APP_TITLE=标题  被载入的变量将会对v">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-10-04T08:12:51.759Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue-cli-mode">
+<meta name="twitter:description" content="vue-cli4 mode、NODE_ENV、webpack mode 最近使用vue-cli4初始化了一个项目，对其中mode、NODE_ENV、webpack mode的关系有点迷 所以花了点时间整理了下  vue-cli4 环境变量声明环境变量 vue-cli可通过.env前缀的环境文件来声明环境变量  123# .envFoo=BarVUE_APP_TITLE=标题  被载入的变量将会对v">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/06/22/vue-cli-mode/"/>
+
+
+
+
+
+  <title> vue-cli-mode | BryanAdamss的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BryanAdamss的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个伪前端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/22/vue-cli-mode/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BryanAdamss">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/Avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BryanAdamss的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                vue-cli-mode
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-22T16:12:13+08:00">
+                2020-06-22 16:12:13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FrontEnd/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="vue-cli4-mode、NODE-ENV、webpack-mode"><a href="#vue-cli4-mode、NODE-ENV、webpack-mode" class="headerlink" title="vue-cli4 mode、NODE_ENV、webpack mode"></a>vue-cli4 mode、NODE_ENV、webpack mode</h1><ul>
+<li>最近使用<code>vue-cli4</code>初始化了一个项目，对其中<code>mode、NODE_ENV、webpack mode</code>的关系有点迷</li>
+<li>所以花了点时间整理了下</li>
+</ul>
+<h2 id="vue-cli4-环境变量"><a href="#vue-cli4-环境变量" class="headerlink" title="vue-cli4 环境变量"></a>vue-cli4 环境变量</h2><h3 id="声明环境变量"><a href="#声明环境变量" class="headerlink" title="声明环境变量"></a>声明环境变量</h3><ul>
+<li><code>vue-cli</code>可通过<code>.env</code>前缀的环境文件来声明环境变量</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .env</span></span><br><span class="line">Foo=Bar</span><br><span class="line">VUE_APP_TITLE=标题</span><br></pre></td></tr></table></figure>
+<ul>
+<li>被载入的变量将会对<code>vue-cli-service</code>的所有命令、插件和依赖可用</li>
+</ul>
+<h3 id="客户端可以使用的环境变量"><a href="#客户端可以使用的环境变量" class="headerlink" title="客户端可以使用的环境变量"></a>客户端可以使用的环境变量</h3><ul>
+<li>在客户端(<code>src/目录下</code>)可以使用<code>process.env.XXX</code>来引用环境变量，主要有下面的变量可以引用<ul>
+<li>环境文件中以<code>VUE_APP_</code>开头的环境变量</li>
+<li><code>NODE_ENV</code> ， 会是  <code>development</code>、<code>production</code>  或  <code>test</code>  中的一个</li>
+<li><code>BASE_URL</code>，会和  <code>vue.config.js</code>  中的  <code>publicPath</code>  选项相符</li>
+</ul>
+</li>
+</ul>
+<h2 id="vue-cli-mode"><a href="#vue-cli-mode" class="headerlink" title="vue-cli mode"></a>vue-cli mode</h2><h3 id="默认-mode"><a href="#默认-mode" class="headerlink" title="默认 mode"></a>默认 mode</h3><ul>
+<li><code>mode</code>可以理解为<code>vue-cli</code>运行的一个环境，一个标志量；内部的插件依赖此变量来决定是否启用</li>
+<li><code>vue-cli mode</code>默认只会有<code>development</code>、<code>production</code>、<code>test</code>三种取值</li>
+<li><code>development</code><ul>
+<li>会在调用<code>vue-cli-service serve</code>命令时，<code>mode</code>被设置为<code>development</code></li>
+</ul>
+</li>
+<li><code>production</code><ul>
+<li>会在调用<code>vue-cli-service build</code>  和<code>vue-cli-service test:e2e</code>命令时，<code>mode</code>被设置为<code>production</code></li>
+</ul>
+</li>
+<li><code>test</code><ul>
+<li>会在调用<code>vue-cli-service test:unit</code>命令时，<code>mode</code>被设置为<code>test</code></li>
+</ul>
+</li>
+<li>每个模式都会将<code>NODE_ENV</code>  的值设置为模式的名称——比如在 <code>development</code> 模式下  <code>NODE_ENV</code>  的值会被设置为<code>development</code></li>
+</ul>
+<h3 id="覆盖、自定义-mode"><a href="#覆盖、自定义-mode" class="headerlink" title="覆盖、自定义 mode"></a>覆盖、自定义 mode</h3><ul>
+<li>可以使用<code>vue-cli-service xxx --mode custom</code>来覆盖原有<code>mode</code>(自定义 mode)</li>
+</ul>
+<h2 id="vue-cli-mode-和环境文件的关系"><a href="#vue-cli-mode-和环境文件的关系" class="headerlink" title="vue-cli mode 和环境文件的关系"></a>vue-cli mode 和环境文件的关系</h2><ul>
+<li>当指定了<code>mode</code>时(无论是命令默认值还是<code>--mode</code> 自定义的)</li>
+<li>会去项目根目录下找到<code>.env.[mode]</code>文件，读取并设置其中的环境变量</li>
+<li>如果<code>mode</code>的值是除<code>development、production、test</code>以外的值，则需要在环境文件中手动指定<code>NODE_ENV</code>值，这样<code>vue-cli</code>内部的插件才知道需要工作在哪种环境下</li>
+<li>例子</li>
+<li><code>vue-cli-service build --mode staging</code>，使用<code>--mode</code>覆盖了默认的<code>production</code>模式，则需要在<code>.env.staging</code>环境文件中手动指定<code>NODE_ENV</code></li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .env.staging</span></span><br><span class="line">NODE_ENV=production</span><br><span class="line">VUE_APP_TITLE=My App (staging)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>vue-cli mode</code>和<code>NODE_ENV</code>及<code>webpack mode</code>三者间是如何互动，下面会解释</li>
+</ul>
+<h2 id="vue-cli-mode、NODE-ENV、webpack-mode-三者的关系"><a href="#vue-cli-mode、NODE-ENV、webpack-mode-三者的关系" class="headerlink" title="vue-cli mode、NODE_ENV、webpack mode 三者的关系"></a>vue-cli mode、NODE_ENV、webpack mode 三者的关系</h2><h3 id="webpack-mode"><a href="#webpack-mode" class="headerlink" title="webpack mode"></a>webpack mode</h3><ul>
+<li>webpack 从 4 开始，支持<code>mode</code>选项，根据<code>mode</code>自动开启一些插件和优化</li>
+<li><code>mode</code>的可选值有<ul>
+<li><code>development</code><ul>
+<li>告知<code>webpack</code>启用  <code>NamedChunksPlugin</code>  和  <code>NamedModulesPlugin</code></li>
+</ul>
+</li>
+<li><code>production</code><ul>
+<li>告知<code>webpack</code>启用  <code>FlagDependencyUsagePlugin</code>、 <code>FlagIncludedChunksPlugin</code> 、<code>ModuleConcatenationPlugin</code>、<code>NoEmitOnErrorsPlugin</code>、<code>OccurrenceOrderPlugin</code>、<code>SideEffectsFlagPlugin</code>、<code>UglifyJsPlugin</code></li>
+<li>启用压缩、优化</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>vue-cli</code>内部会使用到<code>webpack</code>，所以也需要设置<code>webpack mode</code></li>
+</ul>
+<h3 id="三者关系"><a href="#三者关系" class="headerlink" title="三者关系"></a>三者关系</h3><ul>
+<li>首先在<code>vue-cli</code>中<code>NODE_ENV</code>默认被设置为<code>development</code>，除非<code>vue-cli mode</code>为<code>production</code>或者<code>test</code></li>
+<li>其次，环境文件中的<code>NODE_ENV</code>具有更高的优先级，即如果环境文件中也有设置<code>NODE_ENV</code>，则会覆盖上一步的<code>NODE_ENV</code></li>
+<li>最后<code>webpack mode</code>是根据上一步的<code>NODE_ENV</code>值来确定的，只要值不是<code>production</code>，则<code>webpack</code>都会运行在<code>development</code>模式</li>
+</ul>
+<h3 id="例子-1"><a href="#例子-1" class="headerlink" title="例子 1"></a>例子 1</h3><ul>
+<li><code>vue-cli-service serve</code><ul>
+<li><code>mode</code>初始为<code>development</code>，<code>NODE_ENV</code>初始为<code>development</code></li>
+</ul>
+</li>
+<li><code>.env.development</code></li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NODE_ENV=production <span class="comment"># 被覆盖为production</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>NODE_ENV</code>最终为<code>production</code>，所以<code>webpack mode</code>最终为<code>production</code>，会启用压缩、优化等行为</li>
+</ul>
+<h3 id="例子-2"><a href="#例子-2" class="headerlink" title="例子 2"></a>例子 2</h3><ul>
+<li><code>vue-cli-service build --mode staging</code><ul>
+<li>通过<code>cli</code>参数覆盖默认<code>mode</code>，此时<code>mode</code>为<code>staging</code></li>
+</ul>
+</li>
+<li><code>.env.staging</code></li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 未设置NODE_ENV</span></span><br><span class="line"></span><br><span class="line">VUE_APP_TITLE=标题</span><br></pre></td></tr></table></figure>
+<ul>
+<li>由于使用了自定义<code>mode</code>、环境文件中又没有设置<code>NODE_ENV</code>，导致<code>NODE_ENV</code>为默认值<code>development</code>、所以<code>webpack mode</code>为<code>development</code>，并不会启用压缩等行为</li>
+</ul>
+<h3 id="例子-3"><a href="#例子-3" class="headerlink" title="例子 3"></a>例子 3</h3><ul>
+<li><code>vue-cli-service build --mode staging</code><ul>
+<li>通过<code>cli</code>参数覆盖默认<code>mode</code>，此时<code>mode</code>为<code>staging</code></li>
+</ul>
+</li>
+<li><code>.env.staging</code></li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NODE_ENV=production <span class="comment"># 设置NODE_ENV</span></span><br><span class="line">VUE_APP_TITLE=标题</span><br></pre></td></tr></table></figure>
+<ul>
+<li>环境文件中设置了<code>NODE_ENV=production</code>，所以<code>webpack mode</code>为<code>production</code></li>
+</ul>
+<h3 id="例子-4"><a href="#例子-4" class="headerlink" title="例子 4"></a>例子 4</h3><ul>
+<li><code>vue-cli-service build --mode staging</code><ul>
+<li>通过<code>cli</code>参数覆盖默认<code>mode</code>，此时<code>mode</code>为<code>staging</code></li>
+</ul>
+</li>
+<li><code>.env.staging</code></li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NODE_ENV=staging <span class="comment"># 设置NODE_ENV为非production、development、test的值</span></span><br><span class="line">VUE_APP_TITLE=标题</span><br></pre></td></tr></table></figure>
+<ul>
+<li>环境文件中设置了<code>NODE_ENV=staging</code>，所以<code>webpack mode</code>会运行在默认<code>development</code>环境下</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-service/lib/Service.js#L111" target="_blank" rel="noopener">https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-service/lib/Service.js#L111</a></li>
+<li><a href="https://github.com/vuejs/vue-cli/issues/4699" target="_blank" rel="noopener">https://github.com/vuejs/vue-cli/issues/4699</a></li>
+<li><a href="https://github.com/vuejs/vue-cli/issues/4743" target="_blank" rel="noopener">https://github.com/vuejs/vue-cli/issues/4743</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vue-cli/" rel="tag"># vue-cli</a>
+          
+            <a href="/tags/webpack/" rel="tag"># webpack</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/27/vue-router-analysis-part1/" rel="next" title="vue-router-analysis-part1">
+                <i class="fa fa-chevron-left"></i> vue-router-analysis-part1
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/12/01/vue-router-analysis-part2/" rel="prev" title="vue-router-analysis-part2">
+                vue-router-analysis-part2 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/Avatar.png"
+               alt="BryanAdamss" />
+          <p class="site-author-name" itemprop="name">BryanAdamss</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/BryanAdamss" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#vue-cli4-mode、NODE-ENV、webpack-mode"><span class="nav-number">1.</span> <span class="nav-text">vue-cli4 mode、NODE_ENV、webpack mode</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#vue-cli4-环境变量"><span class="nav-number">1.1.</span> <span class="nav-text">vue-cli4 环境变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#声明环境变量"><span class="nav-number">1.1.1.</span> <span class="nav-text">声明环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端可以使用的环境变量"><span class="nav-number">1.1.2.</span> <span class="nav-text">客户端可以使用的环境变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vue-cli-mode"><span class="nav-number">1.2.</span> <span class="nav-text">vue-cli mode</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#默认-mode"><span class="nav-number">1.2.1.</span> <span class="nav-text">默认 mode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#覆盖、自定义-mode"><span class="nav-number">1.2.2.</span> <span class="nav-text">覆盖、自定义 mode</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vue-cli-mode-和环境文件的关系"><span class="nav-number">1.3.</span> <span class="nav-text">vue-cli mode 和环境文件的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vue-cli-mode、NODE-ENV、webpack-mode-三者的关系"><span class="nav-number">1.4.</span> <span class="nav-text">vue-cli mode、NODE_ENV、webpack mode 三者的关系</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#webpack-mode"><span class="nav-number">1.4.1.</span> <span class="nav-text">webpack mode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三者关系"><span class="nav-number">1.4.2.</span> <span class="nav-text">三者关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例子-1"><span class="nav-number">1.4.3.</span> <span class="nav-text">例子 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例子-2"><span class="nav-number">1.4.4.</span> <span class="nav-text">例子 2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例子-3"><span class="nav-number">1.4.5.</span> <span class="nav-text">例子 3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例子-4"><span class="nav-number">1.4.6.</span> <span class="nav-text">例子 4</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.5.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BryanAdamss</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

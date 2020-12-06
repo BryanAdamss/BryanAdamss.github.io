@@ -1,0 +1,846 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="表格," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/Avatar.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="最近在项目中需要使用到表格控件，调研几个常用的表格控件(jquery-dataTable、list.js、jqGrid、Bootstrap-table)后，决定使用Bootstrap-table，特意将常用API记录下来，以备后用。源码可在这https://github.com/BryanAdamss/SourceSave/tree/master/Practice  12345678910111">
+<meta name="keywords" content="表格">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bootstrap-table_API">
+<meta property="og:url" content="http://yoursite.com/2017/09/07/Bootstrap-table-API/index.html">
+<meta property="og:site_name" content="BryanAdamss的博客">
+<meta property="og:description" content="最近在项目中需要使用到表格控件，调研几个常用的表格控件(jquery-dataTable、list.js、jqGrid、Bootstrap-table)后，决定使用Bootstrap-table，特意将常用API记录下来，以备后用。源码可在这https://github.com/BryanAdamss/SourceSave/tree/master/Practice  12345678910111">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-07T12:53:07.665Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Bootstrap-table_API">
+<meta name="twitter:description" content="最近在项目中需要使用到表格控件，调研几个常用的表格控件(jquery-dataTable、list.js、jqGrid、Bootstrap-table)后，决定使用Bootstrap-table，特意将常用API记录下来，以备后用。源码可在这https://github.com/BryanAdamss/SourceSave/tree/master/Practice  12345678910111">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/07/Bootstrap-table-API/"/>
+
+
+
+
+
+  <title> Bootstrap-table_API | BryanAdamss的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BryanAdamss的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个伪前端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/07/Bootstrap-table-API/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BryanAdamss">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/Avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BryanAdamss的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Bootstrap-table_API
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-07T20:44:29+08:00">
+                2017-09-07 20:44:29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FrontEnd/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>最近在项目中需要使用到表格控件，调研几个常用的表格控件(jquery-dataTable、list.js、jqGrid、Bootstrap-table)后，决定使用Bootstrap-table，特意将常用API记录下来，以备后用。<br>源码可在这<a href="https://github.com/BryanAdamss/SourceSave/tree/master/Practice" target="_blank" rel="noopener">https://github.com/BryanAdamss/SourceSave/tree/master/Practice</a></p>
+</blockquote>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 引入bootstrap样式 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"./vendors/bootstrap-3.3.7-dist/css/bootstrap.min.css"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 引入bootstrap-table样式 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"./vendors/bootstrap-table/bootstrap-table.css"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"btn-group hidden-xs"</span> <span class="attr">id</span>=<span class="string">"js_caremaTableToolBar"</span> <span class="attr">role</span>=<span class="string">"group"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">class</span>=<span class="string">"btn btn-outline btn-default"</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"glyphicon glyphicon-plus"</span> <span class="attr">aria-hidden</span>=<span class="string">"true"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">table</span> <span class="attr">id</span>=<span class="string">"js_caremaTable"</span> <span class="attr">data-height</span>=<span class="string">"400"</span> <span class="attr">data-icon-size</span>=<span class="string">"outline"</span> <span class="attr">data-striped</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"./js/jquery.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 引入bootstrap.js --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"./vendors/bootstrap-3.3.7-dist/js/bootstrap.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- bootstrap-table主js --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"./vendors/bootstrap-table/bootstrap-table.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- bootstrap-table本地化文件 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"./vendors/bootstrap-table/locale/bootstrap-table-zh-CN.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined">    var caremaTable = $('#js_caremaTable').bootstrapTable(&#123;</span></span><br><span class="line"><span class="undefined">        url: './json/bootstrap_table_test.json',</span></span><br><span class="line"><span class="undefined">        method: 'get', // 请求方式</span></span><br><span class="line"><span class="undefined">        uniqueId: 'id', // 每一行的唯一id，一般设置为主键列，此处用数据中的'id'做为每一行的唯一标识；可用在一些方法中如removeByUniqueId，不设置uniqueId时，调用此类方法会出错</span></span><br><span class="line"><span class="undefined">        search: true, // 启用搜索</span></span><br><span class="line"><span class="undefined">        sortable: true, // 全局配置，是否启用列排序；若为false，即使列上设置了sortable:true，列也无法进行排序</span></span><br><span class="line"><span class="undefined">        pagination: true, // 启用分页</span></span><br><span class="line"><span class="undefined">        sidePagination: 'client', // 设置在哪里进行分页，可选值为 'client' 或者 'server'。设置 'server'时，必须设置 服务器数据地址（url）或者重写ajax方法</span></span><br><span class="line"><span class="undefined">        showRefresh: true, // 启用刷新</span></span><br><span class="line"><span class="undefined">        showColumns: true, // 启用内容列下拉框</span></span><br><span class="line"><span class="undefined">        showToggle: true, // 是否显示 切换试图（table/card）按钮</span></span><br><span class="line"><span class="undefined">        showPaginationSwitch: true, // 是否显示切换分页按钮</span></span><br><span class="line"><span class="undefined">        toolbar: '#js_caremaTableToolBar', // 工具栏</span></span><br><span class="line"><span class="undefined">        cache: true, // 设置为 false 禁用 AJAX 数据缓存</span></span><br><span class="line"><span class="undefined">        singleSelect: false, // 设置True 将禁止radio、checkbox多选，并隐藏选择全部按钮</span></span><br><span class="line"><span class="undefined">        class: 'cgh_dfjakdjfklasjdfklajslkdfjlkaf',</span></span><br><span class="line"><span class="undefined">        columns: [&#123;</span></span><br><span class="line"><span class="undefined">                checkbox: true, // 此列为checkbox</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">            &#125;,</span></span><br><span class="line"><span class="undefined">            // &#123;</span></span><br><span class="line"><span class="undefined">            //     radio: true // 此列为radio</span></span><br><span class="line"><span class="undefined">            // &#125;,</span></span><br><span class="line"><span class="undefined">            &#123;</span></span><br><span class="line"><span class="undefined">                field: 'id',</span></span><br><span class="line"><span class="undefined">                title: '编号',</span></span><br><span class="line"><span class="undefined">                sortable: true, // 此列表头点击，可进行排序，前提必须是表格的sortable为true</span></span><br><span class="line"><span class="undefined">                titleTooltip: '点击可进行排序', // 悬停tooltip</span></span><br><span class="line"><span class="undefined">                width: '100px'</span></span><br><span class="line"><span class="undefined">            &#125;, &#123;</span></span><br><span class="line"><span class="undefined">                field: 'name',</span></span><br><span class="line"><span class="undefined">                title: '名称',</span></span><br><span class="line"><span class="undefined">            &#125;, &#123;</span></span><br><span class="line"><span class="undefined">                field: 'place',</span></span><br><span class="line"><span class="undefined">                title: '预置位'</span></span><br><span class="line"><span class="undefined">            &#125;, &#123;</span></span><br><span class="line"><span class="undefined">                field: 'userName',</span></span><br><span class="line"><span class="undefined">                title: '连接用户名'</span></span><br><span class="line"><span class="undefined">            &#125;, &#123;</span></span><br><span class="line"><span class="undefined">                field: 'password',</span></span><br><span class="line"><span class="undefined">                title: '连接密码'</span></span><br><span class="line"><span class="undefined">            &#125;, &#123;</span></span><br><span class="line"><span class="undefined">                field: 'channel',</span></span><br><span class="line"><span class="undefined">                title: '远程频道'</span></span><br><span class="line"><span class="undefined">            &#125;, &#123;</span></span><br><span class="line"><span class="undefined">                field: 'lng',</span></span><br><span class="line"><span class="undefined">                title: '经度'</span></span><br><span class="line"><span class="undefined">            &#125;, &#123;</span></span><br><span class="line"><span class="undefined">                field: 'lat',</span></span><br><span class="line"><span class="undefined">                title: '纬度',</span></span><br><span class="line"><span class="undefined">            &#125;, &#123;</span></span><br><span class="line"><span class="undefined">                title: '操作',</span></span><br><span class="line"><span class="undefined">                formatter: function(value, row, index) &#123;</span></span><br><span class="line"><span class="xml">                    return '<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:;"</span> <span class="attr">class</span>=<span class="string">"text-danger m-l js_delete"</span>&gt;</span>删除<span class="tag">&lt;/<span class="name">a</span>&gt;</span>'</span></span><br><span class="line"><span class="undefined">                &#125;,</span></span><br><span class="line"><span class="undefined">                events: &#123; // 按钮点击事件</span></span><br><span class="line"><span class="undefined">                    'click .js_delete': function(e, value, row, index) &#123;</span></span><br><span class="line"><span class="undefined">                        console.log(e, value, row, index);</span></span><br><span class="line"><span class="undefined">                        if (confirm('确定删除此行吗？')) &#123;</span></span><br><span class="line"><span class="undefined">                            caremaTable.bootstrapTable('removeByUniqueId', row.id); // 当表格配置了uniqueId: 'id'时，可通过removeByUniqueId来删除当前行</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">                            // caremaTable.bootstrapTable('remove', &#123; // 删除name列值为'测试0'的行</span></span><br><span class="line"><span class="undefined">                            //     field: 'name',</span></span><br><span class="line"><span class="undefined">                            //     values: ['测试0'] // 注意values必须是一个数组</span></span><br><span class="line"><span class="undefined">                            // &#125;);</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">                            // caremaTable.bootstrapTable('remove', &#123; // 删除当前行，由于id在创建数据时是唯一的，所以通过点击获取row中的id数据，然后删除id列值为row.id的行；不过还是建议通过配置uniqueId然后通过removeByUniqueId方法来删除</span></span><br><span class="line"><span class="undefined">                            //     field: 'id',</span></span><br><span class="line"><span class="undefined">                            //     values: [row.id]</span></span><br><span class="line"><span class="undefined">                            // &#125;);</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">                        &#125;</span></span><br><span class="line"><span class="undefined">                    &#125;</span></span><br><span class="line"><span class="undefined">                &#125;</span></span><br><span class="line"><span class="undefined">            &#125;</span></span><br><span class="line"><span class="undefined">        ],</span></span><br><span class="line"><span class="undefined">        onCheck: function(row) &#123; // 单独选中某一个check时触发</span></span><br><span class="line"><span class="undefined">            console.log('onCheck', row);</span></span><br><span class="line"><span class="undefined">        &#125;,</span></span><br><span class="line"><span class="undefined">        onUncheck: function(row) &#123;</span></span><br><span class="line"><span class="undefined">            console.log('onUncheck', row); // uncheck某一个check时触发</span></span><br><span class="line"><span class="undefined">        &#125;,</span></span><br><span class="line"><span class="undefined">        onCheckAll: function(rows) &#123;</span></span><br><span class="line"><span class="undefined">            console.log('onCheckAll', rows); // 全选check时触发</span></span><br><span class="line"><span class="undefined">        &#125;,</span></span><br><span class="line"><span class="undefined">        onUncheckAll: function(rows) &#123;</span></span><br><span class="line"><span class="undefined">            console.log('onUncheckAll', rows); // uncheck所有check时触发</span></span><br><span class="line"><span class="undefined">        &#125;</span></span><br><span class="line"><span class="undefined">    &#125;);</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">    // 常用方法</span></span><br><span class="line"><span class="undefined">    // 调用方法的语法：$('#table').bootstrapTable('method', parameter);</span></span><br><span class="line"><span class="undefined">    // 全部方法请参阅http://bootstrap-table.wenzhixin.net.cn/zh-cn/documentation/#方法</span></span><br><span class="line"><span class="undefined">    // caremaTable.bootstrapTable('getSelections'); // 返回所选的行，当没有选择任何行的时候返回一个空数组。</span></span><br><span class="line"><span class="undefined">    // caremaTable.bootstrapTable('getAllSelections'); // 返回所有选择的行，包括搜索过滤前的，当没有选择任何行的时候返回一个空数组。</span></span><br><span class="line"><span class="undefined">    // caremaTable.bootstrapTable('getData'); // 获取当前加载的数据。</span></span><br><span class="line"><span class="undefined">    // caremaTable.bootstrapTable('getRowByUniqueId', 3); // 根据 uniqueId 获取行数据。</span></span><br><span class="line"><span class="undefined">    // caremaTable.bootstrapTable('load', data); // 加载数据到表格中，旧数据会被替换。</span></span><br><span class="line"><span class="undefined">    // caremaTable.bootstrapTable('showAllColumns'); // 显示所有列。</span></span><br><span class="line"><span class="undefined">    // caremaTable.bootstrapTable('hideAllColumns'); // 隐藏所有列。</span></span><br><span class="line"><span class="undefined">    // caremaTable.bootstrapTable('append'); // 添加数据到表格在现有数据之后。</span></span><br><span class="line"><span class="undefined">    // caremaTable.bootstrapTable('prepend'); // 插入数据到表格在现有数据之前。</span></span><br><span class="line"><span class="undefined">    // caremaTable.bootstrapTable('remove', &#123; field: 'id', values: someArr &#125;); // 从表格中删除数据，包括两个参数： field: 需要删除的行的 field 名称。values: 需要删除的行的值，类型为数组。</span></span><br><span class="line"><span class="undefined">    // caremaTable.bootstrapTable('removeAll'); // 删除表格所有数据。</span></span><br><span class="line"><span class="undefined">    // caremaTable.bootstrapTable('removeByUniqueId'); // 根据 uniqueId 删除指定的行。</span></span><br><span class="line"><span class="undefined">    // caremaTable.bootstrapTable('insertRow', &#123; index: 1, row: row &#125;); // 插入新行，参数包括：index: 要插入的行的 index。row: 行的数据，Object 对象。</span></span><br><span class="line"><span class="undefined">    // caremaTable.bootstrapTable('updateRow', &#123; index: 1, row: row &#125;); // 更新指定的行，参数包括：index: 要更新的行的 index。row: 行的数据，Object 对象。</span></span><br><span class="line"><span class="undefined">    // caremaTable.bootstrapTable('showRow', &#123; index: 1 &#125;); // 显示指定的行，参数包括：index: 要更新的行的 index 或者 uniqueId。isIdField: 指定 index 是否为 uniqueid。</span></span><br><span class="line"><span class="undefined">    // caremaTable.bootstrapTable('hideRow', &#123; index: 1 &#125;); // 隐藏指定的行，参数包括：index: 要更新的行的 index 或者 uniqueId。isIdField: 指定 index 是否为 uniqueid。</span></span><br><span class="line"><span class="undefined">    // caremaTable.bootstrapTable('checkAll'); // 选中所有行</span></span><br><span class="line"><span class="undefined">    // caremaTable.bootstrapTable('uncheckAll'); // uncheck所有行</span></span><br><span class="line"><span class="undefined">    // caremaTable.bootstrapTable('check', 0); // 选中第一行</span></span><br><span class="line"><span class="undefined">    // caremaTable.bootstrapTable('uncheck', 0); // 取消选中第一行</span></span><br><span class="line"><span class="undefined">    // caremaTable.bootstrapTable('checkBy', &#123; field: "field_name", values: ["value1", "value2", "value3"] &#125;); // 选中field_name为value1、value2、value3的行</span></span><br><span class="line"><span class="undefined">    // caremaTable.bootstrapTable('uncheckBy', &#123; field: "field_name", values: ["value1", "value2", "value3"] &#125;); // 取消选中field_name为value1、value2、value3的行</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">    $(window).resize(function() &#123; // 防止thead和tbody在缩放情况下不对齐</span></span><br><span class="line"><span class="undefined">        caremaTable.bootstrapTable('resetView');</span></span><br><span class="line"><span class="undefined">    &#125;);</span></span><br><span class="line"><span class="undefined">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/表格/" rel="tag"># 表格</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/04/type-existence/" rel="next" title="type-existence">
+                <i class="fa fa-chevron-left"></i> type-existence
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/07/Deferred-Promise/" rel="prev" title="Deferred_Promise">
+                Deferred_Promise <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/Avatar.png"
+               alt="BryanAdamss" />
+          <p class="site-author-name" itemprop="name">BryanAdamss</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/BryanAdamss" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BryanAdamss</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

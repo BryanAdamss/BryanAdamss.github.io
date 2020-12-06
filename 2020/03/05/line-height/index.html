@@ -1,0 +1,932 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="css,line-height," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/Avatar.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="line-height英文字体四线 基线:创建字体的基准之线,是小写字母 x 的下边缘; 中线:小写字母 x 的上边缘； 顶线:文字的最上边缘 底线:文字的最下边缘  综合 1 和 2 可发现小写 x 对于英文字母的设计非常重要，所以设计字体一般会先设计出 x，再设计其他文字 content area每一个文字都有一个”内容区域 content area”的矩形盒子将文字包裹在其中;“内容区域”的">
+<meta name="keywords" content="css,line-height">
+<meta property="og:type" content="article">
+<meta property="og:title" content="line-height">
+<meta property="og:url" content="http://yoursite.com/2020/03/05/line-height/index.html">
+<meta property="og:site_name" content="BryanAdamss的博客">
+<meta property="og:description" content="line-height英文字体四线 基线:创建字体的基准之线,是小写字母 x 的下边缘; 中线:小写字母 x 的上边缘； 顶线:文字的最上边缘 底线:文字的最下边缘  综合 1 和 2 可发现小写 x 对于英文字母的设计非常重要，所以设计字体一般会先设计出 x，再设计其他文字 content area每一个文字都有一个”内容区域 content area”的矩形盒子将文字包裹在其中;“内容区域”的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/1.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/3.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/4.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/5.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/6.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/7.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/8.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/9.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/10.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/11.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/12.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/13.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/line-boxes.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/l1.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/l2.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/l3.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/l4.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/l5.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/l6.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/l7.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/l8.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/l9.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/l10.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/l11.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/l12.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/05/line-height/l13.png">
+<meta property="og:updated_time" content="2020-03-07T08:16:10.778Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="line-height">
+<meta name="twitter:description" content="line-height英文字体四线 基线:创建字体的基准之线,是小写字母 x 的下边缘; 中线:小写字母 x 的上边缘； 顶线:文字的最上边缘 底线:文字的最下边缘  综合 1 和 2 可发现小写 x 对于英文字母的设计非常重要，所以设计字体一般会先设计出 x，再设计其他文字 content area每一个文字都有一个”内容区域 content area”的矩形盒子将文字包裹在其中;“内容区域”的">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/05/line-height/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/05/line-height/"/>
+
+
+
+
+
+  <title> line-height | BryanAdamss的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BryanAdamss的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一个伪前端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/05/line-height/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BryanAdamss">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/Avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BryanAdamss的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                line-height
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-05T16:35:09+08:00">
+                2020-03-05 16:35:09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FrontEnd/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="line-height"><a href="#line-height" class="headerlink" title="line-height"></a>line-height</h1><h2 id="英文字体四线"><a href="#英文字体四线" class="headerlink" title="英文字体四线"></a>英文字体四线</h2><ol>
+<li>基线:创建字体的基准之线,是小写字母 x 的下边缘;</li>
+<li>中线:小写字母 x 的上边缘；</li>
+<li>顶线:文字的最上边缘</li>
+<li>底线:文字的最下边缘</li>
+</ol>
+<p>综合 1 和 2 可发现小写 x 对于英文字母的设计非常重要，所以设计字体一般会先设计出 x，再设计其他文字</p>
+<h2 id="content-area"><a href="#content-area" class="headerlink" title="content area"></a>content area</h2><p><strong>每一个</strong>文字都有一个”内容区域 content area”的矩形盒子将文字包裹在其中;<strong>“内容区域”的高度就是 font-size;</strong></p>
+<h2 id="盒子"><a href="#盒子" class="headerlink" title="盒子"></a>盒子</h2><ol>
+<li>每一行文字都会产生一个行框(line boxes);</li>
+<li>每个行框(line boxes)中又包含一个个的行内框(inline boxes);行内框(inline boxes)又有显性行内框和匿名行内框之分，显性行内框一般由显性的行内标签 span、em 等包裹一个或多个文字后产生，没有行内标签包裹的一个或多个文字一般会产生匿名行内框</li>
+<li><strong>在没有其他因素（padding）影响的时候，行内框(inline boxes)高度等于内容区域(content area)高度</strong></li>
+<li><img src="/2020/03/05/line-height/1.png" alt="1.png"><br><img src="/2020/03/05/line-height/2.png" alt="2.png"><br><img src="/2020/03/05/line-height/3.png" alt="3.png"><br><img src="/2020/03/05/line-height/4.png" alt="4.png"><br><img src="/2020/03/05/line-height/5.png" alt="5.png"><br><img src="/2020/03/05/line-height/6.png" alt="6.png"><br><img src="/2020/03/05/line-height/7.png" alt="7.png"><br><img src="/2020/03/05/line-height/8.png" alt="8.png"><br><img src="/2020/03/05/line-height/9.png" alt="9.png"><br><img src="/2020/03/05/line-height/10.png" alt="10.png"><br><img src="/2020/03/05/line-height/11.png" alt="11.png"><br><img src="/2020/03/05/line-height/12.png" alt="12.png"><br><img src="/2020/03/05/line-height/13.png" alt="13.png"></li>
+</ol>
+<h2 id="高度"><a href="#高度" class="headerlink" title="高度"></a>高度</h2><ol>
+<li>行高(line-height):文本的高度即行内框(inline box)的高度,不是 line box 的高度,因为每个单独的 inline 元素都可以设置 line-height</li>
+<li>行(间)距:每行文本的间距;一般为文字”底线”到下一行文字的”顶线”之间的垂直距离或者为”顶线”到上一行”底线”间的垂直距离；行距=行高-文字内容区域的高度(一般为字体大小);<strong>行距=line-height - font-size</strong></li>
+<li>半行(间)距:一般为文字”顶线”到行框(line boxes)  的最上部或”底线”到行框的最下部;<strong>大小为行距的一半</strong>,半行(间)距  =行距/2=(line-height - font-size )/2;<strong>会添加到内容区域(content area)的上下部；</strong></li>
+</ol>
+<h2 id="行框-line-boxes-特性"><a href="#行框-line-boxes-特性" class="headerlink" title="行框(line boxes)特性"></a>行框(line boxes)特性</h2><ol>
+<li><strong>行框总是以文字的水平中线进行上下对称分布的</strong>(利用此特性可实现文本的垂直居中)</li>
+<li>行框高度是由<strong>内部行高最大的 inline box 决定的</strong></li>
+<li><img src="/2020/03/05/line-height/line-boxes.png" alt="line-boxes.png">、看 test1 的结果，此时 line boxes 的高度为 0，但是它是以文字的水平中垂线对称分布的。这一重要的特性可以用来实现文字或图片的垂直居中对齐。(通过 test1 也说明 line-height 可以小于 font-size)</li>
+</ol>
+<h2 id="行高-line-height-的取值特点"><a href="#行高-line-height-的取值特点" class="headerlink" title="行高(line-height)的取值特点"></a>行高(line-height)的取值特点</h2><p>body 设置 line-height:120%、120px、1.2 区别(假设 font-size 为 16px)</p>
+<ol>
+<li>百分比  ：body 的行高通过计算得出应该是 16x120%=19.2px;子元素会继承 body 计算后的 line-height 数值,而不是直接继承声明值(120%)再和自身 font-size 做计算得出自己的 line-height</li>
+<li>长度值:body 自身的 line-height 为 120px,子元素也会继承这个值 120px</li>
+<li>值(缩放因子):body 本身计算后为 16x1.2=19.2;子元素不会继承计算后的值，而是继承这个声明值 1.2,然后再和自身的 font-size 做计算，得出自身的 line-height.所以此方法比较好.</li>
+<li><img src="/2020/03/05/line-height/l1.png" alt="l1.png"><br><img src="/2020/03/05/line-height/l2.png" alt="l2.png"><br><img src="/2020/03/05/line-height/l3.png" alt="l3.png"><br><img src="/2020/03/05/line-height/l4.png" alt="l4.png"><br><img src="/2020/03/05/line-height/l5.png" alt="l5.png"><br><img src="/2020/03/05/line-height/l6.png" alt="l6.png"><br><img src="/2020/03/05/line-height/l7.png" alt="l7.png"><br><img src="/2020/03/05/line-height/l8.png" alt="l8.png"><br><img src="/2020/03/05/line-height/l9.png" alt="l9.png"><br><img src="/2020/03/05/line-height/l10.png" alt="l10.png"><br><img src="/2020/03/05/line-height/l11.png" alt="l11.png"><br><img src="/2020/03/05/line-height/l12.png" alt="l12.png"><br><img src="/2020/03/05/line-height/l13.png" alt="l13.png"></li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://www.cnblogs.com/fengzheng126/archive/2012/05/18/2507632.html" target="_blank" rel="noopener">https://www.cnblogs.com/fengzheng126/archive/2012/05/18/2507632.html</a></li>
+<li><a href="https://www.zhangxinxu.com/wordpress/2009/11/css%e8%a1%8c%e9%ab%98line-height%e7%9a%84%e4%b8%80%e4%ba%9b%e6%b7%b1%e5%85%a5%e7%90%86%e8%a7%a3%e5%8f%8a%e5%ba%94%e7%94%a8/" target="_blank" rel="noopener">https://www.zhangxinxu.com/wordpress/2009/11/css%e8%a1%8c%e9%ab%98line-height%e7%9a%84%e4%b8%80%e4%ba%9b%e6%b7%b1%e5%85%a5%e7%90%86%e8%a7%a3%e5%8f%8a%e5%ba%94%e7%94%a8/</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/css/" rel="tag"># css</a>
+          
+            <a href="/tags/line-height/" rel="tag"># line-height</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/05/bfc/" rel="next" title="bfc">
+                <i class="fa fa-chevron-left"></i> bfc
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/07/stacking-context/" rel="prev" title="stacking-context">
+                stacking-context <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/Avatar.png"
+               alt="BryanAdamss" />
+          <p class="site-author-name" itemprop="name">BryanAdamss</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/BryanAdamss" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#line-height"><span class="nav-number">1.</span> <span class="nav-text">line-height</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#英文字体四线"><span class="nav-number">1.1.</span> <span class="nav-text">英文字体四线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#content-area"><span class="nav-number">1.2.</span> <span class="nav-text">content area</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#盒子"><span class="nav-number">1.3.</span> <span class="nav-text">盒子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高度"><span class="nav-number">1.4.</span> <span class="nav-text">高度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#行框-line-boxes-特性"><span class="nav-number">1.5.</span> <span class="nav-text">行框(line boxes)特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#行高-line-height-的取值特点"><span class="nav-number">1.6.</span> <span class="nav-text">行高(line-height)的取值特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.7.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BryanAdamss</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
